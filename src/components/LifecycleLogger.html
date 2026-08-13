@@ -1,0 +1,14 @@
+<script>
+  import { onMount, props } from "olum";
+
+  const { onLog } = props();
+
+  onMount(() => {
+    onLog("mounted");
+    return () => onLog("unmounted");
+  });
+</script>
+
+<div class="rounded-lg border border-border bg-muted/50 p-3 text-sm text-muted-foreground">
+  I'm alive — toggle the switch above to mount/unmount me and watch the log.
+</div>

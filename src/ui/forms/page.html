@@ -1,0 +1,336 @@
+<script>
+  import Nav from "../../components/Nav";
+  import Button from "../../components/ui/Button/Button";
+  import Icon from "../../components/ui/Icon/Icon";
+  import ButtonGroup from "../../components/ui/ButtonGroup/ButtonGroup";
+  import ButtonGroupSeparator from "../../components/ui/ButtonGroup/ButtonGroupSeparator";
+  import ButtonGroupText from "../../components/ui/ButtonGroup/ButtonGroupText";
+  import Calendar from "../../components/ui/Calendar/Calendar";
+  import Checkbox from "../../components/ui/Checkbox/Checkbox";
+  import Combobox from "../../components/ui/Combobox/Combobox";
+  import DatePicker from "../../components/ui/DatePicker/DatePicker";
+  import Field from "../../components/ui/Field/Field";
+  import FieldContent from "../../components/ui/Field/FieldContent";
+  import FieldDescription from "../../components/ui/Field/FieldDescription";
+  import FieldError from "../../components/ui/Field/FieldError";
+  import FieldGroup from "../../components/ui/Field/FieldGroup";
+  import FieldLabel from "../../components/ui/Field/FieldLabel";
+  import FieldLegend from "../../components/ui/Field/FieldLegend";
+  import FieldSeparator from "../../components/ui/Field/FieldSeparator";
+  import FieldSet from "../../components/ui/Field/FieldSet";
+  import Input from "../../components/ui/Input/Input";
+  import InputGroup from "../../components/ui/InputGroup/InputGroup";
+  import InputGroupAddon from "../../components/ui/InputGroup/InputGroupAddon";
+  import InputGroupButton from "../../components/ui/InputGroup/InputGroupButton";
+  import InputGroupInput from "../../components/ui/InputGroup/InputGroupInput";
+  import InputOTP from "../../components/ui/InputOTP/InputOTP";
+  import InputOTPGroup from "../../components/ui/InputOTP/InputOTPGroup";
+  import InputOTPSeparator from "../../components/ui/InputOTP/InputOTPSeparator";
+  import InputOTPSlot from "../../components/ui/InputOTP/InputOTPSlot";
+  import Label from "../../components/ui/Label/Label";
+  import NativeSelect from "../../components/ui/NativeSelect/NativeSelect";
+  import NativeSelectOptGroup from "../../components/ui/NativeSelect/NativeSelectOptGroup";
+  import NativeSelectOption from "../../components/ui/NativeSelect/NativeSelectOption";
+  import RadioGroup from "../../components/ui/RadioGroup/RadioGroup";
+  import RadioGroupItem from "../../components/ui/RadioGroup/RadioGroupItem";
+  import Select from "../../components/ui/Select/Select";
+  import SelectContent from "../../components/ui/Select/SelectContent";
+  import SelectGroup from "../../components/ui/Select/SelectGroup";
+  import SelectItem from "../../components/ui/Select/SelectItem";
+  import SelectLabel from "../../components/ui/Select/SelectLabel";
+  import SelectSeparator from "../../components/ui/Select/SelectSeparator";
+  import SelectTrigger from "../../components/ui/Select/SelectTrigger";
+  import SelectValue from "../../components/ui/Select/SelectValue";
+  import Slider from "../../components/ui/Slider/Slider";
+  import Switch from "../../components/ui/Switch/Switch";
+  import Textarea from "../../components/ui/Textarea/Textarea";
+  import Toggle from "../../components/ui/Toggle/Toggle";
+  import ToggleGroup from "../../components/ui/ToggleGroup/ToggleGroup";
+  import ToggleGroupItem from "../../components/ui/ToggleGroup/ToggleGroupItem";
+  import { Search, X } from "olum-icons/lucide";
+
+  // ---- Composed "profile form" state ----
+  const state = {
+    name: "",
+    email: "",
+    bio: "",
+    country: "",
+    plan: "pro",
+    notify: true,
+    terms: false,
+    termsError: false,
+    submitted: false,
+  };
+
+  const onNameInput = (e) => (state.name = e.target.value);
+  const onEmailInput = (e) => (state.email = e.target.value);
+  const onBioInput = (e) => (state.bio = e.target.value);
+  const onCountryChange = (e) => (state.country = e.target.value);
+  const onPlanChange = (v) => (state.plan = v);
+  const onNotifyChange = (checked) => (state.notify = checked);
+  const onTermsChange = (checked) => {
+    state.terms = checked;
+    if (checked) state.termsError = false;
+  };
+  const submitForm = () => {
+    state.termsError = !state.terms;
+    state.submitted = state.terms;
+  };
+
+  // ---- Gallery state ----
+  const gallery = { framework: "olum", otp: "", searchQuery: "" };
+  const onFrameworkChange = (v) => (gallery.framework = v);
+  const onSearchInput = (e) => (gallery.searchQuery = e.target.value);
+  const clearSearch = () => (gallery.searchQuery = "");
+
+  const fruits = ["Apple", "Banana", "Cherry", "Durian", "Elderberry", "Fig", "Grape", "Honeydew"];
+</script>
+
+<Nav />
+
+<main class="mx-auto max-w-6xl px-6 py-12">
+  <header class="mb-10">
+    <h1 class="font-heading text-3xl font-semibold tracking-tight text-foreground">Forms</h1>
+    <p class="mt-1 text-muted-foreground">Every form-category component from the olum-ui registry, live.</p>
+  </header>
+
+  <section class="mb-16">
+    <h2 class="mb-1 text-xl font-semibold text-foreground">Composed profile form</h2>
+    <p class="mb-4 text-sm text-muted-foreground">Field, FieldGroup, FieldSet, and Label wrapping Input, Textarea, NativeSelect, RadioGroup, Switch, and Checkbox.</p>
+    <div class="rounded-xl border border-border p-6">
+      <FieldGroup class="max-w-lg">
+        <Field>
+          <FieldContent>
+            <FieldLabel for="pf-name">Name</FieldLabel>
+            <Input id="pf-name" placeholder="Ada Lovelace" value="{state.name}" oninput="{onNameInput}" />
+            <FieldDescription>Shown on your public profile.</FieldDescription>
+          </FieldContent>
+        </Field>
+
+        <Field>
+          <FieldContent>
+            <FieldLabel for="pf-email">Email</FieldLabel>
+            <Input id="pf-email" type="email" placeholder="ada@example.com" value="{state.email}" oninput="{onEmailInput}" />
+          </FieldContent>
+        </Field>
+
+        <Field>
+          <FieldContent>
+            <FieldLabel for="pf-bio">Bio</FieldLabel>
+            <Textarea id="pf-bio" rows="3" placeholder="A few words about you" value="{state.bio}" oninput="{onBioInput}" />
+          </FieldContent>
+        </Field>
+
+        <Field>
+          <FieldContent>
+            <FieldLabel for="pf-country">Country</FieldLabel>
+            <NativeSelect id="pf-country" onchange="{onCountryChange}">
+              <NativeSelectOption value="">Select a country…</NativeSelectOption>
+              <NativeSelectOptGroup label="Popular">
+                <NativeSelectOption value="us">United States</NativeSelectOption>
+                <NativeSelectOption value="eg">Egypt</NativeSelectOption>
+                <NativeSelectOption value="de">Germany</NativeSelectOption>
+              </NativeSelectOptGroup>
+              <NativeSelectOptGroup label="Other">
+                <NativeSelectOption value="jp">Japan</NativeSelectOption>
+                <NativeSelectOption value="br">Brazil</NativeSelectOption>
+              </NativeSelectOptGroup>
+            </NativeSelect>
+            <FieldDescription>You picked: {state.country || "nothing yet"}</FieldDescription>
+          </FieldContent>
+        </Field>
+
+        <FieldSeparator>Plan</FieldSeparator>
+
+        <FieldSet>
+          <FieldLegend variant="label">Choose a plan</FieldLegend>
+          <RadioGroup>
+            <div class="flex items-center gap-2">
+              <RadioGroupItem id="plan-free" name="plan" value="free" defaultChecked="{state.plan === 'free'}" onCheckedChange="{onPlanChange}" />
+              <Label for="plan-free">Free</Label>
+            </div>
+            <div class="flex items-center gap-2">
+              <RadioGroupItem id="plan-pro" name="plan" value="pro" defaultChecked="{state.plan === 'pro'}" onCheckedChange="{onPlanChange}" />
+              <Label for="plan-pro">Pro</Label>
+            </div>
+            <div class="flex items-center gap-2">
+              <RadioGroupItem id="plan-ent" name="plan" value="enterprise" defaultChecked="{state.plan === 'enterprise'}" onCheckedChange="{onPlanChange}" />
+              <Label for="plan-ent">Enterprise</Label>
+            </div>
+          </RadioGroup>
+        </FieldSet>
+
+        <Field orientation="horizontal">
+          <Switch id="pf-notify" defaultChecked="{state.notify}" onCheckedChange="{onNotifyChange}" />
+          <FieldContent>
+            <FieldLabel for="pf-notify">Email notifications</FieldLabel>
+            <FieldDescription>Currently {state.notify ? "on" : "off"}.</FieldDescription>
+          </FieldContent>
+        </Field>
+
+        <Field orientation="horizontal">
+          <Checkbox id="pf-terms" defaultChecked="{state.terms}" invalid="{state.termsError}" onCheckedChange="{onTermsChange}" />
+          <FieldContent>
+            <FieldLabel for="pf-terms">I agree to the terms</FieldLabel>
+            <if when="state.termsError">
+              <FieldError>You must accept the terms to continue.</FieldError>
+            </if>
+          </FieldContent>
+        </Field>
+
+        <div class="flex items-center gap-3">
+          <Button onclick="{submitForm}">Submit</Button>
+          <if when="state.submitted">
+            <span class="text-sm text-primary">Submitted ✓</span>
+          </if>
+        </div>
+      </FieldGroup>
+
+      <pre class="mt-6 max-w-lg overflow-x-auto rounded-lg bg-muted p-3 text-xs text-muted-foreground">{JSON.stringify(state, null, 2)}</pre>
+    </div>
+  </section>
+
+  <section class="mb-12">
+    <h2 class="mb-1 text-xl font-semibold text-foreground">Button Group</h2>
+    <p class="mb-4 text-sm text-muted-foreground">Joins related buttons or a text/input/button split control.</p>
+    <div class="flex flex-col gap-4 rounded-xl border border-border p-6">
+      <ButtonGroup>
+        <Button variant="outline" size="sm">Bold</Button>
+        <Button variant="outline" size="sm">Italic</Button>
+        <ButtonGroupSeparator />
+        <Button variant="outline" size="sm">Underline</Button>
+      </ButtonGroup>
+      <ButtonGroup class="max-w-xs">
+        <ButtonGroupText>https://</ButtonGroupText>
+        <Input placeholder="yoursite.com" />
+        <Button variant="outline">Go</Button>
+      </ButtonGroup>
+    </div>
+  </section>
+
+  <section class="mb-12">
+    <h2 class="mb-1 text-xl font-semibold text-foreground">Calendar &amp; Date Picker</h2>
+    <p class="mb-4 text-sm text-muted-foreground">A month grid, and the popover trigger built on top of it.</p>
+    <div class="flex flex-wrap items-start gap-8 rounded-xl border border-border p-6">
+      <Calendar />
+      <DatePicker placeholder="Pick a date" />
+    </div>
+  </section>
+
+  <section class="mb-12">
+    <h2 class="mb-1 text-xl font-semibold text-foreground">Combobox</h2>
+    <p class="mb-4 text-sm text-muted-foreground">Filterable text field over a list of options.</p>
+    <div class="rounded-xl border border-border p-6">
+      <Combobox items="{fruits}" placeholder="Search fruit…" showClear="{true}" />
+    </div>
+  </section>
+
+  <section class="mb-12">
+    <h2 class="mb-1 text-xl font-semibold text-foreground">Input Group &amp; OTP</h2>
+    <p class="mb-4 text-sm text-muted-foreground">Addon-decorated inputs, and one-time-code slots.</p>
+    <div class="flex flex-col gap-6 rounded-xl border border-border p-6">
+      <InputGroup class="max-w-xs">
+        <InputGroupAddon>
+          <Icon icon="{Search}" class="size-4" />
+        </InputGroupAddon>
+        <InputGroupInput placeholder="Search…" value="{gallery.searchQuery}" oninput="{onSearchInput}" />
+        <if when="gallery.searchQuery">
+          <InputGroupAddon align="inline-end">
+            <!-- InputGroupButton doesn't forward onclick to its inner Button (read the
+                 source — it only forwards type/variant/value/ariaLabel), so the actual
+                 clear behavior is wired on a plain Button styled to match instead. -->
+            <Button variant="ghost" size="icon-xs" ariaLabel="Clear" onclick="{clearSearch}">
+              <Icon icon="{X}" class="size-4" />
+            </Button>
+          </InputGroupAddon>
+        </if>
+      </InputGroup>
+
+      <InputGroup class="max-w-xs">
+        <InputGroupAddon>
+          <InputGroupText>Qty</InputGroupText>
+        </InputGroupAddon>
+        <InputGroupInput placeholder="1" />
+        <InputGroupAddon align="inline-end">
+          <InputGroupButton>Update</InputGroupButton>
+        </InputGroupAddon>
+      </InputGroup>
+
+      <div>
+        <InputOTP>
+          <InputOTPGroup>
+            <InputOTPSlot index="{0}" />
+            <InputOTPSlot index="{1}" />
+            <InputOTPSlot index="{2}" />
+          </InputOTPGroup>
+          <InputOTPSeparator />
+          <InputOTPGroup>
+            <InputOTPSlot index="{3}" />
+            <InputOTPSlot index="{4}" />
+            <InputOTPSlot index="{5}" />
+          </InputOTPGroup>
+        </InputOTP>
+        <p class="mt-2 text-xs text-muted-foreground">Type digits — auto-advances, backspace steps back, paste is supported.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="mb-12">
+    <h2 class="mb-1 text-xl font-semibold text-foreground">Select</h2>
+    <p class="mb-4 text-sm text-muted-foreground">A custom dropdown, composed from Trigger/Content/Item.</p>
+    <div class="rounded-xl border border-border p-6">
+      <Select defaultValue="olum" onValueChange="{onFrameworkChange}">
+        <SelectTrigger class="w-56">
+          <SelectValue placeholder="Pick a framework" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectGroup>
+            <SelectLabel>Frameworks</SelectLabel>
+            <SelectItem value="olum">Olum</SelectItem>
+            <SelectItem value="vue">Vue</SelectItem>
+            <SelectItem value="react">React</SelectItem>
+          </SelectGroup>
+          <SelectSeparator />
+          <SelectItem value="svelte">Svelte</SelectItem>
+        </SelectContent>
+      </Select>
+      <p class="mt-2 text-sm text-muted-foreground">Selected: {gallery.framework}</p>
+    </div>
+  </section>
+
+  <section class="mb-12">
+    <h2 class="mb-1 text-xl font-semibold text-foreground">Slider</h2>
+    <p class="mb-4 text-sm text-muted-foreground">Single-thumb and two-thumb range variants.</p>
+    <div class="flex max-w-sm flex-col gap-8 rounded-xl border border-border p-6">
+      <Slider defaultValue="{[40]}" />
+      <Slider defaultValue="{[20, 80]}" />
+    </div>
+  </section>
+
+  <section class="mb-12">
+    <h2 class="mb-1 text-xl font-semibold text-foreground">Toggle &amp; Toggle Group</h2>
+    <p class="mb-4 text-sm text-muted-foreground">A single pressable toggle, and single/multi-select groups sharing state via toggleGroupStore.</p>
+    <div class="flex flex-wrap items-center gap-6 rounded-xl border border-border p-6">
+      <Toggle ariaLabel="Bold">B</Toggle>
+      <ToggleGroup>
+        <ToggleGroupItem value="left">Left</ToggleGroupItem>
+        <ToggleGroupItem value="center">Center</ToggleGroupItem>
+        <ToggleGroupItem value="right">Right</ToggleGroupItem>
+      </ToggleGroup>
+      <ToggleGroup multiple="{true}">
+        <ToggleGroupItem value="bold">B</ToggleGroupItem>
+        <ToggleGroupItem value="italic">I</ToggleGroupItem>
+        <ToggleGroupItem value="underline">U</ToggleGroupItem>
+      </ToggleGroup>
+    </div>
+  </section>
+
+  <section class="mb-12">
+    <h2 class="mb-1 text-xl font-semibold text-foreground">Label</h2>
+    <p class="mb-4 text-sm text-muted-foreground">Bare pairing outside of Field — clicking the text focuses the input.</p>
+    <div class="flex max-w-xs flex-col gap-1.5 rounded-xl border border-border p-6">
+      <Label for="newsletter">Newsletter email</Label>
+      <Input id="newsletter" type="email" placeholder="you@example.com" />
+    </div>
+  </section>
+</main>

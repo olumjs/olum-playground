@@ -1,0 +1,429 @@
+<script>
+  import Nav from "../../components/Nav";
+  import Icon from "../../components/ui/Icon/Icon";
+  import Button from "../../components/ui/Button/Button";
+  import Badge from "../../components/ui/Badge/Badge";
+
+  import Accordion from "../../components/ui/Accordion/Accordion";
+  import AccordionItem from "../../components/ui/Accordion/AccordionItem";
+  import AccordionTrigger from "../../components/ui/Accordion/AccordionTrigger";
+  import AccordionContent from "../../components/ui/Accordion/AccordionContent";
+
+  import Attachment from "../../components/ui/Attachment/Attachment";
+  import AttachmentMedia from "../../components/ui/Attachment/AttachmentMedia";
+  import AttachmentContent from "../../components/ui/Attachment/AttachmentContent";
+  import AttachmentTitle from "../../components/ui/Attachment/AttachmentTitle";
+  import AttachmentDescription from "../../components/ui/Attachment/AttachmentDescription";
+  import AttachmentActions from "../../components/ui/Attachment/AttachmentActions";
+  import AttachmentAction from "../../components/ui/Attachment/AttachmentAction";
+  import AttachmentGroup from "../../components/ui/Attachment/AttachmentGroup";
+
+  import Avatar from "../../components/ui/Avatar/Avatar";
+  import AvatarFallback from "../../components/ui/Avatar/AvatarFallback";
+  import AvatarBadge from "../../components/ui/Avatar/AvatarBadge";
+  import AvatarGroup from "../../components/ui/Avatar/AvatarGroup";
+  import AvatarGroupCount from "../../components/ui/Avatar/AvatarGroupCount";
+
+  import Bubble from "../../components/ui/Bubble/Bubble";
+  import BubbleContent from "../../components/ui/Bubble/BubbleContent";
+  import BubbleGroup from "../../components/ui/Bubble/BubbleGroup";
+
+  import Carousel from "../../components/ui/Carousel/Carousel";
+  import CarouselContent from "../../components/ui/Carousel/CarouselContent";
+  import CarouselItem from "../../components/ui/Carousel/CarouselItem";
+  import CarouselNext from "../../components/ui/Carousel/CarouselNext";
+  import CarouselPrevious from "../../components/ui/Carousel/CarouselPrevious";
+
+  import BarChart from "../../components/ui/Chart/BarChart";
+  import LineChart from "../../components/ui/Chart/LineChart";
+  import DonutChart from "../../components/ui/Chart/DonutChart";
+  import AreaChart from "../../components/ui/Chart/AreaChart";
+  import ComposedChart from "../../components/ui/Chart/ComposedChart";
+  import RadialBarChart from "../../components/ui/Chart/RadialBarChart";
+
+  import Collapsible from "../../components/ui/Collapsible/Collapsible";
+  import CollapsibleTrigger from "../../components/ui/Collapsible/CollapsibleTrigger";
+  import CollapsibleContent from "../../components/ui/Collapsible/CollapsibleContent";
+
+  import DataTable from "../../components/ui/DataTable/DataTable";
+
+  import Item from "../../components/ui/Item/Item";
+  import ItemMedia from "../../components/ui/Item/ItemMedia";
+  import ItemContent from "../../components/ui/Item/ItemContent";
+  import ItemTitle from "../../components/ui/Item/ItemTitle";
+  import ItemDescription from "../../components/ui/Item/ItemDescription";
+  import ItemActions from "../../components/ui/Item/ItemActions";
+  import ItemGroup from "../../components/ui/Item/ItemGroup";
+  import ItemSeparator from "../../components/ui/Item/ItemSeparator";
+
+  import Kbd from "../../components/ui/Kbd/Kbd";
+  import KbdGroup from "../../components/ui/Kbd/KbdGroup";
+
+  import Marker from "../../components/ui/Marker/Marker";
+  import MarkerContent from "../../components/ui/Marker/MarkerContent";
+  import MarkerIcon from "../../components/ui/Marker/MarkerIcon";
+
+  import Message from "../../components/ui/Message/Message";
+  import MessageAvatar from "../../components/ui/Message/MessageAvatar";
+  import MessageContent from "../../components/ui/Message/MessageContent";
+  import MessageGroup from "../../components/ui/Message/MessageGroup";
+
+  import MessageScroller from "../../components/ui/MessageScroller/MessageScroller";
+  import MessageScrollerViewport from "../../components/ui/MessageScroller/MessageScrollerViewport";
+  import MessageScrollerContent from "../../components/ui/MessageScroller/MessageScrollerContent";
+  import MessageScrollerItem from "../../components/ui/MessageScroller/MessageScrollerItem";
+  import MessageScrollerButton from "../../components/ui/MessageScroller/MessageScrollerButton";
+  import MessageScrollerProvider from "../../components/ui/MessageScroller/MessageScrollerProvider";
+
+  import Table from "../../components/ui/Table/Table";
+  import TableHeader from "../../components/ui/Table/TableHeader";
+  import TableBody from "../../components/ui/Table/TableBody";
+  import TableRow from "../../components/ui/Table/TableRow";
+  import TableHead from "../../components/ui/Table/TableHead";
+  import TableCell from "../../components/ui/Table/TableCell";
+
+  import { FileText, Image, Download, X, Trash2, Sparkles, Send } from "olum-icons/lucide";
+
+  const removeAttachment = () => console.log("remove attachment");
+
+  const barData = [
+    { month: "Jan", visits: 186, signups: 80 },
+    { month: "Feb", visits: 305, signups: 200 },
+    { month: "Mar", visits: 237, signups: 120 },
+    { month: "Apr", visits: 273, signups: 190 },
+    { month: "May", visits: 209, signups: 130 },
+  ];
+  const barConfig = { visits: { label: "Visits", color: "var(--color-chart-1)" }, signups: { label: "Signups", color: "var(--color-chart-2)" } };
+  const donutData = [
+    { name: "Chrome", value: 62, color: "var(--color-chart-1)" },
+    { name: "Safari", value: 21, color: "var(--color-chart-2)" },
+    { name: "Firefox", value: 11, color: "var(--color-chart-3)" },
+    { name: "Other", value: 6, color: "var(--color-chart-4)" },
+  ];
+  const composedConfig = {
+    visits: { label: "Visits", color: "var(--color-chart-1)", type: "bar" },
+    signups: { label: "Signups", color: "var(--color-chart-2)", type: "line" },
+  };
+  const radialData = [{ month: "May", desktop: 186, mobile: 120 }];
+  const radialConfig = {
+    desktop: { label: "Desktop", color: "var(--color-chart-1)" },
+    mobile: { label: "Mobile", color: "var(--color-chart-2)" },
+  };
+
+  const tableRows = [
+    { id: "1", name: "Ada Lovelace", role: "Engineer", status: "Active", amount: 1200 },
+    { id: "2", name: "Grace Hopper", role: "Admiral", status: "Active", amount: 2400 },
+    { id: "3", name: "Alan Turing", role: "Researcher", status: "Invited", amount: 800 },
+    { id: "4", name: "Margaret Hamilton", role: "Director", status: "Active", amount: 3100 },
+    { id: "5", name: "Katherine Johnson", role: "Analyst", status: "Suspended", amount: 950 },
+    { id: "6", name: "Radia Perlman", role: "Engineer", status: "Active", amount: 1750 },
+    { id: "7", name: "Hedy Lamarr", role: "Inventor", status: "Invited", amount: 640 },
+    { id: "8", name: "Barbara Liskov", role: "Researcher", status: "Active", amount: 2050 },
+  ];
+  const tableColumns = [
+    { key: "name", label: "Name", sortable: true },
+    { key: "role", label: "Role", sortable: true },
+    { key: "status", label: "Status" },
+    { key: "amount", label: "Amount", format: "currency", sortable: true, cellClass: "text-right", headClass: "text-right" },
+  ];
+
+  const state = {
+    messages: [
+      { id: 1, from: "them", text: "Hey, is the Chart component all inline SVG?" },
+      { id: 2, from: "me", text: "Yep — no charting library, just plain SVG + a data/config shape." },
+    ],
+  };
+  const sendMessage = () => {
+    state.messages.push({ id: Date.now(), from: "me", text: "New message #" + state.messages.length });
+  };
+</script>
+
+<Nav />
+
+<main class="mx-auto max-w-6xl px-6 py-12">
+  <h1 class="mb-8 font-heading text-2xl font-semibold text-foreground">UI Kit — Data Display</h1>
+
+  <section class="mb-12">
+    <h2 class="mb-1 text-xl font-semibold text-foreground">Accordion</h2>
+    <p class="mb-4 text-sm text-muted-foreground">Stacked headings that expand to reveal a section — single-open via a shared radio name.</p>
+    <div class="rounded-xl border border-border p-6">
+      <Accordion>
+        <AccordionItem name="dd-accordion" type="radio" defaultOpen="{true}">
+          <AccordionTrigger>Is it accessible?</AccordionTrigger>
+          <AccordionContent>Yes. It adheres to the WAI-ARIA design pattern via native radio/checkbox inputs.</AccordionContent>
+        </AccordionItem>
+        <AccordionItem name="dd-accordion" type="radio">
+          <AccordionTrigger>Is it styled?</AccordionTrigger>
+          <AccordionContent>Yes, it comes with default styles that match the rest of the kit.</AccordionContent>
+        </AccordionItem>
+        <AccordionItem name="dd-accordion" type="radio">
+          <AccordionTrigger>Is it animated?</AccordionTrigger>
+          <AccordionContent>Yes, a CSS grid-rows trick animates the height without JS.</AccordionContent>
+        </AccordionItem>
+      </Accordion>
+    </div>
+  </section>
+
+  <section class="mb-12">
+    <h2 class="mb-1 text-xl font-semibold text-foreground">Attachment</h2>
+    <p class="mb-4 text-sm text-muted-foreground">File attachments with a thumbnail/type icon and a remove action.</p>
+    <div class="rounded-xl border border-border p-6">
+      <AttachmentGroup>
+        <Attachment>
+          <AttachmentMedia><Icon icon="{FileText}" class="size-4" /></AttachmentMedia>
+          <AttachmentContent>
+            <AttachmentTitle>proposal.pdf</AttachmentTitle>
+            <AttachmentDescription>248 KB</AttachmentDescription>
+          </AttachmentContent>
+          <AttachmentActions>
+            <AttachmentAction ariaLabel="Remove" onclick="{removeAttachment}"><Icon icon="{X}" class="size-3.5" /></AttachmentAction>
+          </AttachmentActions>
+        </Attachment>
+        <Attachment>
+          <AttachmentMedia variant="image"><Icon icon="{Image}" class="size-4" /></AttachmentMedia>
+          <AttachmentContent>
+            <AttachmentTitle>cover.png</AttachmentTitle>
+            <AttachmentDescription>1.1 MB</AttachmentDescription>
+          </AttachmentContent>
+          <AttachmentActions>
+            <AttachmentAction ariaLabel="Download"><Icon icon="{Download}" class="size-3.5" /></AttachmentAction>
+          </AttachmentActions>
+        </Attachment>
+      </AttachmentGroup>
+    </div>
+  </section>
+
+  <section class="mb-12">
+    <h2 class="mb-1 text-xl font-semibold text-foreground">Avatar</h2>
+    <p class="mb-4 text-sm text-muted-foreground">Image with initials fallback, a presence badge, and a grouped stack with overflow.</p>
+    <div class="flex flex-wrap items-center gap-8 rounded-xl border border-border p-6">
+      <Avatar><AvatarFallback>AL</AvatarFallback></Avatar>
+      <div class="relative">
+        <Avatar size="lg"><AvatarFallback>GH</AvatarFallback></Avatar>
+        <AvatarBadge class="bg-emerald-500" />
+      </div>
+      <AvatarGroup>
+        <Avatar><AvatarFallback>AT</AvatarFallback></Avatar>
+        <Avatar><AvatarFallback>MH</AvatarFallback></Avatar>
+        <Avatar><AvatarFallback>KJ</AvatarFallback></Avatar>
+        <AvatarGroupCount>+5</AvatarGroupCount>
+      </AvatarGroup>
+    </div>
+  </section>
+
+  <section class="mb-12">
+    <h2 class="mb-1 text-xl font-semibold text-foreground">Badge</h2>
+    <p class="mb-4 text-sm text-muted-foreground">Six variants, with an optional leading icon.</p>
+    <div class="flex flex-wrap items-center gap-2 rounded-xl border border-border p-6">
+      <Badge>Default</Badge>
+      <Badge variant="secondary">Secondary</Badge>
+      <Badge variant="destructive">Destructive</Badge>
+      <Badge variant="outline">Outline</Badge>
+      <Badge variant="ghost">Ghost</Badge>
+      <Badge variant="link">Link</Badge>
+      <Badge variant="secondary"><Icon icon="{Sparkles}" class="size-3" />New</Badge>
+    </div>
+  </section>
+
+  <section class="mb-12">
+    <h2 class="mb-1 text-xl font-semibold text-foreground">Bubble</h2>
+    <p class="mb-4 text-sm text-muted-foreground">Chat bubbles, grouped and aligned by sender.</p>
+    <div class="rounded-xl border border-border p-6">
+      <BubbleGroup>
+        <Bubble align="start"><BubbleContent>Hey! Are you free to review the PR?</BubbleContent></Bubble>
+        <Bubble align="end" variant="secondary"><BubbleContent>Sure, give me 5 minutes.</BubbleContent></Bubble>
+        <Bubble align="start" variant="outline"><BubbleContent>No rush, thanks!</BubbleContent></Bubble>
+      </BubbleGroup>
+    </div>
+  </section>
+
+  <section class="mb-12">
+    <h2 class="mb-1 text-xl font-semibold text-foreground">Carousel</h2>
+    <p class="mb-4 text-sm text-muted-foreground">Drag or use the arrows.</p>
+    <div class="rounded-xl border border-border p-10">
+      <div class="mx-auto max-w-xs">
+        <Carousel>
+          <CarouselContent>
+            <for each="n of [1, 2, 3, 4, 5]" key="n">
+              <CarouselItem>
+                <div class="flex h-40 items-center justify-center rounded-xl bg-muted text-3xl font-semibold text-muted-foreground">{n}</div>
+              </CarouselItem>
+            </for>
+          </CarouselContent>
+          <CarouselPrevious />
+          <CarouselNext />
+        </Carousel>
+      </div>
+    </div>
+  </section>
+
+  <section class="mb-12">
+    <h2 class="mb-1 text-xl font-semibold text-foreground">Chart</h2>
+    <p class="mb-4 text-sm text-muted-foreground">Plain inline SVG — no charting library. All six variants the family ships.</p>
+    <div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
+      <div class="rounded-xl border border-border p-4">
+        <BarChart data="{barData}" config="{barConfig}" />
+      </div>
+      <div class="rounded-xl border border-border p-4">
+        <LineChart data="{barData}" config="{barConfig}" />
+      </div>
+      <div class="rounded-xl border border-border p-4">
+        <DonutChart data="{donutData}" label="Browsers" />
+      </div>
+      <div class="rounded-xl border border-border p-4">
+        <AreaChart data="{barData}" config="{barConfig}" />
+      </div>
+      <div class="rounded-xl border border-border p-4">
+        <ComposedChart data="{barData}" config="{composedConfig}" />
+      </div>
+      <div class="rounded-xl border border-border p-4">
+        <RadialBarChart data="{radialData}" config="{radialConfig}" max="{300}" centerLabel="Traffic" />
+      </div>
+    </div>
+  </section>
+
+  <section class="mb-12">
+    <h2 class="mb-1 text-xl font-semibold text-foreground">Collapsible</h2>
+    <p class="mb-4 text-sm text-muted-foreground">A single expand/collapse section — the simpler counterpart to Accordion.</p>
+    <div class="rounded-xl border border-border p-6">
+      <Collapsible>
+        <CollapsibleTrigger>
+          <Button variant="outline" size="sm">Toggle details</Button>
+        </CollapsibleTrigger>
+        <CollapsibleContent>
+          <p class="pt-3 text-sm text-muted-foreground">Hidden details revealed on toggle, animated via a CSS grid-rows trick.</p>
+        </CollapsibleContent>
+      </Collapsible>
+    </div>
+  </section>
+
+  <section class="mb-12">
+    <h2 class="mb-1 text-xl font-semibold text-foreground">Data Table</h2>
+    <p class="mb-4 text-sm text-muted-foreground">Sorting, text filter, row selection, column visibility, and CSV export over a small fake dataset.</p>
+    <div class="rounded-xl border border-border p-6">
+      <DataTable data="{tableRows}" columns="{tableColumns}" search="{true}" searchPlaceholder="Filter people..." pageSize="{5}" selectable="{true}" showExport="{true}" />
+    </div>
+  </section>
+
+  <section class="mb-12">
+    <h2 class="mb-1 text-xl font-semibold text-foreground">Item</h2>
+    <p class="mb-4 text-sm text-muted-foreground">Media + title + description + trailing actions, repeated in a group.</p>
+    <div class="rounded-xl border border-border p-6">
+      <ItemGroup>
+        <Item variant="outline">
+          <ItemMedia variant="icon"><Icon icon="{FileText}" class="size-4" /></ItemMedia>
+          <ItemContent>
+            <ItemTitle>Q3 report.pdf</ItemTitle>
+            <ItemDescription>Updated 2 days ago</ItemDescription>
+          </ItemContent>
+          <ItemActions><Button variant="ghost" size="icon-sm" ariaLabel="Delete"><Icon icon="{Trash2}" class="size-3.5" /></Button></ItemActions>
+        </Item>
+        <ItemSeparator />
+        <Item variant="outline">
+          <ItemMedia variant="icon"><Icon icon="{Image}" class="size-4" /></ItemMedia>
+          <ItemContent>
+            <ItemTitle>hero-banner.png</ItemTitle>
+            <ItemDescription>Updated 5 days ago</ItemDescription>
+          </ItemContent>
+          <ItemActions><Button variant="ghost" size="icon-sm" ariaLabel="Delete"><Icon icon="{Trash2}" class="size-3.5" /></Button></ItemActions>
+        </Item>
+      </ItemGroup>
+    </div>
+  </section>
+
+  <section class="mb-12">
+    <h2 class="mb-1 text-xl font-semibold text-foreground">Kbd</h2>
+    <p class="mb-4 text-sm text-muted-foreground">Renders keyboard keys the way a manual would.</p>
+    <div class="rounded-xl border border-border p-6">
+      <KbdGroup>
+        <Kbd>Ctrl</Kbd>
+        <Kbd>Alt</Kbd>
+        <Kbd>Del</Kbd>
+      </KbdGroup>
+    </div>
+  </section>
+
+  <section class="mb-12">
+    <h2 class="mb-1 text-xl font-semibold text-foreground">Marker</h2>
+    <p class="mb-4 text-sm text-muted-foreground">Highlights or annotates a span of content.</p>
+    <div class="rounded-xl border border-border p-6">
+      <Marker>
+        <MarkerIcon><Icon icon="{Sparkles}" class="size-4" /></MarkerIcon>
+        <MarkerContent>New in this release — see the changelog for details.</MarkerContent>
+      </Marker>
+    </div>
+  </section>
+
+  <section class="mb-12">
+    <h2 class="mb-1 text-xl font-semibold text-foreground">Message</h2>
+    <p class="mb-4 text-sm text-muted-foreground">A chat message with avatar, grouped by sender.</p>
+    <div class="rounded-xl border border-border p-6">
+      <MessageGroup>
+        <Message align="start">
+          <MessageAvatar><Avatar size="sm"><AvatarFallback>OL</AvatarFallback></Avatar></MessageAvatar>
+          <MessageContent><Bubble align="start"><BubbleContent>Welcome to the playground!</BubbleContent></Bubble></MessageContent>
+        </Message>
+      </MessageGroup>
+    </div>
+  </section>
+
+  <section class="mb-12">
+    <h2 class="mb-1 text-xl font-semibold text-foreground">Message Scroller</h2>
+    <p class="mb-4 text-sm text-muted-foreground">Stays pinned to the latest message; scroll up and a jump-to-latest button appears. Click "Send" a few times.</p>
+    <div class="overflow-hidden rounded-xl border border-border" style="height: 16rem;">
+      <MessageScrollerProvider>
+        <MessageScroller>
+          <MessageScrollerViewport>
+            <MessageScrollerContent>
+              <for each="m of state.messages" key="m.id">
+                <MessageScrollerItem>
+                  <Message align="{m.from === 'me' ? 'end' : 'start'}">
+                    <MessageContent>
+                      <Bubble align="{m.from === 'me' ? 'end' : 'start'}" variant="{m.from === 'me' ? 'default' : 'secondary'}">
+                        <BubbleContent>{m.text}</BubbleContent>
+                      </Bubble>
+                    </MessageContent>
+                  </Message>
+                </MessageScrollerItem>
+              </for>
+            </MessageScrollerContent>
+          </MessageScrollerViewport>
+          <MessageScrollerButton />
+        </MessageScroller>
+      </MessageScrollerProvider>
+    </div>
+    <Button size="sm" variant="outline" class="mt-3" onclick="{sendMessage}">
+      <Icon icon="{Send}" class="size-3.5" />
+      Send a message
+    </Button>
+  </section>
+
+  <section class="mb-12">
+    <h2 class="mb-1 text-xl font-semibold text-foreground">Table</h2>
+    <p class="mb-4 text-sm text-muted-foreground">The plain foundation Data Table builds sorting/filtering on top of.</p>
+    <div class="rounded-xl border border-border p-6">
+      <p class="mb-2 text-sm text-muted-foreground">A list of recent invoices.</p>
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead>Invoice</TableHead>
+            <TableHead>Status</TableHead>
+            <TableHead class="text-right">Amount</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          <TableRow>
+            <TableCell>INV001</TableCell>
+            <TableCell>Paid</TableCell>
+            <TableCell class="text-right">$250.00</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell>INV002</TableCell>
+            <TableCell>Pending</TableCell>
+            <TableCell class="text-right">$150.00</TableCell>
+          </TableRow>
+        </TableBody>
+      </Table>
+    </div>
+  </section>
+</main>

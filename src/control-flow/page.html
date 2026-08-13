@@ -1,0 +1,147 @@
+<script>
+  import Nav from "../components/Nav";
+
+  const state = {
+    tab: "a",
+    showText: "",
+    ifText: "",
+    showOpen: true,
+    ifOpen: true,
+    todos: [
+      { id: 1, text: "Ship the router demo", done: false },
+      { id: 2, text: "Ship the store demo", done: true },
+    ],
+    nextId: 3,
+    newTodo: "",
+    settings: { theme: "dark", locale: "en-US", notifications: true },
+  };
+
+  const setTab = (t) => (state.tab = t);
+  const toggleShow = () => (state.showOpen = !state.showOpen);
+  const toggleIf = () => (state.ifOpen = !state.ifOpen);
+
+  const addTodo = () => {
+    if (!state.newTodo.trim()) return;
+    state.todos.push({ id: state.nextId++, text: state.newTodo.trim(), done: false });
+    state.newTodo = "";
+  };
+  const removeTodo = (id) => {
+    const i = state.todos.findIndex((t) => t.id === id);
+    if (i !== -1) state.todos.splice(i, 1);
+  };
+  const toggleTodo = (id) => {
+    const t = state.todos.find((t) => t.id === id);
+    if (t) t.done = !t.done;
+  };
+
+  const btn = "h-8 rounded-md border border-border bg-background px-3 text-sm text-foreground transition-colors hover:bg-muted";
+  const btnActive = "h-8 rounded-md border border-transparent bg-primary px-3 text-sm text-primary-foreground";
+</script>
+
+<Nav />
+
+<main class="mx-auto max-w-6xl px-6 py-12">
+  <h1 class="font-heading text-3xl font-semibold tracking-tight text-foreground">Control Flow</h1>
+  <p class="mt-2 max-w-2xl text-muted-foreground">The template primitives that add, remove, hide, and repeat DOM nodes: <code class="rounded bg-muted px-1 py-0.5 text-sm">&lt;if&gt;</code>, <code class="rounded bg-muted px-1 py-0.5 text-sm">&lt;show&gt;</code>, and <code class="rounded bg-muted px-1 py-0.5 text-sm">&lt;for&gt;</code>.</p>
+
+  <section class="mt-10">
+    <h2 class="mb-1 text-xl font-semibold text-foreground">if / else-if / else</h2>
+    <p class="mb-4 text-sm text-muted-foreground">Switches on <code>state.tab</code> — the non-matching branches are removed from the DOM entirely, not just hidden.</p>
+    <div class="rounded-xl border border-border p-6">
+      <div class="flex gap-2">
+        <button onclick="setTab('a')" class="{state.tab === 'a' ? btnActive : btn}">Tab A</button>
+        <button onclick="setTab('b')" class="{state.tab === 'b' ? btnActive : btn}">Tab B</button>
+        <button onclick="setTab('c')" class="{state.tab === 'c' ? btnActive : btn}">Tab C</button>
+      </div>
+      <div class="mt-4 rounded-lg bg-muted p-4 text-sm text-foreground">
+        <if when="state.tab === 'a'">This is Tab A's content — a plain &lt;if&gt;.</if>
+        <else-if when="state.tab === 'b'">Tab B — matched by &lt;else-if&gt;.</else-if>
+        <else>Tab C, the &lt;else&gt; fallback.</else>
+      </div>
+    </div>
+  </section>
+
+  <section class="mt-10">
+    <h2 class="mb-1 text-xl font-semibold text-foreground">show vs if</h2>
+    <p class="mb-4 text-sm text-muted-foreground">Type into both inputs, then toggle each panel closed and open again — <code>&lt;show&gt;</code> only flips visibility so your text survives; <code>&lt;if&gt;</code> removes and remounts the node, so it resets.</p>
+    <div class="grid grid-cols-1 gap-6 rounded-xl border border-border p-6 md:grid-cols-2">
+      <div>
+        <div class="mb-2 flex items-center justify-between">
+          <span class="text-sm font-medium text-foreground">&lt;show&gt; — preserves state</span>
+          <button onclick="toggleShow()" class="{btn}">{state.showOpen ? "Hide" : "Show"}</button>
+        </div>
+        <show when="state.showOpen">
+          <input
+            value="{state.showText}"
+            oninput="(e) => state.showText = e.target.value"
+            placeholder="Type, then hide/show…"
+            class="h-8 w-full rounded-md border border-border bg-background px-2.5 text-sm outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50"
+          />
+        </show>
+      </div>
+      <div>
+        <div class="mb-2 flex items-center justify-between">
+          <span class="text-sm font-medium text-foreground">&lt;if&gt; — resets state</span>
+          <button onclick="toggleIf()" class="{btn}">{state.ifOpen ? "Remove" : "Add"}</button>
+        </div>
+        <if when="state.ifOpen">
+          <input
+            value="{state.ifText}"
+            oninput="(e) => state.ifText = e.target.value"
+            placeholder="Type, then remove/add…"
+            class="h-8 w-full rounded-md border border-border bg-background px-2.5 text-sm outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50"
+          />
+        </if>
+      </div>
+    </div>
+  </section>
+
+  <section class="mt-10">
+    <h2 class="mb-1 text-xl font-semibold text-foreground">Keyed for-loop</h2>
+    <p class="mb-4 text-sm text-muted-foreground"><code>key="todo.id"</code> matches items by identity across reorders/removals, not by position.</p>
+    <div class="rounded-xl border border-border p-6">
+      <div class="flex gap-2">
+        <input
+          value="{state.newTodo}"
+          oninput="(e) => state.newTodo = e.target.value"
+          onkeydown="(e) => e.key === 'Enter' && addTodo()"
+          placeholder="New todo…"
+          class="h-8 flex-1 rounded-md border border-border bg-background px-2.5 text-sm outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50"
+        />
+        <button onclick="addTodo()" class="{btnActive}">Add</button>
+      </div>
+      <ul class="mt-4 space-y-2">
+        <for each="todo of state.todos" key="todo.id">
+          <li class="flex items-center gap-3 rounded-lg bg-muted px-3 py-2 text-sm">
+            <input type="checkbox" checked="{todo.done}" onchange="toggleTodo(todo.id)" class="size-4 accent-primary" />
+            <span class="flex-1 {todo.done ? 'text-muted-foreground line-through' : 'text-foreground'}">{todo.text}</span>
+            <button onclick="removeTodo(todo.id)" class="text-muted-foreground hover:text-destructive" aria-label="Remove">✕</button>
+          </li>
+        </for>
+      </ul>
+    </div>
+  </section>
+
+  <section class="mt-10">
+    <h2 class="mb-1 text-xl font-semibold text-foreground">Numeric range & object-key loops</h2>
+    <p class="mb-4 text-sm text-muted-foreground"><code>each="i of 6"</code> counts 1→6; <code>each="key in obj"</code> walks an object's keys.</p>
+    <div class="grid grid-cols-1 gap-6 rounded-xl border border-border p-6 md:grid-cols-2">
+      <div>
+        <div class="mb-2 text-sm font-medium text-foreground">for i of 6</div>
+        <div class="flex flex-wrap gap-2">
+          <for each="i of 6">
+            <span class="flex size-8 items-center justify-center rounded-md bg-muted text-sm font-medium text-foreground">{i}</span>
+          </for>
+        </div>
+      </div>
+      <div>
+        <div class="mb-2 text-sm font-medium text-foreground">for (key, index, value) in settings</div>
+        <ul class="space-y-1 text-sm text-muted-foreground">
+          <for each="(key, index, value) in state.settings">
+            <li><span class="font-mono text-xs text-foreground">{index}. {key}</span> = {String(value)}</li>
+          </for>
+        </ul>
+      </div>
+    </div>
+  </section>
+</main>

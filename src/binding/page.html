@@ -1,0 +1,103 @@
+<script>
+  import Nav from "../components/Nav";
+
+  const state = {
+    text: "",
+    bio: "",
+    n: 0,
+    agree: false,
+    size: 2,
+    color: "red",
+    fruits: [],
+    fileNames: [],
+  };
+
+  const setSize = (n) => (state.size = n);
+
+  const setFruits = (e) => {
+    state.fruits = Array.from(e.target.options)
+      .filter((o) => o.selected)
+      .map((o) => o.value);
+  };
+
+  const setFiles = (e) => {
+    state.fileNames = Array.from(e.target.files).map((f) => f.name);
+  };
+
+  const preview = () =>
+    JSON.stringify(
+      { text: state.text, bio: state.bio, n: state.n, agree: state.agree, size: state.size, color: state.color, fruits: state.fruits, fileNames: state.fileNames },
+      null,
+      2,
+    );
+</script>
+
+<Nav />
+
+<main class="mx-auto max-w-6xl px-6 py-12">
+  <h1 class="mb-2 font-heading text-3xl font-semibold text-foreground">Binding</h1>
+  <p class="mb-10 max-w-2xl text-muted-foreground">Olum has no <code class="rounded bg-muted px-1 py-0.5 text-sm">model</code> directive — every binding is a value-ish attribute reading state plus an event handler writing it back.</p>
+
+  <div class="grid grid-cols-1 gap-8 lg:grid-cols-2">
+    <form class="flex flex-col gap-5 rounded-xl border border-border p-6" onsubmit="(e) => e.preventDefault()">
+      <label class="flex flex-col gap-1.5 text-sm">
+        <span class="font-medium text-foreground">Text input</span>
+        <input type="text" value="{state.text}" oninput="(e) => state.text = e.target.value" placeholder="type something" class="h-9 rounded-lg border border-border bg-background px-3 outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50" />
+      </label>
+
+      <label class="flex flex-col gap-1.5 text-sm">
+        <span class="font-medium text-foreground">Textarea</span>
+        <textarea value="{state.bio}" oninput="(e) => state.bio = e.target.value" rows="3" placeholder="a longer answer" class="rounded-lg border border-border bg-background px-3 py-2 outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50"></textarea>
+      </label>
+
+      <label class="flex flex-col gap-1.5 text-sm">
+        <span class="font-medium text-foreground">Number (cast with +)</span>
+        <input type="number" value="{state.n}" oninput="(e) => state.n = +e.target.value" class="h-9 w-32 rounded-lg border border-border bg-background px-3 outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50" />
+      </label>
+
+      <label class="flex items-center gap-2 text-sm">
+        <input type="checkbox" checked="{state.agree}" onchange="(e) => state.agree = e.target.checked" class="size-4 rounded border-border" />
+        <span class="font-medium text-foreground">Checkbox — I agree</span>
+      </label>
+
+      <fieldset class="flex flex-col gap-1.5 text-sm">
+        <legend class="mb-1 font-medium text-foreground">Radio group — scoops</legend>
+        <for each="n of 3">
+          <label class="flex items-center gap-2">
+            <input type="radio" name="scoops" checked="{state.size === n}" onchange="setSize(n)" class="size-4" />
+            <span>{n} scoop{n > 1 ? "s" : ""}</span>
+          </label>
+        </for>
+      </fieldset>
+
+      <label class="flex flex-col gap-1.5 text-sm">
+        <span class="font-medium text-foreground">Select — selected on &lt;option&gt;</span>
+        <select onchange="(e) => state.color = e.target.value" class="h-9 rounded-lg border border-border bg-background px-3">
+          <option value="red" selected="{state.color === 'red'}">red</option>
+          <option value="green" selected="{state.color === 'green'}">green</option>
+          <option value="blue" selected="{state.color === 'blue'}">blue</option>
+        </select>
+      </label>
+
+      <label class="flex flex-col gap-1.5 text-sm">
+        <span class="font-medium text-foreground">Select multiple</span>
+        <select multiple onchange="setFruits($event)" class="h-24 rounded-lg border border-border bg-background px-3 py-1">
+          <option value="apple">apple</option>
+          <option value="banana">banana</option>
+          <option value="cherry">cherry</option>
+          <option value="date">date</option>
+        </select>
+      </label>
+
+      <label class="flex flex-col gap-1.5 text-sm">
+        <span class="font-medium text-foreground">File input</span>
+        <input type="file" multiple onchange="setFiles($event)" class="text-sm" />
+      </label>
+    </form>
+
+    <div class="rounded-xl border border-border p-6">
+      <h2 class="mb-3 text-sm font-medium text-foreground">Live state</h2>
+      <pre class="overflow-x-auto rounded-lg bg-muted p-4 text-xs">{preview()}</pre>
+    </div>
+  </div>
+</main>

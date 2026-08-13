@@ -1,0 +1,81 @@
+<script>
+  import { scope } from "olum";
+  import Nav from "../components/Nav";
+  import StatusBadge from "../components/StatusBadge";
+  import CounterCard from "../components/CounterCard";
+  import Box from "../components/Box";
+
+  const state = { score: 0, inspection: null };
+
+  // Component props are resolved at compile time to a plain identifier, not an
+  // inline expression -- a function-valued prop must reference a top-level
+  // function declared right here (see Nav.html for the same fix).
+  const setScore = (v) => (state.score = v);
+
+  const inspect = () => {
+    const found = scope("CounterCard");
+    state.inspection = found ? { props: found.props, methods: Object.keys(found.methods || {}) } : null;
+  };
+
+  const bumpViaScope = () => {
+    const found = scope("CounterCard");
+    if (found && found.methods.bump) found.methods.bump();
+  };
+</script>
+
+<Nav />
+
+<main class="mx-auto max-w-6xl px-6 py-12">
+  <h1 class="mb-2 font-heading text-3xl font-semibold text-foreground">Composition</h1>
+  <p class="mb-10 max-w-2xl text-muted-foreground">Props (one-way, read-only), callback props for changes flowing back up, slots via <code class="rounded bg-muted px-1 py-0.5 text-sm">children</code>, and reading a mounted component's public surface with <code class="rounded bg-muted px-1 py-0.5 text-sm">scope()</code>.</p>
+
+  <section class="mb-12">
+    <h2 class="mb-1 text-xl font-semibold text-foreground">Props</h2>
+    <p class="mb-4 text-sm text-muted-foreground">StatusBadge takes plain <code>label</code> / <code>color</code> props — a literal string vs. an interpolated value passed straight through.</p>
+    <div class="flex flex-wrap gap-3 rounded-xl border border-border p-6">
+      <StatusBadge label="Online" color="#16a34a" />
+      <StatusBadge label="Building" color="#ca8a04" />
+      <StatusBadge label="Offline" color="#dc2626" />
+    </div>
+  </section>
+
+  <section class="mb-12">
+    <h2 class="mb-1 text-xl font-semibold text-foreground">Callback props (one-way data flow)</h2>
+    <p class="mb-4 text-sm text-muted-foreground">
+      This page owns <code>state.score</code> and hands <code>CounterCard</code> a read-only <code>value</code> plus an <code>onChange</code> callback — the child never
+      mutates the value itself, it just asks the parent to.
+    </p>
+    <div class="flex flex-col items-start gap-3 rounded-xl border border-border p-6">
+      <CounterCard value="{state.score}" onChange="{setScore}" />
+      <p class="text-sm text-muted-foreground">Parent's state.score is now <strong class="text-foreground">{state.score}</strong>.</p>
+    </div>
+  </section>
+
+  <section class="mb-12">
+    <h2 class="mb-1 text-xl font-semibold text-foreground">Slots — children</h2>
+    <p class="mb-4 text-sm text-muted-foreground">Content between a component's tags arrives as <code>children</code>; <code>Box</code> falls back to placeholder text when the parent passes nothing.</p>
+    <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+      <Box>
+        <p class="text-foreground">Hello from the parent's markup — this is raw <code>children</code>.</p>
+      </Box>
+      <Box />
+    </div>
+  </section>
+
+  <section>
+    <h2 class="mb-1 text-xl font-semibold text-foreground">scope() — reading a mounted component's public surface</h2>
+    <p class="mb-4 text-sm text-muted-foreground">
+      CounterCard's script is tagged <code>public-props public-methods</code>. <code>scope("CounterCard")</code> reads its live props and lets us call its
+      exposed <code>bump</code> method directly, as an escape hatch (the store is the preferred way to share state).
+    </p>
+    <div class="flex flex-col gap-3 rounded-xl border border-border p-6">
+      <div class="flex flex-wrap gap-2">
+        <button type="button" class="h-8 rounded-lg border border-border px-3 text-sm hover:bg-muted" onclick="inspect()">Inspect via scope()</button>
+        <button type="button" class="h-8 rounded-lg border border-border px-3 text-sm hover:bg-muted" onclick="bumpViaScope()">Call bump() via scope()</button>
+      </div>
+      <if when="state.inspection">
+        <pre class="overflow-x-auto rounded-lg bg-muted p-3 text-xs">{JSON.stringify(state.inspection, null, 2)}</pre>
+      </if>
+    </div>
+  </section>
+</main>

@@ -1,0 +1,33 @@
+<script>
+  import Nav from "../../components/Nav";
+  import Anchor from "../../components/ui/Anchor/Anchor";
+  import Badge from "../../components/ui/Badge/Badge";
+  import { params } from "olum";
+  import { getPost } from "../../utils/posts";
+
+  const { slug } = params();
+  const post = getPost(slug);
+</script>
+
+<Nav />
+
+<main class="mx-auto max-w-3xl px-6 py-12">
+  <!-- Plain text only: Anchor's children render inside the real <a to>, and the
+       router's click listener reads e.target (not e.currentTarget), so a nested
+       icon here would intercept the click and navigate to "/null" instead. -->
+  <Anchor to="/blog" variant="ghost" size="sm" class="mb-6">← Back to blog</Anchor>
+
+  <if when="post">
+    <article>
+      <Badge variant="outline" class="mb-3">{post.date}</Badge>
+      <h1 class="mb-4 font-heading text-3xl font-semibold text-foreground">{post.title}</h1>
+      <p class="text-lg leading-relaxed text-muted-foreground">{post.body}</p>
+    </article>
+  </if>
+  <else>
+    <div class="rounded-xl border border-dashed border-border p-10 text-center">
+      <p class="font-medium text-foreground">No post at "{slug}"</p>
+      <p class="mt-1 text-sm text-muted-foreground">It might have been renamed or never existed.</p>
+    </div>
+  </else>
+</main>

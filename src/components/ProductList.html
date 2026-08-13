@@ -1,0 +1,50 @@
+<script>
+  import Button from "./ui/Button/Button";
+  import Card from "./ui/Card/Card";
+  import CardContent from "./ui/Card/CardContent";
+  import Badge from "./ui/Badge/Badge";
+  import { cart } from "../utils/cart";
+  import { toast } from "./ui/Toast/toast";
+
+  const products = [
+    { id: "p1", name: "Fade Cushion", price: 24 },
+    { id: "p2", name: "Fly Lamp", price: 58 },
+    { id: "p3", name: "Slide Rug", price: 132 },
+    { id: "p4", name: "Crossfade Mug", price: 14 },
+    { id: "p5", name: "Flip Frame", price: 39 },
+    { id: "p6", name: "Draw Notebook", price: 9 },
+  ];
+
+  // Button is a component, so its onclick prop must be a braced, bare
+  // top-level identifier -- function props are JSON.stringify'd on the way
+  // down, so an inline arrow (or one closing over `product`) silently drops.
+  // Per-item data instead rides the `value` data-prop (a plain string, so it
+  // survives the JSON round-trip fine), which Button mirrors onto the real
+  // <button> as `data-value`; this one shared handler reads it back off the
+  // event target.
+  const addToCart = (e) => {
+    const id = e.currentTarget.dataset.value;
+    const product = products.find((p) => p.id === id);
+    if (!product) return;
+    cart.add(product);
+    toast.add({ title: "Added to cart", description: product.name, type: "success" });
+  };
+</script>
+
+<div>
+  <h2 class="mb-1 text-xl font-semibold text-foreground">Products</h2>
+  <p class="mb-4 text-sm text-muted-foreground">Imports the same <code class="rounded bg-muted px-1 py-0.5 text-xs">cart</code> store as CartSummary — no props passed between them.</p>
+  <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
+    <for each="product of products" key="product.id">
+      <Card>
+        <CardContent class="flex items-center justify-between gap-3">
+          <div>
+            <p class="text-sm font-medium text-foreground">{product.name}</p>
+            <Badge variant="secondary" class="mt-1">${product.price}</Badge>
+          </div>
+          <Button size="sm" value="{product.id}" onclick="{addToCart}">Add</Button>
+        </CardContent>
+      </Card>
+    </for>
+  </div>
+</div>

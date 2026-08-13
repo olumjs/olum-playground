@@ -1,0 +1,64 @@
+<script>
+  import Nav from "../components/Nav";
+  import Badge from "../components/ui/Badge/Badge";
+  import Icon from "../components/ui/Icon/Icon";
+  import Card from "../components/ui/Card/Card";
+  import CardHeader from "../components/ui/Card/CardHeader";
+  import CardTitle from "../components/ui/Card/CardTitle";
+  import CardDescription from "../components/ui/Card/CardDescription";
+  import CardFooter from "../components/ui/Card/CardFooter";
+  import { SlidersHorizontal, PanelsTopLeft, Compass, Layers, Bell, Table2, ArrowRight } from "olum-icons/lucide";
+
+  const categories = [
+    { to: "/ui/forms", icon: SlidersHorizontal, title: "Forms", desc: "Input, Select, Checkbox, Slider, Field, OTP, and every other data-entry component." },
+    { to: "/ui/layout", icon: PanelsTopLeft, title: "Layout", desc: "Card, Sidebar, Resizable, ScrollArea, AspectRatio, Separator, Direction." },
+    { to: "/ui/navigation", icon: Compass, title: "Navigation", desc: "Tabs, Breadcrumb, Pagination, Command, Menubar, NavigationMenu, Anchor." },
+    { to: "/ui/overlay", icon: Layers, title: "Overlay", desc: "Dialog, Drawer, Sheet, Popover, Tooltip, HoverCard, DropdownMenu, ContextMenu, AlertDialog." },
+    { to: "/ui/feedback", icon: Bell, title: "Feedback", desc: "Alert, Empty, Progress, Skeleton, Spinner, Toast." },
+    { to: "/ui/data-display", icon: Table2, title: "Data Display", desc: "Table, DataTable, Chart, Accordion, Avatar, Carousel, Message, and more." },
+  ];
+</script>
+
+<Nav />
+
+<main class="mx-auto max-w-6xl px-6 py-16">
+  <section class="flex flex-col items-start gap-5">
+    <Badge variant="outline" class="gap-1.5">
+      <span class="size-1.5 rounded-full bg-primary"></span>
+      58 components · 6 categories
+    </Badge>
+    <h1 class="max-w-2xl font-heading text-4xl font-semibold tracking-tight text-foreground sm:text-5xl">The olum-ui kit</h1>
+    <p class="max-w-xl text-lg text-muted-foreground">
+      Every component in the registry, installed with <code class="rounded bg-muted px-1.5 py-0.5 text-base">olum add &lt;name&gt;</code> and wired up here as a
+      working demo rather than a static screenshot. Pick a category to browse.
+    </p>
+  </section>
+
+  <section class="mt-16 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+    <for each="c of categories" key="c.to">
+      <!--
+        Empty overlay anchor, not a wrapping one -- the router's click
+        listener reads e.target.getAttribute("to"), not e.currentTarget, so
+        clicking any nested element (icon, title, badge) makes e.target a
+        node with no "to" attribute and the nav goes to literal "/null".
+        Content-free + absolutely positioned means nothing inside it can
+        ever be the click target.
+      -->
+      <Card class="group relative h-full transition-colors hover:ring-primary/40">
+        <CardHeader>
+          <div class="mb-2 flex size-9 items-center justify-center rounded-lg bg-primary/10 text-primary">
+            <Icon icon="{c.icon}" class="size-4.5" />
+          </div>
+          <CardTitle>{c.title}</CardTitle>
+          <CardDescription>{c.desc}</CardDescription>
+        </CardHeader>
+        <CardFooter class="border-t-0 bg-transparent pt-0">
+          <span class="inline-flex items-center gap-1 text-sm font-medium text-primary opacity-0 transition-opacity group-hover:opacity-100">
+            Browse <Icon icon="{ArrowRight}" class="size-3.5" />
+          </span>
+        </CardFooter>
+        <a to="{c.to}" class="absolute inset-0" aria-label="{c.title}"></a>
+      </Card>
+    </for>
+  </section>
+</main>

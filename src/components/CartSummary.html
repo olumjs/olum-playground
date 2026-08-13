@@ -1,0 +1,60 @@
+<script>
+  import Button from "./ui/Button/Button";
+  import Card from "./ui/Card/Card";
+  import CardContent from "./ui/Card/CardContent";
+  import Icon from "./ui/Icon/Icon";
+  import { Minus, Plus, Trash2 } from "olum-icons/lucide";
+  import { cart, cartCount, cartTotal } from "../utils/cart";
+
+  // Component callback props must be braced, bare top-level identifiers (see
+  // ProductList.html for why) -- per-item id rides the `value` data-prop and
+  // these shared handlers read it back off e.currentTarget.
+  const decItem = (e) => cart.dec(e.currentTarget.dataset.value);
+  const incItem = (e) => cart.inc(e.currentTarget.dataset.value);
+  const removeItem = (e) => cart.remove(e.currentTarget.dataset.value);
+  const clearCart = () => cart.clear();
+</script>
+
+<div>
+  <div class="mb-4 flex items-center justify-between">
+    <div>
+      <h2 class="text-xl font-semibold text-foreground">Cart</h2>
+      <p class="text-sm text-muted-foreground">{cartCount()} item{cartCount() === 1 ? "" : "s"} · ${cartTotal()}</p>
+    </div>
+    <if when="cart.items.length">
+      <Button variant="ghost" size="sm" onclick="{clearCart}">Clear</Button>
+    </if>
+  </div>
+
+  <if when="!cart.items.length">
+    <Card>
+      <CardContent class="py-10 text-center text-sm text-muted-foreground">Nothing in the cart yet — add a product.</CardContent>
+    </Card>
+  </if>
+  <else>
+    <div class="space-y-2">
+      <for each="item of cart.items" key="item.id">
+        <Card>
+          <CardContent class="flex items-center justify-between gap-3">
+            <div>
+              <p class="text-sm font-medium text-foreground">{item.name}</p>
+              <p class="text-xs text-muted-foreground">${item.price} × {item.qty}</p>
+            </div>
+            <div class="flex items-center gap-1">
+              <Button variant="outline" size="icon-sm" ariaLabel="Decrease" value="{item.id}" onclick="{decItem}">
+                <Icon icon="{Minus}" class="size-3.5" />
+              </Button>
+              <span class="w-6 text-center text-sm">{item.qty}</span>
+              <Button variant="outline" size="icon-sm" ariaLabel="Increase" value="{item.id}" onclick="{incItem}">
+                <Icon icon="{Plus}" class="size-3.5" />
+              </Button>
+              <Button variant="ghost" size="icon-sm" ariaLabel="Remove" value="{item.id}" onclick="{removeItem}">
+                <Icon icon="{Trash2}" class="size-3.5" />
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      </for>
+    </div>
+  </else>
+</div>

@@ -1,0 +1,265 @@
+<script>
+  import Nav from "../../components/Nav";
+  import Icon from "../../components/ui/Icon/Icon";
+  import Button from "../../components/ui/Button/Button";
+
+  import Breadcrumb from "../../components/ui/Breadcrumb/Breadcrumb";
+  import BreadcrumbList from "../../components/ui/Breadcrumb/BreadcrumbList";
+  import BreadcrumbItem from "../../components/ui/Breadcrumb/BreadcrumbItem";
+  import BreadcrumbLink from "../../components/ui/Breadcrumb/BreadcrumbLink";
+  import BreadcrumbPage from "../../components/ui/Breadcrumb/BreadcrumbPage";
+  import BreadcrumbSeparator from "../../components/ui/Breadcrumb/BreadcrumbSeparator";
+  import BreadcrumbEllipsis from "../../components/ui/Breadcrumb/BreadcrumbEllipsis";
+
+  import Command from "../../components/ui/Command/Command";
+  import CommandInput from "../../components/ui/Command/CommandInput";
+  import CommandList from "../../components/ui/Command/CommandList";
+  import CommandEmpty from "../../components/ui/Command/CommandEmpty";
+  import CommandGroup from "../../components/ui/Command/CommandGroup";
+  import CommandItem from "../../components/ui/Command/CommandItem";
+  import CommandSeparator from "../../components/ui/Command/CommandSeparator";
+  import CommandShortcut from "../../components/ui/Command/CommandShortcut";
+  import CommandDialog from "../../components/ui/Command/CommandDialog";
+  import CommandDialogTrigger from "../../components/ui/Command/CommandDialogTrigger";
+  import CommandDialogContent from "../../components/ui/Command/CommandDialogContent";
+
+  import Menubar from "../../components/ui/Menubar/Menubar";
+  import MenubarMenu from "../../components/ui/Menubar/MenubarMenu";
+  import MenubarTrigger from "../../components/ui/Menubar/MenubarTrigger";
+  import MenubarContent from "../../components/ui/Menubar/MenubarContent";
+  import DropdownMenuItem from "../../components/ui/DropdownMenu/DropdownMenuItem";
+  import DropdownMenuSeparator from "../../components/ui/DropdownMenu/DropdownMenuSeparator";
+  import DropdownMenuShortcut from "../../components/ui/DropdownMenu/DropdownMenuShortcut";
+
+  import NavigationMenu from "../../components/ui/NavigationMenu/NavigationMenu";
+  import NavigationMenuList from "../../components/ui/NavigationMenu/NavigationMenuList";
+  import NavigationMenuItem from "../../components/ui/NavigationMenu/NavigationMenuItem";
+  import NavigationMenuTrigger from "../../components/ui/NavigationMenu/NavigationMenuTrigger";
+  import NavigationMenuContent from "../../components/ui/NavigationMenu/NavigationMenuContent";
+  import NavigationMenuLink from "../../components/ui/NavigationMenu/NavigationMenuLink";
+
+  import Pagination from "../../components/ui/Pagination/Pagination";
+  import PaginationContent from "../../components/ui/Pagination/PaginationContent";
+  import PaginationItem from "../../components/ui/Pagination/PaginationItem";
+  import PaginationLink from "../../components/ui/Pagination/PaginationLink";
+  import PaginationEllipsis from "../../components/ui/Pagination/PaginationEllipsis";
+  import PaginationNext from "../../components/ui/Pagination/PaginationNext";
+  import PaginationPrevious from "../../components/ui/Pagination/PaginationPrevious";
+
+  import Tabs from "../../components/ui/Tabs/Tabs";
+  import TabsList from "../../components/ui/Tabs/TabsList";
+  import TabsTrigger from "../../components/ui/Tabs/TabsTrigger";
+  import TabsContent from "../../components/ui/Tabs/TabsContent";
+
+  import Anchor from "../../components/ui/Anchor/Anchor";
+
+  import { Calculator, Contact, Calendar, User, CreditCard, Settings } from "olum-icons/lucide";
+
+  const state = { page: 1 };
+  const totalPages = 5;
+  const pageNumbers = Array.from({ length: totalPages }, (_, i) => i + 1);
+  // Pagination's <a> links don't expose an onclick prop, so this reads the
+  // clicked link's own text content via event delegation on the container.
+  const onPageClick = (e) => {
+    const a = e.target.closest('[data-slot="pagination-link"], [aria-label="Go to next page"], [aria-label="Go to previous page"]');
+    if (!a) return;
+    e.preventDefault();
+    const label = a.getAttribute("aria-label") || "";
+    if (label === "Go to next page") state.page = Math.min(totalPages, state.page + 1);
+    else if (label === "Go to previous page") state.page = Math.max(1, state.page - 1);
+    else {
+      const n = parseInt(a.textContent.trim(), 10);
+      if (!Number.isNaN(n)) state.page = n;
+    }
+  };
+
+  const fileAction = () => console.log("File > New file");
+  const saveAction = () => console.log("File > Save");
+</script>
+
+<Nav />
+
+<main class="mx-auto max-w-6xl px-6 py-12">
+  <h1 class="mb-8 font-heading text-2xl font-semibold text-foreground">UI Kit — Navigation</h1>
+
+  <section class="mb-12">
+    <h2 class="mb-1 text-xl font-semibold text-foreground">Breadcrumb</h2>
+    <p class="mb-4 text-sm text-muted-foreground">The trail of pages leading to the current one; long trails collapse behind an ellipsis.</p>
+    <div class="rounded-xl border border-border p-6">
+      <Breadcrumb>
+        <BreadcrumbList>
+          <BreadcrumbItem><BreadcrumbLink href="/">Home</BreadcrumbLink></BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem><BreadcrumbEllipsis /></BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem><BreadcrumbLink href="/ui">UI Kit</BreadcrumbLink></BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem><BreadcrumbPage>Navigation</BreadcrumbPage></BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
+    </div>
+  </section>
+
+  <section class="mb-12">
+    <h2 class="mb-1 text-xl font-semibold text-foreground">Command</h2>
+    <p class="mb-4 text-sm text-muted-foreground">A searchable palette of commands — inline, and as a modal dialog (try the trigger button, then type and use arrow keys).</p>
+    <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
+      <div class="rounded-xl border border-border p-2">
+        <Command>
+          <CommandInput placeholder="Search commands…" />
+          <CommandList>
+            <CommandEmpty>No results found.</CommandEmpty>
+            <CommandGroup heading="Suggestions">
+              <CommandItem><Icon icon="{Calendar}" class="size-4" /><span>Calendar</span></CommandItem>
+              <CommandItem><Icon icon="{Contact}" class="size-4" /><span>Search emoji</span></CommandItem>
+              <CommandItem><Icon icon="{Calculator}" class="size-4" /><span>Calculator</span></CommandItem>
+            </CommandGroup>
+            <CommandSeparator />
+            <CommandGroup heading="Settings">
+              <CommandItem><Icon icon="{User}" class="size-4" /><span>Profile</span><CommandShortcut>⌘P</CommandShortcut></CommandItem>
+              <CommandItem><Icon icon="{CreditCard}" class="size-4" /><span>Billing</span><CommandShortcut>⌘B</CommandShortcut></CommandItem>
+              <CommandItem><Icon icon="{Settings}" class="size-4" /><span>Settings</span><CommandShortcut>⌘S</CommandShortcut></CommandItem>
+            </CommandGroup>
+          </CommandList>
+        </Command>
+      </div>
+      <div class="flex items-center justify-center rounded-xl border border-border p-6">
+        <CommandDialog>
+          <CommandDialogTrigger>
+            <Button variant="outline">Open command palette <CommandShortcut>⌘K</CommandShortcut></Button>
+          </CommandDialogTrigger>
+          <CommandDialogContent>
+            <Command>
+              <CommandInput placeholder="Type a command…" />
+              <CommandList>
+                <CommandEmpty>No results found.</CommandEmpty>
+                <CommandGroup heading="Suggestions">
+                  <CommandItem><Icon icon="{Calendar}" class="size-4" /><span>Calendar</span></CommandItem>
+                  <CommandItem><Icon icon="{Contact}" class="size-4" /><span>Search emoji</span></CommandItem>
+                  <CommandItem><Icon icon="{Calculator}" class="size-4" /><span>Calculator</span></CommandItem>
+                </CommandGroup>
+              </CommandList>
+            </Command>
+          </CommandDialogContent>
+        </CommandDialog>
+      </div>
+    </div>
+  </section>
+
+  <section class="mb-12">
+    <h2 class="mb-1 text-xl font-semibold text-foreground">Menubar</h2>
+    <p class="mb-4 text-sm text-muted-foreground">A row of application menus, composed from DropdownMenu underneath.</p>
+    <div class="rounded-xl border border-border p-6">
+      <Menubar>
+        <MenubarMenu>
+          <MenubarTrigger>File</MenubarTrigger>
+          <MenubarContent>
+            <DropdownMenuItem onclick="{fileAction}">New File <DropdownMenuShortcut>⌘N</DropdownMenuShortcut></DropdownMenuItem>
+            <DropdownMenuItem onclick="{saveAction}">Save <DropdownMenuShortcut>⌘S</DropdownMenuShortcut></DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem variant="destructive">Close</DropdownMenuItem>
+          </MenubarContent>
+        </MenubarMenu>
+        <MenubarMenu>
+          <MenubarTrigger>Edit</MenubarTrigger>
+          <MenubarContent>
+            <DropdownMenuItem>Undo <DropdownMenuShortcut>⌘Z</DropdownMenuShortcut></DropdownMenuItem>
+            <DropdownMenuItem>Redo <DropdownMenuShortcut>⇧⌘Z</DropdownMenuShortcut></DropdownMenuItem>
+          </MenubarContent>
+        </MenubarMenu>
+        <MenubarMenu>
+          <MenubarTrigger>View</MenubarTrigger>
+          <MenubarContent>
+            <DropdownMenuItem>Zoom In</DropdownMenuItem>
+            <DropdownMenuItem>Zoom Out</DropdownMenuItem>
+          </MenubarContent>
+        </MenubarMenu>
+      </Menubar>
+    </div>
+  </section>
+
+  <section class="mb-12">
+    <h2 class="mb-1 text-xl font-semibold text-foreground">Navigation Menu</h2>
+    <p class="mb-4 text-sm text-muted-foreground">Site navigation whose items open rich panels rather than plain lists.</p>
+    <div class="rounded-xl border border-border p-6">
+      <NavigationMenu>
+        <NavigationMenuList>
+          <NavigationMenuItem>
+            <NavigationMenuTrigger>Ecosystem</NavigationMenuTrigger>
+            <NavigationMenuContent>
+              <div class="grid w-64 gap-1">
+                <NavigationMenuLink href="/store">Store — olum-store demo</NavigationMenuLink>
+                <NavigationMenuLink href="/transitions">Transitions — olum-transition demo</NavigationMenuLink>
+                <NavigationMenuLink href="/icons">Icons — olum-icons browser</NavigationMenuLink>
+              </div>
+            </NavigationMenuContent>
+          </NavigationMenuItem>
+          <NavigationMenuItem>
+            <NavigationMenuTrigger>UI Kit</NavigationMenuTrigger>
+            <NavigationMenuContent>
+              <div class="grid w-64 gap-1">
+                <NavigationMenuLink href="/ui/forms">Forms</NavigationMenuLink>
+                <NavigationMenuLink href="/ui/overlay">Overlay</NavigationMenuLink>
+                <NavigationMenuLink href="/ui/data-display">Data Display</NavigationMenuLink>
+              </div>
+            </NavigationMenuContent>
+          </NavigationMenuItem>
+        </NavigationMenuList>
+      </NavigationMenu>
+    </div>
+  </section>
+
+  <section class="mb-12">
+    <h2 class="mb-1 text-xl font-semibold text-foreground">Pagination</h2>
+    <p class="mb-4 text-sm text-muted-foreground">Page {state.page} of {totalPages} — working state-driven paginator over a fake dataset.</p>
+    <div class="rounded-xl border border-border p-6" onclick="onPageClick(event)">
+      <Pagination>
+        <PaginationContent>
+          <PaginationItem><PaginationPrevious /></PaginationItem>
+          <for each="n of pageNumbers" key="n">
+            <PaginationItem><PaginationLink isActive="{n === state.page}">{n}</PaginationLink></PaginationItem>
+          </for>
+          <PaginationItem><PaginationNext /></PaginationItem>
+        </PaginationContent>
+      </Pagination>
+    </div>
+  </section>
+
+  <section class="mb-12">
+    <h2 class="mb-1 text-xl font-semibold text-foreground">Tabs</h2>
+    <p class="mb-4 text-sm text-muted-foreground">The styled UI kit tabs — radio-input driven, CSS-only. Distinct from the raw <code class="rounded bg-muted px-1 py-0.5 text-xs">&lt;if&gt;</code> tab demo on /control-flow.</p>
+    <div class="rounded-xl border border-border p-6">
+      <Tabs>
+        <TabsList>
+          <TabsTrigger group="ui-tabs" value="account" defaultChecked="{true}">Account</TabsTrigger>
+          <TabsTrigger group="ui-tabs" value="password">Password</TabsTrigger>
+          <TabsTrigger group="ui-tabs" value="team">Team</TabsTrigger>
+        </TabsList>
+        <TabsContent value="account"><p class="p-3 text-sm text-muted-foreground">Update your account details here.</p></TabsContent>
+        <TabsContent value="password"><p class="p-3 text-sm text-muted-foreground">Change your password here.</p></TabsContent>
+        <TabsContent value="team"><p class="p-3 text-sm text-muted-foreground">Manage your team members here.</p></TabsContent>
+      </Tabs>
+    </div>
+  </section>
+
+  <section class="mb-12">
+    <h2 class="mb-1 text-xl font-semibold text-foreground">Anchor</h2>
+    <p class="mb-4 text-sm text-muted-foreground">An anchor styled as a button — same variants and sizes as Button, works with a router <code class="rounded bg-muted px-1 py-0.5 text-xs">to</code> path or a plain href.</p>
+    <div class="rounded-xl border border-border p-6">
+      <div class="flex flex-wrap items-center gap-2">
+        <Anchor to="/" variant="default">Default</Anchor>
+        <Anchor to="/" variant="secondary">Secondary</Anchor>
+        <Anchor to="/" variant="outline">Outline</Anchor>
+        <Anchor to="/" variant="ghost">Ghost</Anchor>
+        <Anchor to="/" variant="destructive">Destructive</Anchor>
+        <Anchor to="/" variant="link">Link</Anchor>
+      </div>
+      <div class="mt-3 flex flex-wrap items-center gap-2">
+        <Anchor to="/" size="xs">Extra small</Anchor>
+        <Anchor to="/" size="sm">Small</Anchor>
+        <Anchor to="/" size="default">Default</Anchor>
+        <Anchor to="/" size="lg">Large</Anchor>
+      </div>
+    </div>
+  </section>
+</main>

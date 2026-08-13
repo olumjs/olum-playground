@@ -1,0 +1,276 @@
+<script>
+  import Nav from "../../components/Nav";
+  import Icon from "../../components/ui/Icon/Icon";
+  import Button from "../../components/ui/Button/Button";
+  import Avatar from "../../components/ui/Avatar/Avatar";
+  import AvatarFallback from "../../components/ui/Avatar/AvatarFallback";
+
+  import AlertDialog from "../../components/ui/AlertDialog/AlertDialog";
+  import AlertDialogTrigger from "../../components/ui/AlertDialog/AlertDialogTrigger";
+  import AlertDialogContent from "../../components/ui/AlertDialog/AlertDialogContent";
+  import AlertDialogHeader from "../../components/ui/AlertDialog/AlertDialogHeader";
+  import AlertDialogTitle from "../../components/ui/AlertDialog/AlertDialogTitle";
+  import AlertDialogDescription from "../../components/ui/AlertDialog/AlertDialogDescription";
+  import AlertDialogFooter from "../../components/ui/AlertDialog/AlertDialogFooter";
+  import AlertDialogCancel from "../../components/ui/AlertDialog/AlertDialogCancel";
+  import AlertDialogAction from "../../components/ui/AlertDialog/AlertDialogAction";
+
+  import ContextMenu from "../../components/ui/ContextMenu/ContextMenu";
+  import ContextMenuTrigger from "../../components/ui/ContextMenu/ContextMenuTrigger";
+  import ContextMenuContent from "../../components/ui/ContextMenu/ContextMenuContent";
+  import DropdownMenuItem from "../../components/ui/DropdownMenu/DropdownMenuItem";
+  import DropdownMenuSeparator from "../../components/ui/DropdownMenu/DropdownMenuSeparator";
+
+  import Dialog from "../../components/ui/Dialog/Dialog";
+  import DialogTrigger from "../../components/ui/Dialog/DialogTrigger";
+  import DialogContent from "../../components/ui/Dialog/DialogContent";
+  import DialogHeader from "../../components/ui/Dialog/DialogHeader";
+  import DialogTitle from "../../components/ui/Dialog/DialogTitle";
+  import DialogDescription from "../../components/ui/Dialog/DialogDescription";
+  import DialogFooter from "../../components/ui/Dialog/DialogFooter";
+  import DialogClose from "../../components/ui/Dialog/DialogClose";
+
+  import Drawer from "../../components/ui/Drawer/Drawer";
+  import DrawerTrigger from "../../components/ui/Drawer/DrawerTrigger";
+  import DrawerContent from "../../components/ui/Drawer/DrawerContent";
+  import DrawerHeader from "../../components/ui/Drawer/DrawerHeader";
+  import DrawerTitle from "../../components/ui/Drawer/DrawerTitle";
+  import DrawerDescription from "../../components/ui/Drawer/DrawerDescription";
+  import DrawerFooter from "../../components/ui/Drawer/DrawerFooter";
+  import DrawerClose from "../../components/ui/Drawer/DrawerClose";
+
+  import DropdownMenu from "../../components/ui/DropdownMenu/DropdownMenu";
+  import DropdownMenuTrigger from "../../components/ui/DropdownMenu/DropdownMenuTrigger";
+  import DropdownMenuContent from "../../components/ui/DropdownMenu/DropdownMenuContent";
+  import DropdownMenuLabel from "../../components/ui/DropdownMenu/DropdownMenuLabel";
+  import DropdownMenuGroup from "../../components/ui/DropdownMenu/DropdownMenuGroup";
+  import DropdownMenuCheckboxItem from "../../components/ui/DropdownMenu/DropdownMenuCheckboxItem";
+  import DropdownMenuRadioGroup from "../../components/ui/DropdownMenu/DropdownMenuRadioGroup";
+  import DropdownMenuRadioItem from "../../components/ui/DropdownMenu/DropdownMenuRadioItem";
+  import DropdownMenuSub from "../../components/ui/DropdownMenu/DropdownMenuSub";
+  import DropdownMenuSubTrigger from "../../components/ui/DropdownMenu/DropdownMenuSubTrigger";
+  import DropdownMenuSubContent from "../../components/ui/DropdownMenu/DropdownMenuSubContent";
+
+  import HoverCard from "../../components/ui/HoverCard/HoverCard";
+  import HoverCardTrigger from "../../components/ui/HoverCard/HoverCardTrigger";
+  import HoverCardContent from "../../components/ui/HoverCard/HoverCardContent";
+
+  import Popover from "../../components/ui/Popover/Popover";
+  import PopoverTrigger from "../../components/ui/Popover/PopoverTrigger";
+  import PopoverContent from "../../components/ui/Popover/PopoverContent";
+  import PopoverHeader from "../../components/ui/Popover/PopoverHeader";
+  import PopoverTitle from "../../components/ui/Popover/PopoverTitle";
+  import PopoverDescription from "../../components/ui/Popover/PopoverDescription";
+
+  import Sheet from "../../components/ui/Sheet/Sheet";
+  import SheetTrigger from "../../components/ui/Sheet/SheetTrigger";
+  import SheetContent from "../../components/ui/Sheet/SheetContent";
+  import SheetHeader from "../../components/ui/Sheet/SheetHeader";
+  import SheetTitle from "../../components/ui/Sheet/SheetTitle";
+  import SheetDescription from "../../components/ui/Sheet/SheetDescription";
+  import SheetFooter from "../../components/ui/Sheet/SheetFooter";
+  import SheetClose from "../../components/ui/Sheet/SheetClose";
+
+  import Tooltip from "../../components/ui/Tooltip/Tooltip";
+  import TooltipProvider from "../../components/ui/Tooltip/TooltipProvider";
+  import TooltipTrigger from "../../components/ui/Tooltip/TooltipTrigger";
+  import TooltipContent from "../../components/ui/Tooltip/TooltipContent";
+
+  import { Trash2, EllipsisVertical, Copy, Clipboard, Scissors, Settings } from "olum-icons/lucide";
+
+  const confirmDelete = () => console.log("deleted");
+</script>
+
+<Nav />
+
+<main class="mx-auto max-w-6xl px-6 py-12">
+  <h1 class="mb-2 font-heading text-2xl font-semibold text-foreground">UI Kit — Overlay</h1>
+  <p class="mb-8 max-w-2xl text-sm text-muted-foreground">
+    All portal-based — moved into <code class="rounded bg-muted px-1 py-0.5 text-xs">&lt;body&gt;</code> on open via the shared <code class="rounded bg-muted px-1 py-0.5 text-xs">portal.js</code>, which blurs the app root behind them with a real
+    <code class="rounded bg-muted px-1 py-0.5 text-xs">filter: blur()</code>.
+  </p>
+
+  <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+    <div class="rounded-xl border border-border p-6">
+      <h2 class="mb-1 text-sm font-semibold text-foreground">Alert Dialog</h2>
+      <p class="mb-4 text-xs text-muted-foreground">Confirms something consequential — not dismissible by clicking outside.</p>
+      <AlertDialog>
+        <AlertDialogTrigger>
+          <Button variant="destructive" size="sm">Delete item</Button>
+        </AlertDialogTrigger>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Delete this item?</AlertDialogTitle>
+            <AlertDialogDescription>This action can't be undone. This will permanently remove the item.</AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onclick="{confirmDelete}">Delete</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    </div>
+
+    <div class="rounded-xl border border-border p-6">
+      <h2 class="mb-1 text-sm font-semibold text-foreground">Context Menu</h2>
+      <p class="mb-4 text-xs text-muted-foreground">Right-click the box below.</p>
+      <ContextMenu>
+        <ContextMenuTrigger>
+          <div class="flex h-24 items-center justify-center rounded-lg border border-dashed border-border text-sm text-muted-foreground">Right-click here</div>
+        </ContextMenuTrigger>
+        <ContextMenuContent>
+          <DropdownMenuItem><Icon icon="{Copy}" class="size-4" /><span>Copy</span></DropdownMenuItem>
+          <DropdownMenuItem><Icon icon="{Clipboard}" class="size-4" /><span>Paste</span></DropdownMenuItem>
+          <DropdownMenuItem><Icon icon="{Scissors}" class="size-4" /><span>Cut</span></DropdownMenuItem>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem variant="destructive"><Icon icon="{Trash2}" class="size-4" /><span>Delete</span></DropdownMenuItem>
+        </ContextMenuContent>
+      </ContextMenu>
+    </div>
+
+    <div class="rounded-xl border border-border p-6">
+      <h2 class="mb-1 text-sm font-semibold text-foreground">Dialog</h2>
+      <p class="mb-4 text-xs text-muted-foreground">A simple modal window, dismissible by Escape or an outside click.</p>
+      <Dialog>
+        <DialogTrigger>
+          <Button variant="outline" size="sm">Edit profile</Button>
+        </DialogTrigger>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Edit profile</DialogTitle>
+            <DialogDescription>Make changes to your profile here.</DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <DialogClose><Button variant="outline" size="sm">Cancel</Button></DialogClose>
+            <Button size="sm">Save changes</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </div>
+
+    <div class="rounded-xl border border-border p-6">
+      <h2 class="mb-1 text-sm font-semibold text-foreground">Drawer</h2>
+      <p class="mb-4 text-xs text-muted-foreground">Slides up from the bottom edge, draggable-style handle bar.</p>
+      <Drawer>
+        <DrawerTrigger>
+          <Button variant="outline" size="sm">Open drawer</Button>
+        </DrawerTrigger>
+        <DrawerContent>
+          <DrawerHeader>
+            <DrawerTitle>Move goal</DrawerTitle>
+            <DrawerDescription>Set your daily activity goal.</DrawerDescription>
+          </DrawerHeader>
+          <DrawerFooter>
+            <Button size="sm">Submit</Button>
+            <DrawerClose><Button variant="outline" size="sm">Cancel</Button></DrawerClose>
+          </DrawerFooter>
+        </DrawerContent>
+      </Drawer>
+    </div>
+
+    <div class="rounded-xl border border-border p-6">
+      <h2 class="mb-1 text-sm font-semibold text-foreground">Dropdown Menu</h2>
+      <p class="mb-4 text-xs text-muted-foreground">Checkbox items, a radio group, and a nested submenu.</p>
+      <DropdownMenu>
+        <DropdownMenuTrigger>
+          <Button variant="outline" size="icon" ariaLabel="Open menu"><Icon icon="{EllipsisVertical}" class="size-4" /></Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent>
+          <DropdownMenuLabel>Appearance</DropdownMenuLabel>
+          <DropdownMenuGroup>
+            <DropdownMenuCheckboxItem defaultChecked="{true}">Show status bar</DropdownMenuCheckboxItem>
+            <DropdownMenuCheckboxItem>Show activity bar</DropdownMenuCheckboxItem>
+          </DropdownMenuGroup>
+          <DropdownMenuSeparator />
+          <DropdownMenuRadioGroup>
+            <DropdownMenuRadioItem name="ov-density" value="compact">Compact</DropdownMenuRadioItem>
+            <DropdownMenuRadioItem name="ov-density" value="comfortable" defaultChecked="{true}">Comfortable</DropdownMenuRadioItem>
+          </DropdownMenuRadioGroup>
+          <DropdownMenuSeparator />
+          <DropdownMenuSub>
+            <DropdownMenuSubTrigger><Icon icon="{Settings}" class="size-4" /><span>More tools</span></DropdownMenuSubTrigger>
+            <DropdownMenuSubContent>
+              <DropdownMenuItem>Extensions</DropdownMenuItem>
+              <DropdownMenuItem>Task Manager</DropdownMenuItem>
+            </DropdownMenuSubContent>
+          </DropdownMenuSub>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </div>
+
+    <div class="rounded-xl border border-border p-6">
+      <h2 class="mb-1 text-sm font-semibold text-foreground">Hover Card</h2>
+      <p class="mb-4 text-xs text-muted-foreground">Hover the link to preview a small card.</p>
+      <HoverCard>
+        <HoverCardTrigger>
+          <Button variant="link" size="sm">@olumjs</Button>
+        </HoverCardTrigger>
+        <HoverCardContent>
+          <div class="flex gap-3">
+            <Avatar><AvatarFallback>OL</AvatarFallback></Avatar>
+            <div>
+              <p class="text-sm font-medium text-foreground">Olum</p>
+              <p class="text-xs text-muted-foreground">A small, Vue-like JavaScript framework.</p>
+            </div>
+          </div>
+        </HoverCardContent>
+      </HoverCard>
+    </div>
+
+    <div class="rounded-xl border border-border p-6">
+      <h2 class="mb-1 text-sm font-semibold text-foreground">Popover</h2>
+      <p class="mb-4 text-xs text-muted-foreground">Click-triggered floating content, richer than a tooltip.</p>
+      <Popover>
+        <PopoverTrigger>
+          <Button variant="outline" size="sm">Open popover</Button>
+        </PopoverTrigger>
+        <PopoverContent>
+          <PopoverHeader>
+            <PopoverTitle>Dimensions</PopoverTitle>
+            <PopoverDescription>Set the dimensions for the layer.</PopoverDescription>
+          </PopoverHeader>
+        </PopoverContent>
+      </Popover>
+    </div>
+
+    <div class="rounded-xl border border-border p-6">
+      <h2 class="mb-1 text-sm font-semibold text-foreground">Sheet</h2>
+      <p class="mb-4 text-xs text-muted-foreground">Side-anchored panel — pick an edge.</p>
+      <div class="flex flex-wrap gap-2">
+        <Sheet>
+          <SheetTrigger><Button variant="outline" size="sm">Right</Button></SheetTrigger>
+          <SheetContent side="right">
+            <SheetHeader>
+              <SheetTitle>Right sheet</SheetTitle>
+              <SheetDescription>Anchored to the right edge.</SheetDescription>
+            </SheetHeader>
+            <SheetFooter><SheetClose><Button variant="outline" size="sm">Close</Button></SheetClose></SheetFooter>
+          </SheetContent>
+        </Sheet>
+        <Sheet>
+          <SheetTrigger><Button variant="outline" size="sm">Left</Button></SheetTrigger>
+          <SheetContent side="left">
+            <SheetHeader>
+              <SheetTitle>Left sheet</SheetTitle>
+              <SheetDescription>Anchored to the left edge.</SheetDescription>
+            </SheetHeader>
+            <SheetFooter><SheetClose><Button variant="outline" size="sm">Close</Button></SheetClose></SheetFooter>
+          </SheetContent>
+        </Sheet>
+      </div>
+    </div>
+
+    <div class="rounded-xl border border-border p-6">
+      <h2 class="mb-1 text-sm font-semibold text-foreground">Tooltip</h2>
+      <p class="mb-4 text-xs text-muted-foreground">Hover or focus the button. A shared Provider wraps every tooltip on this page.</p>
+      <TooltipProvider>
+        <Tooltip>
+          <TooltipTrigger>
+            <Button variant="outline" size="icon" ariaLabel="Settings"><Icon icon="{Settings}" class="size-4" /></Button>
+          </TooltipTrigger>
+          <TooltipContent>Settings</TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
+    </div>
+  </div>
+</main>

@@ -1,39 +1,77 @@
 <script>
-  import Counter from "./components/Counter";
   import Nav from "./components/Nav";
+  import Badge from "./components/ui/Badge/Badge";
+  import Icon from "./components/ui/Icon/Icon";
+  import Anchor from "./components/ui/Anchor/Anchor";
+  import Card from "./components/ui/Card/Card";
+  import CardHeader from "./components/ui/Card/CardHeader";
+  import CardTitle from "./components/ui/Card/CardTitle";
+  import CardDescription from "./components/ui/Card/CardDescription";
+  import CardFooter from "./components/ui/Card/CardFooter";
+  import { Sparkles, Split, Puzzle, Clock, Link, Wand, Database, Newspaper, Route, Palette, Blocks, ArrowRight } from "olum-icons/lucide";
+
+  const sections = [
+    { to: "/reactivity", icon: Sparkles, title: "Reactivity", desc: "state, derived values, watchers, deep mutation." },
+    { to: "/control-flow", icon: Split, title: "Control Flow", desc: "if / else-if / else, show, and keyed for loops." },
+    { to: "/composition", icon: Puzzle, title: "Composition", desc: "props, callback props, slots, and scope()." },
+    { to: "/lifecycle", icon: Clock, title: "Lifecycle", desc: "onMount, async fetch, timers, and host refs." },
+    { to: "/binding", icon: Link, title: "Binding", desc: "manual two-way binding across every input type." },
+    { to: "/transitions", icon: Wand, title: "Transitions", desc: "olum-transition: fade, fly, scale, flip, crossfade." },
+    { to: "/store", icon: Database, title: "Store", desc: "olum-store: shared state, zero prop-drilling." },
+    { to: "/blog", icon: Newspaper, title: "Router", desc: "file-based routing, dynamic [slug] params." },
+    { to: "/match/premier-league/1042", icon: Route, title: "Match", desc: "multi-segment params: /match/[slug]/[id]." },
+    { to: "/icons", icon: Palette, title: "Icons", desc: "olum-icons, browsable and filterable." },
+    { to: "/ui", icon: Blocks, title: "UI Kit", desc: "58 olum-ui components across 6 categories." },
+  ];
 </script>
 
-<main>
-  <Nav />
-  <div class="window">
-    <div class="window-bar">
-      <div class="window-dots">
-        <span></span>
-        <span></span>
-        <span></span>
-      </div>
-      <span class="window-path">src/page.html</span>
+<Nav />
+
+<main class="mx-auto max-w-6xl px-6 py-16">
+  <section class="flex flex-col items-start gap-5">
+    <Badge variant="outline" class="gap-1.5">
+      <span class="size-1.5 rounded-full bg-primary"></span>
+      olum ^0.9.1 · olum-compiler ^1.8.0
+    </Badge>
+    <h1 class="max-w-2xl font-heading text-4xl font-semibold tracking-tight text-foreground sm:text-5xl">Every corner of Olum, in one app.</h1>
+    <p class="max-w-xl text-lg text-muted-foreground">
+      This is a stress test of the whole ecosystem — core reactivity, the compiler, the router, the store, transitions, icons, and the full olum-ui kit —
+      wired up as a real, working app rather than isolated snippets.
+    </p>
+    <div class="flex flex-wrap gap-3 pt-2">
+      <!-- Plain text only: Anchor's children render inside the real <a to>, and the
+           router's click listener reads e.target (not e.currentTarget), so a nested
+           icon here would intercept the click and navigate to "/null" instead. -->
+      <Anchor to="/reactivity" size="lg">Start exploring →</Anchor>
+      <Anchor to="/ui" variant="outline" size="lg">Browse the UI kit</Anchor>
     </div>
-    <div class="window-body hero">
-      <a href="https://olumjs.top/docs" target="_blank" rel="noopener" class="mark-link">
-        <img src="/favicon.svg" class="mark" alt="Olum logo" />
-      </a>
-      <h1>Olum</h1>
-      <p class="tagline">The tiny framework that ships plain HTML.</p>
-      <Counter />
-    </div>
-  </div>
-  <div class="hero-links">
-    <a href="https://olumjs.top/docs" target="_blank" rel="noopener" class="primary">
-      Read the docs
-    </a>
-    <a href="https://github.com/olumjs/olum" target="_blank" rel="noopener">
-      <svg viewBox="0 0 24 24" fill="currentColor">
-        <path
-          d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.57.1.78-.25.78-.55 0-.27-.01-1.16-.01-2.11-3.2.7-3.88-1.36-3.88-1.36-.52-1.34-1.28-1.69-1.28-1.69-1.04-.72.08-.7.08-.7 1.15.08 1.76 1.19 1.76 1.19 1.03 1.76 2.69 1.25 3.35.96.1-.75.4-1.25.73-1.54-2.55-.29-5.24-1.28-5.24-5.7 0-1.26.45-2.29 1.19-3.09-.12-.29-.52-1.47.11-3.07 0 0 .97-.31 3.18 1.18a10.9 10.9 0 0 1 5.79 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.6.23 2.78.11 3.07.74.8 1.19 1.83 1.19 3.09 0 4.43-2.69 5.4-5.25 5.69.41.36.78 1.08.78 2.17 0 1.57-.01 2.83-.01 3.22 0 .3.21.66.79.55A10.52 10.52 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5z"
-        />
-      </svg>
-      View on GitHub
-    </a>
-  </div>
+  </section>
+
+  <section class="mt-16 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+    <for each="s of sections" key="s.to">
+      <!--
+        The `to` anchor below is empty on purpose — no nested content. A
+        router click listener reads e.target.getAttribute("to"), not
+        e.currentTarget, so any nested element (icon, title, badge) that
+        actually receives the click makes e.target the wrong node and the
+        nav silently goes to "/null" instead. An absolute, content-free
+        overlay anchor sidesteps that: nothing inside it can ever be e.target.
+      -->
+      <Card class="group relative h-full transition-colors hover:ring-primary/40">
+        <CardHeader>
+          <div class="mb-2 flex size-9 items-center justify-center rounded-lg bg-primary/10 text-primary">
+            <Icon icon="{s.icon}" class="size-4.5" />
+          </div>
+          <CardTitle>{s.title}</CardTitle>
+          <CardDescription>{s.desc}</CardDescription>
+        </CardHeader>
+        <CardFooter class="border-t-0 bg-transparent pt-0">
+          <span class="inline-flex items-center gap-1 text-sm font-medium text-primary opacity-0 transition-opacity group-hover:opacity-100">
+            Open <Icon icon="{ArrowRight}" class="size-3.5" />
+          </span>
+        </CardFooter>
+        <a to="{s.to}" class="absolute inset-0" aria-label="{s.title}"></a>
+      </Card>
+    </for>
+  </section>
 </main>

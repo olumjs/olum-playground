@@ -1,0 +1,17 @@
+<script>
+  import Nav from "./components/Nav";
+  import Anchor from "./components/ui/Anchor/Anchor";
+  import Icon from "./components/ui/Icon/Icon";
+  import { CircleAlert } from "olum-icons/lucide";
+</script>
+
+<Nav />
+
+<main class="mx-auto flex max-w-xl flex-col items-center gap-4 px-6 py-32 text-center">
+  <div class="flex size-12 items-center justify-center rounded-full bg-destructive/10 text-destructive">
+    <Icon icon="{CircleAlert}" class="size-6" />
+  </div>
+  <h1 class="font-heading text-2xl font-semibold text-foreground">404 — page not found</h1>
+  <p class="text-muted-foreground">There's no route for this URL. It's served by <code class="rounded bg-muted px-1.5 py-0.5 text-sm">src/not-found.html</code>.</p>
+  <Anchor to="/">Back home</Anchor>
+</main>

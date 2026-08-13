@@ -1,0 +1,151 @@
+<script>
+  import Nav from "../components/Nav";
+  import Button from "../components/ui/Button/Button";
+  import Badge from "../components/ui/Badge/Badge";
+
+  // --- counter + derived values ---
+  const state = {
+    count: 0,
+    user: { name: "Ann" },
+    items: [
+      { id: 1, text: "Read the llms.txt" },
+      { id: 2, text: "Add every olum-ui component" },
+      { id: 3, text: "Ship the demo app" },
+    ],
+    nextId: 4,
+    newItem: "",
+    tags: new Set(["core", "router"]),
+    newTag: "",
+    watcherLog: [],
+  };
+
+  const inc = () => state.count++;
+  const dec = () => state.count--;
+  const reset = () => (state.count = 0);
+
+  const doubled = () => state.count * 2;
+  const quadrupled = () => doubled() * 2;
+
+  const watcher = {
+    count(old, next) {
+      state.watcherLog = [`${old} → ${next}`, ...state.watcherLog].slice(0, 6);
+    },
+  };
+
+  const rename = () => (state.user.name = state.user.name === "Ann" ? "Bo" : "Ann");
+
+  const addItem = () => {
+    if (!state.newItem.trim()) return;
+    state.items.push({ id: state.nextId++, text: state.newItem.trim() });
+    state.newItem = "";
+  };
+  const removeItem = (id) => {
+    const i = state.items.findIndex((it) => it.id === id);
+    if (i !== -1) state.items.splice(i, 1);
+  };
+
+  const addTag = () => {
+    const tag = state.newTag.trim().toLowerCase();
+    if (!tag) return;
+    state.tags.add(tag);
+    state.newTag = "";
+  };
+  const removeTag = (tag) => state.tags.delete(tag);
+</script>
+
+<Nav />
+
+<main class="mx-auto max-w-6xl px-6 py-12">
+  <h1 class="font-heading text-3xl font-semibold tracking-tight text-foreground">Reactivity</h1>
+  <p class="mt-2 max-w-2xl text-muted-foreground">
+    Only <code class="rounded bg-muted px-1 py-0.5 text-sm">state</code> is tracked. Every mutation below — top-level, nested, array, watcher, Set — re-renders
+    via a microtask-batched diff-patch.
+  </p>
+
+  <section class="mt-10">
+    <h2 class="mb-1 text-xl font-semibold text-foreground">Counter, derived values & watcher</h2>
+    <p class="mb-4 text-sm text-muted-foreground">Derived values are plain functions — <code>doubled()</code> calls <code>state.count</code>, <code>quadrupled()</code> calls <code>doubled()</code>. The watcher fires on top-level key assignment.</p>
+    <div class="grid grid-cols-1 gap-6 rounded-xl border border-border p-6 md:grid-cols-2">
+      <div>
+        <div class="flex items-center gap-3">
+          <Button variant="outline" size="icon" ariaLabel="Decrement" onclick="{dec}">−</Button>
+          <span class="w-10 text-center font-heading text-2xl tabular-nums text-foreground">{state.count}</span>
+          <Button variant="outline" size="icon" ariaLabel="Increment" onclick="{inc}">+</Button>
+          <Button variant="ghost" size="sm" onclick="{reset}">Reset</Button>
+        </div>
+        <div class="mt-4 flex gap-6 text-sm text-muted-foreground">
+          <span>doubled() = <strong class="text-foreground">{doubled()}</strong></span>
+          <span>quadrupled() = <strong class="text-foreground">{quadrupled()}</strong></span>
+        </div>
+        <log>{state.count}</log>
+      </div>
+      <div>
+        <div class="text-sm font-medium text-foreground">Watcher log</div>
+        <ul class="mt-2 space-y-1 text-sm text-muted-foreground">
+          <if when="state.watcherLog.length === 0"><li>Change the count to see entries.</li></if>
+          <for each="line of state.watcherLog" key="line">
+            <li class="font-mono text-xs">{line}</li>
+          </for>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="mt-10">
+    <h2 class="mb-1 text-xl font-semibold text-foreground">Nested mutation</h2>
+    <p class="mb-4 text-sm text-muted-foreground"><code>state.user.name = "Bo"</code> — a deep write, no reassignment of <code>state.user</code> itself.</p>
+    <div class="flex items-center gap-4 rounded-xl border border-border p-6">
+      <span class="text-foreground">Hello, <strong>{state.user.name}</strong></span>
+      <Button variant="outline" size="sm" onclick="{rename}">Rename</Button>
+    </div>
+  </section>
+
+  <section class="mt-10">
+    <h2 class="mb-1 text-xl font-semibold text-foreground">Array mutation (push / splice)</h2>
+    <p class="mb-4 text-sm text-muted-foreground">Both <code>push</code> and <code>splice</code> re-render in place — no need to reassign <code>state.items</code>.</p>
+    <div class="rounded-xl border border-border p-6">
+      <div class="flex gap-2">
+        <input
+          value="{state.newItem}"
+          oninput="(e) => state.newItem = e.target.value"
+          onkeydown="(e) => e.key === 'Enter' && addItem()"
+          placeholder="Add a task…"
+          class="h-8 flex-1 rounded-md border border-border bg-background px-2.5 text-sm outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50"
+        />
+        <Button size="sm" onclick="{addItem}">Add</Button>
+      </div>
+      <ul class="mt-4 space-y-2">
+        <for each="item of state.items" key="item.id">
+          <li class="flex items-center justify-between rounded-lg bg-muted px-3 py-2 text-sm text-foreground">
+            {item.text}
+            <button onclick="removeItem(item.id)" class="text-muted-foreground hover:text-destructive" aria-label="Remove">✕</button>
+          </li>
+        </for>
+      </ul>
+    </div>
+  </section>
+
+  <section class="mt-10">
+    <h2 class="mb-1 text-xl font-semibold text-foreground">Set reactivity</h2>
+    <p class="mb-4 text-sm text-muted-foreground">A <code>Set</code> in state — <code>.add()</code> / <code>.delete()</code> are tracked deeply, same as objects and arrays.</p>
+    <div class="rounded-xl border border-border p-6">
+      <div class="flex gap-2">
+        <input
+          value="{state.newTag}"
+          oninput="(e) => state.newTag = e.target.value"
+          onkeydown="(e) => e.key === 'Enter' && addTag()"
+          placeholder="New tag…"
+          class="h-8 flex-1 rounded-md border border-border bg-background px-2.5 text-sm outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50"
+        />
+        <Button size="sm" onclick="{addTag}">Add tag</Button>
+      </div>
+      <div class="mt-4 flex flex-wrap gap-2">
+        <for each="tag of Array.from(state.tags)" key="tag">
+          <button onclick="removeTag(tag)" class="cursor-pointer">
+            <Badge variant="secondary">{tag} ✕</Badge>
+          </button>
+        </for>
+      </div>
+    </div>
+  </section>
+</main>

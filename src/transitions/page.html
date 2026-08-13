@@ -1,0 +1,199 @@
+<script>
+  import Nav from "../components/Nav";
+  import Button from "../components/ui/Button/Button";
+  import { crossfade } from "olum";
+
+  const state = {
+    fadeOn: true,
+    flyOn: true,
+    scaleOn: true,
+    slideOpen: false,
+    drawOn: true,
+    inA: true,
+    cards: [
+      { id: 1, label: "Alpha" },
+      { id: 2, label: "Bravo" },
+      { id: 3, label: "Charlie" },
+      { id: 4, label: "Delta" },
+      { id: 5, label: "Echo" },
+    ],
+    log: [],
+  };
+
+  const shuffle = () => {
+    state.cards = [...state.cards].sort(() => Math.random() - 0.5);
+  };
+
+  // Component callback props go through JSON.stringify, so a function only
+  // survives when the attribute is a braced, BARE top-level identifier like
+  // `onclick="{toggleFade}"` -- an inline arrow or a call would silently drop.
+  const toggleFade = () => (state.fadeOn = !state.fadeOn);
+  const toggleFly = () => (state.flyOn = !state.flyOn);
+  const toggleScale = () => (state.scaleOn = !state.scaleOn);
+  const toggleSlide = () => (state.slideOpen = !state.slideOpen);
+  const toggleDraw = () => (state.drawOn = !state.drawOn);
+  const toggleCrossfade = () => (state.inA = !state.inA);
+
+  const logEvent = (msg) => {
+    state.log = [`${new Date().toLocaleTimeString()} — ${msg}`, ...state.log].slice(0, 6);
+  };
+
+  // Lifecycle-event handlers passed to <transition> must be BARE names (no
+  // call parens) -- the compiler wires them up as raw references, not calls.
+  const onFadeIntroStart = () => logEvent("fade: intro start");
+  const onFadeIntroEnd = () => logEvent("fade: intro end");
+  const onFadeOutroStart = () => logEvent("fade: outro start");
+  const onFadeOutroEnd = () => logEvent("fade: outro end");
+
+  // Named consts because the compiler resolves `send`/`receive` in the `in`/
+  // `out` attribute strings by identifier, against this script's local scope.
+  const [send, receive] = crossfade();
+</script>
+
+<Nav />
+
+<main class="mx-auto max-w-6xl px-6 py-12">
+  <h1 class="mb-1 font-heading text-3xl font-semibold text-foreground">Transitions</h1>
+  <p class="mb-10 max-w-2xl text-muted-foreground">
+    The <code class="rounded bg-muted px-1.5 py-0.5 text-sm">olum-transition</code> package: built-in fade/fly/scale/slide/draw, flip on reorder,
+    crossfade between two spots, and transition lifecycle events.
+  </p>
+
+  <section class="mb-10">
+    <h2 class="mb-1 text-xl font-semibold text-foreground">Fade</h2>
+    <p class="mb-4 text-sm text-muted-foreground">Same transition used for both intro and outro.</p>
+    <div class="rounded-xl border border-border p-6">
+      <Button onclick="{toggleFade}">Toggle</Button>
+      <div class="mt-4 flex h-16 items-center">
+        <if when="state.fadeOn">
+          <transition transition="fade">
+            <div class="rounded-lg bg-primary/10 px-4 py-3 text-sm text-primary">Fades in and out</div>
+          </transition>
+        </if>
+      </div>
+    </div>
+  </section>
+
+  <section class="mb-10">
+    <h2 class="mb-1 text-xl font-semibold text-foreground">Fly</h2>
+    <p class="mb-4 text-sm text-muted-foreground">Separate <code class="rounded bg-muted px-1 py-0.5 text-xs">in</code>/<code class="rounded bg-muted px-1 py-0.5 text-xs">out</code>, each with its own params.</p>
+    <div class="rounded-xl border border-border p-6">
+      <Button onclick="{toggleFly}">Toggle</Button>
+      <div class="mt-4 flex h-16 items-center">
+        <if when="state.flyOn">
+          <transition in="fly({ y: 24, duration: 400 })" out="fade">
+            <div class="rounded-lg bg-primary/10 px-4 py-3 text-sm text-primary">Flies in, fades out</div>
+          </transition>
+        </if>
+      </div>
+    </div>
+  </section>
+
+  <section class="mb-10">
+    <h2 class="mb-1 text-xl font-semibold text-foreground">Scale</h2>
+    <p class="mb-4 text-sm text-muted-foreground">Grows in from a point, shrinks back out.</p>
+    <div class="rounded-xl border border-border p-6">
+      <Button onclick="{toggleScale}">Toggle</Button>
+      <div class="mt-4 flex h-16 items-center">
+        <if when="state.scaleOn">
+          <transition transition="scale({ start: 0.6, duration: 350 })">
+            <div class="rounded-lg bg-primary/10 px-4 py-3 text-sm text-primary">Scales in and out</div>
+          </transition>
+        </if>
+      </div>
+    </div>
+  </section>
+
+  <section class="mb-10">
+    <h2 class="mb-1 text-xl font-semibold text-foreground">Slide</h2>
+    <p class="mb-4 text-sm text-muted-foreground">Animates height — an accordion-style reveal.</p>
+    <div class="rounded-xl border border-border p-6">
+      <Button onclick="{toggleSlide}">{state.slideOpen ? "Collapse" : "Expand"}</Button>
+      <if when="state.slideOpen">
+        <transition transition="slide">
+          <div class="mt-3 rounded-lg border border-border bg-muted/50 p-4 text-sm text-muted-foreground">
+            This panel's height animates open and closed instead of just popping in and out of the DOM.
+          </div>
+        </transition>
+      </if>
+    </div>
+  </section>
+
+  <section class="mb-10">
+    <h2 class="mb-1 text-xl font-semibold text-foreground">Draw</h2>
+    <p class="mb-4 text-sm text-muted-foreground">Traces an SVG path's stroke.</p>
+    <div class="rounded-xl border border-border p-6">
+      <Button onclick="{toggleDraw}">Toggle</Button>
+      <div class="mt-4 flex h-28 items-center">
+        <if when="state.drawOn">
+          <svg viewBox="0 0 100 100" class="size-24 text-primary">
+            <transition transition="draw({ duration: 900 })">
+              <path d="M10 80 L50 12 L90 80 Z" fill="none" stroke="currentColor" stroke-width="4" stroke-linejoin="round" />
+            </transition>
+          </svg>
+        </if>
+      </div>
+    </div>
+  </section>
+
+  <section class="mb-10">
+    <h2 class="mb-1 text-xl font-semibold text-foreground">Flip on reorder</h2>
+    <p class="mb-4 text-sm text-muted-foreground">Each card in this keyed <code class="rounded bg-muted px-1 py-0.5 text-xs">&lt;for&gt;</code> animates to its new position when the list is shuffled.</p>
+    <div class="rounded-xl border border-border p-6">
+      <Button onclick="{shuffle}">Shuffle</Button>
+      <div class="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-5">
+        <for each="card of state.cards" key="card.id">
+          <transition flip="{ duration: 400 }">
+            <div class="rounded-lg border border-border bg-muted/50 p-4 text-center text-sm font-medium text-foreground">{card.label}</div>
+          </transition>
+        </for>
+      </div>
+    </div>
+  </section>
+
+  <section class="mb-10">
+    <h2 class="mb-1 text-xl font-semibold text-foreground">Crossfade</h2>
+    <p class="mb-4 text-sm text-muted-foreground">
+      <code class="rounded bg-muted px-1 py-0.5 text-xs">crossfade()</code> flies the same element between two spots, keyed off a primitive id.
+    </p>
+    <div class="rounded-xl border border-border p-6">
+      <div class="grid grid-cols-2 gap-6">
+        <div class="flex h-28 items-center justify-center rounded-lg border border-dashed border-border">
+          <if when="state.inA">
+            <transition in="receive({ key: 1 })" out="send({ key: 1 })">
+              <div class="size-14 rounded-lg bg-primary"></div>
+            </transition>
+          </if>
+        </div>
+        <div class="flex h-28 items-center justify-center rounded-lg border border-dashed border-border">
+          <if when="!state.inA">
+            <transition in="receive({ key: 1 })" out="send({ key: 1 })">
+              <div class="size-14 rounded-lg bg-primary"></div>
+            </transition>
+          </if>
+        </div>
+      </div>
+      <Button onclick="{toggleCrossfade}" class="mt-4">Move it across</Button>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="mb-1 text-xl font-semibold text-foreground">Lifecycle events</h2>
+    <p class="mb-4 text-sm text-muted-foreground">
+      <code class="rounded bg-muted px-1 py-0.5 text-xs">onintrostart</code> / <code class="rounded bg-muted px-1 py-0.5 text-xs">onintroend</code> /
+      <code class="rounded bg-muted px-1 py-0.5 text-xs">onoutrostart</code> / <code class="rounded bg-muted px-1 py-0.5 text-xs">onoutroend</code>
+      logged below as the fade above plays.
+    </p>
+    <div class="rounded-xl border border-border p-6">
+      <if when="state.fadeOn">
+        <transition transition="fade" onintrostart="onFadeIntroStart" onintroend="onFadeIntroEnd" onoutrostart="onFadeOutroStart" onoutroend="onFadeOutroEnd">
+          <div class="rounded-lg bg-primary/10 px-4 py-3 text-sm text-primary">Toggle "Fade" above to fire these events</div>
+        </transition>
+      </if>
+      <ul class="mt-4 space-y-1 font-mono text-xs text-muted-foreground">
+        <if when="!state.log.length"><li>No events yet.</li></if>
+        <for each="entry of state.log" key="entry"><li>{entry}</li></for>
+      </ul>
+    </div>
+  </section>
+</main>

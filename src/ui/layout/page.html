@@ -1,0 +1,197 @@
+<script>
+  import Nav from "../../components/Nav";
+  import AspectRatio from "../../components/ui/AspectRatio/AspectRatio";
+  import Card from "../../components/ui/Card/Card";
+  import CardHeader from "../../components/ui/Card/CardHeader";
+  import CardTitle from "../../components/ui/Card/CardTitle";
+  import CardDescription from "../../components/ui/Card/CardDescription";
+  import CardAction from "../../components/ui/Card/CardAction";
+  import CardContent from "../../components/ui/Card/CardContent";
+  import CardFooter from "../../components/ui/Card/CardFooter";
+  import Button from "../../components/ui/Button/Button";
+  import ResizablePanelGroup from "../../components/ui/Resizable/ResizablePanelGroup";
+  import ResizablePanel from "../../components/ui/Resizable/ResizablePanel";
+  import ResizableHandle from "../../components/ui/Resizable/ResizableHandle";
+  import ScrollArea from "../../components/ui/ScrollArea/ScrollArea";
+  import Separator from "../../components/ui/Separator/Separator";
+  import Direction from "../../components/ui/Direction/Direction";
+  import SidebarProvider from "../../components/ui/Sidebar/SidebarProvider";
+  import Sidebar from "../../components/ui/Sidebar/Sidebar";
+  import SidebarHeader from "../../components/ui/Sidebar/SidebarHeader";
+  import SidebarContent from "../../components/ui/Sidebar/SidebarContent";
+  import SidebarFooter from "../../components/ui/Sidebar/SidebarFooter";
+  import SidebarGroup from "../../components/ui/Sidebar/SidebarGroup";
+  import SidebarGroupLabel from "../../components/ui/Sidebar/SidebarGroupLabel";
+  import SidebarGroupContent from "../../components/ui/Sidebar/SidebarGroupContent";
+  import SidebarMenu from "../../components/ui/Sidebar/SidebarMenu";
+  import SidebarMenuItem from "../../components/ui/Sidebar/SidebarMenuItem";
+  import SidebarMenuButton from "../../components/ui/Sidebar/SidebarMenuButton";
+  import SidebarSeparator from "../../components/ui/Sidebar/SidebarSeparator";
+  import SidebarInset from "../../components/ui/Sidebar/SidebarInset";
+  import SidebarTrigger from "../../components/ui/Sidebar/SidebarTrigger";
+  import Icon from "../../components/ui/Icon/Icon";
+  import { Inbox, FileText, Settings, Star } from "olum-icons/lucide";
+
+  const state = { rtl: false };
+  const toggleRtl = () => (state.rtl = !state.rtl);
+
+  const rows = Array.from({ length: 20 }, (_, i) => `Row ${i + 1} — scrollable content inside a fixed-height ScrollArea.`);
+</script>
+
+<Nav />
+
+<main class="mx-auto max-w-6xl px-6 py-12">
+  <h1 class="mb-8 font-heading text-2xl font-semibold text-foreground">UI Kit — Layout</h1>
+
+  <section class="mb-12">
+    <h2 class="mb-1 text-xl font-semibold text-foreground">Aspect Ratio</h2>
+    <p class="mb-4 text-sm text-muted-foreground">Holds its child at a fixed width-to-height ratio.</p>
+    <div class="rounded-xl border border-border p-6">
+      <div class="max-w-xs">
+        <AspectRatio ratio="{16 / 9}" class="overflow-hidden rounded-lg bg-muted">
+          <div class="flex h-full w-full items-center justify-center text-sm text-muted-foreground">16 / 9</div>
+        </AspectRatio>
+      </div>
+    </div>
+  </section>
+
+  <section class="mb-12">
+    <h2 class="mb-1 text-xl font-semibold text-foreground">Card (with CardAction)</h2>
+    <p class="mb-4 text-sm text-muted-foreground">The corner action slot, alongside header/content/footer.</p>
+    <div class="rounded-xl border border-border p-6">
+      <Card class="max-w-sm">
+        <CardHeader>
+          <CardTitle>Deploy target</CardTitle>
+          <CardDescription>Production · us-east-1</CardDescription>
+          <CardAction>
+            <Icon icon="{Star}" class="size-4 text-muted-foreground" />
+          </CardAction>
+        </CardHeader>
+        <CardContent>
+          <p class="text-sm text-muted-foreground">Last deploy succeeded 3 minutes ago.</p>
+        </CardContent>
+        <CardFooter>
+          <Button size="sm" variant="outline">View logs</Button>
+        </CardFooter>
+      </Card>
+    </div>
+  </section>
+
+  <section class="mb-12">
+    <h2 class="mb-1 text-xl font-semibold text-foreground">Resizable</h2>
+    <p class="mb-4 text-sm text-muted-foreground">Drag the handle to redistribute space between panels.</p>
+    <div class="rounded-xl border border-border p-6">
+      <ResizablePanelGroup orientation="horizontal" class="h-48 rounded-lg border border-border">
+        <ResizablePanel defaultSize="{35}" class="flex items-center justify-center bg-muted/40 text-sm text-muted-foreground">Panel A</ResizablePanel>
+        <ResizableHandle withHandle="{true}" />
+        <ResizablePanel defaultSize="{65}" class="flex items-center justify-center bg-muted/20 text-sm text-muted-foreground">Panel B</ResizablePanel>
+      </ResizablePanelGroup>
+    </div>
+  </section>
+
+  <section class="mb-12">
+    <h2 class="mb-1 text-xl font-semibold text-foreground">Scroll Area</h2>
+    <p class="mb-4 text-sm text-muted-foreground">Scrolls its overflow behind a styled scrollbar, inside a fixed footprint.</p>
+    <div class="rounded-xl border border-border p-6">
+      <ScrollArea class="h-48 w-full max-w-sm rounded-lg border border-border">
+        <div class="flex flex-col gap-2 p-3">
+          <for each="row of rows" key="row">
+            <div class="rounded-md bg-muted/40 px-3 py-2 text-sm text-muted-foreground">{row}</div>
+          </for>
+        </div>
+      </ScrollArea>
+    </div>
+  </section>
+
+  <section class="mb-12">
+    <h2 class="mb-1 text-xl font-semibold text-foreground">Separator</h2>
+    <p class="mb-4 text-sm text-muted-foreground">A one-pixel rule, horizontal or vertical.</p>
+    <div class="rounded-xl border border-border p-6">
+      <div class="text-sm text-foreground">Above</div>
+      <Separator class="my-3" />
+      <div class="text-sm text-foreground">Below</div>
+      <div class="mt-4 flex h-6 items-center gap-3 text-sm text-foreground">
+        <span>Left</span>
+        <Separator orientation="vertical" />
+        <span>Right</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="mb-12">
+    <h2 class="mb-1 text-xl font-semibold text-foreground">Direction</h2>
+    <p class="mb-4 text-sm text-muted-foreground">Flips a subtree between left-to-right and right-to-left.</p>
+    <div class="rounded-xl border border-border p-6">
+      <Button size="sm" variant="outline" onclick="{toggleRtl}" class="mb-4">Toggle direction</Button>
+      <Direction direction="{state.rtl ? 'rtl' : 'ltr'}">
+        <div class="flex items-center gap-3 rounded-lg border border-border p-4">
+          <Icon icon="{Inbox}" class="size-4 text-primary" />
+          <span class="text-sm text-foreground">Inbox</span>
+          <span class="text-sm text-muted-foreground">— reads {state.rtl ? "right-to-left" : "left-to-right"}</span>
+        </div>
+      </Direction>
+    </div>
+  </section>
+
+  <section class="mb-12">
+    <h2 class="mb-1 text-xl font-semibold text-foreground">Sidebar</h2>
+    <p class="mb-4 text-sm text-muted-foreground">A collapsible app-shell sidebar with grouped menu sections. Click the trigger to collapse it to an icon rail.</p>
+    <div class="overflow-hidden rounded-xl border border-border" style="height: 22rem;">
+      <SidebarProvider class="h-full">
+        <Sidebar>
+          <SidebarHeader>
+            <div class="flex items-center gap-2 px-2 py-1 text-sm font-semibold text-foreground">
+              <Icon icon="{Inbox}" class="size-4 text-primary" />
+              <span>Playground</span>
+            </div>
+          </SidebarHeader>
+          <SidebarContent>
+            <SidebarGroup>
+              <SidebarGroupLabel>Workspace</SidebarGroupLabel>
+              <SidebarGroupContent>
+                <SidebarMenu>
+                  <SidebarMenuItem>
+                    <SidebarMenuButton isActive="{true}" tooltip="Inbox">
+                      <Icon icon="{Inbox}" class="size-4" />
+                      <span>Inbox</span>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                  <SidebarMenuItem>
+                    <SidebarMenuButton tooltip="Documents">
+                      <Icon icon="{FileText}" class="size-4" />
+                      <span>Documents</span>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                </SidebarMenu>
+              </SidebarGroupContent>
+            </SidebarGroup>
+            <SidebarSeparator />
+            <SidebarGroup>
+              <SidebarGroupLabel>Preferences</SidebarGroupLabel>
+              <SidebarGroupContent>
+                <SidebarMenu>
+                  <SidebarMenuItem>
+                    <SidebarMenuButton tooltip="Settings">
+                      <Icon icon="{Settings}" class="size-4" />
+                      <span>Settings</span>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                </SidebarMenu>
+              </SidebarGroupContent>
+            </SidebarGroup>
+          </SidebarContent>
+          <SidebarFooter>
+            <div class="px-2 py-1 text-xs text-muted-foreground">v0.9.1</div>
+          </SidebarFooter>
+        </Sidebar>
+        <SidebarInset>
+          <div class="flex items-center gap-2 border-b border-border p-3">
+            <SidebarTrigger />
+            <span class="text-sm font-medium text-foreground">App content</span>
+          </div>
+          <div class="p-4 text-sm text-muted-foreground">The trigger toggles a <code class="rounded bg-muted px-1 py-0.5 text-xs">data-state</code> attribute on the wrapper imperatively — no store involved.</div>
+        </SidebarInset>
+      </SidebarProvider>
+    </div>
+  </section>
+</main>

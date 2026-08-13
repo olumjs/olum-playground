@@ -1,0 +1,10 @@
+<script>
+  import { props } from "olum";
+
+  const { children } = props();
+</script>
+
+<div class="rounded-lg border border-dashed border-border p-4 text-sm">
+  <if when="children">{children}</if>
+  <else><em class="text-muted-foreground">no content</em></else>
+</div>

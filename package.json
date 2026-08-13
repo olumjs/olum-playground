@@ -17,14 +17,19 @@
   "author": "Eissa Saber",
   "license": "ISC",
   "dependencies": {
-    "olum": "^0.9.1",
-    "olum-router": "^0.5.1"
+    "olum": "latest",
+    "olum-icons": "latest",
+    "olum-router": "latest",
+    "olum-store": "latest",
+    "olum-transition": "latest",
+    "tailwind-merge": "latest"
   },
   "devDependencies": {
-    "olum-compiler": "^1.8.0",
-    "olum-devtool": "^1.0.0",
-    "@tailwindcss/cli": "^4.3.3",
-    "tailwindcss": "^4.3.3",
-    "concurrently": "^10.0.4"
+    "@tailwindcss/cli": "latest",
+    "concurrently": "latest",
+    "olum-compiler": "latest",
+    "olum-devtool": "latest",
+    "tailwindcss": "latest",
+    "vite": "latest"
   }
 }
