@@ -3,6 +3,7 @@
   import Icon from "./ui/Icon/Icon";
   import Toaster from "./ui/Toast/Toaster";
   import { Sun, Moon, Zap } from "olum-icons/lucide";
+  import {OlumLogo} from "olum-icons";
   import { theme } from "../utils/theme";
 
   // Bare top-level function ref, passed braced ({toggleTheme}) below — component
@@ -22,7 +23,7 @@
       nothing inside it can ever be the click target.
     -->
     <div class="relative flex shrink-0 items-center gap-2 font-semibold tracking-tight">
-      <Icon icon="{Zap}" class="size-5 text-primary" />
+      <Icon icon="{OlumLogo}" class="size-5 text-primary relative top-0.5" />
       <span>Olum Playground</span>
       <a to="/" class="absolute inset-0" aria-label="Olum Playground — home"></a>
     </div>
