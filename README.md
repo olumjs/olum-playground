@@ -1,4 +1,4 @@
-# my-app
+# Olum Playground
 
 An [Olum.js](https://olumjs.top) playground app demonstrating core framework features — reactivity, composition, control flow, lifecycle hooks, state management with olum-store, transitions, and two-way binding — alongside a small UI component library and a blog example.
 
