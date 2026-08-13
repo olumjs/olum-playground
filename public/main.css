@@ -6,6 +6,7 @@
     --color-amber-300: oklch(87.9% 0.169 91.605);
     --color-emerald-500: oklch(69.6% 0.17 162.48);
     --color-sky-300: oklch(82.8% 0.111 230.318);
+    --color-rose-300: oklch(81% 0.117 11.638);
     --color-black: #000;
     --color-white: #fff;
     --spacing: 0.25rem;
@@ -754,6 +755,9 @@
   }
   .w-3\/4 {
     width: calc(3 / 4 * 100%);
+  }
+  .w-4 {
+    width: calc(var(--spacing) * 4);
   }
   .w-6 {
     width: calc(var(--spacing) * 6);
@@ -1629,6 +1633,9 @@
   .text-\[13px\] {
     font-size: 13px;
   }
+  .text-\[15px\] {
+    font-size: 15px;
+  }
   .leading-none {
     --tw-leading: 1;
     line-height: 1;
@@ -1726,6 +1733,9 @@
   }
   .text-primary-foreground {
     color: var(--olum-primary-foreground);
+  }
+  .text-rose-300 {
+    color: var(--color-rose-300);
   }
   .text-secondary-foreground {
     color: var(--olum-secondary-foreground);
@@ -2002,6 +2012,14 @@
     --sidebar-width: 16rem;
   }
   @media (hover: hover) {
+    .group-hover\:bg-brand\/15:is(:where(.group):hover *) {
+      background-color: var(--olum-brand);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      .group-hover\:bg-brand\/15:is(:where(.group):hover *) {
+        background-color: color-mix(in oklab, var(--olum-brand) 15%, transparent);
+      }
+    }
     .group-hover\:opacity-100:is(:where(.group):hover *) {
       opacity: 100%;
     }
@@ -2987,9 +3005,6 @@
     .md\:grid-cols-2 {
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
-    .md\:grid-cols-6 {
-      grid-template-columns: repeat(6, minmax(0, 1fr));
-    }
     .md\:text-pretty {
       text-wrap: pretty;
     }
@@ -3000,9 +3015,6 @@
     }
     .lg\:grid-cols-3 {
       grid-template-columns: repeat(3, minmax(0, 1fr));
-    }
-    .lg\:grid-cols-8 {
-      grid-template-columns: repeat(8, minmax(0, 1fr));
     }
     .lg\:grid-cols-\[1\.05fr_1fr\] {
       grid-template-columns: 1.05fr 1fr;

@@ -10,6 +10,7 @@
   import CardFooter from "./components/ui/Card/CardFooter";
   import HeroCounter from "./components/HeroCounter";
   import { Sparkles, Split, Puzzle, Clock, Link, Wand, Database, Newspaper, Route, Palette, Blocks, ArrowRight } from "olum-icons/lucide";
+  import { OLUM_VERSION, OLUM_COMPILER_VERSION } from "./utils/versions";
 
   const sections = [
     { to: "/reactivity", icon: Sparkles, title: "Reactivity", desc: "state, derived values, watchers, deep mutation." },
@@ -28,13 +29,13 @@
   // compiler's text-interpolation scan, which treats any bare "{" as the start
   // of an expression regardless of intent (see llms.txt: "No naked braces").
   const codeSample =
-    '<span class="text-white/35">&lt;script&gt;</span>\n' +
+    '<span class="text-white/35">&lt;</span><span class="text-rose-300">script</span><span class="text-white/35">&gt;</span>\n' +
     '  <span class="text-brand">const</span> state = { count: <span class="text-amber-300">0</span> };\n' +
     '  <span class="text-brand">const</span> inc = () =&gt; state.count++;\n' +
-    '<span class="text-white/35">&lt;/script&gt;</span>\n\n' +
-    '<span class="text-white/35">&lt;button</span> <span class="text-sky-300">onclick</span>=<span class="text-brand">"inc()"</span><span class="text-white/35">&gt;</span>\n' +
+    '<span class="text-white/35">&lt;/</span><span class="text-rose-300">script</span><span class="text-white/35">&gt;</span>\n\n' +
+    '<span class="text-white/35">&lt;</span><span class="text-rose-300">button</span> <span class="text-sky-300">onclick</span>=<span class="text-brand">"inc()"</span><span class="text-white/35">&gt;</span>\n' +
     "  Count: {state.count}\n" +
-    '<span class="text-white/35">&lt;/button&gt;</span>';
+    '<span class="text-white/35">&lt;/</span><span class="text-rose-300">button</span><span class="text-white/35">&gt;</span>';
 </script>
 
 <Nav />
@@ -44,7 +45,7 @@
     <div class="flex flex-col items-start gap-5">
       <Badge variant="outline" class="gap-1.5">
         <span class="size-1.5 rounded-full bg-brand"></span>
-        olum ^0.9.1 · olum-compiler ^1.8.0
+        olum ^{OLUM_VERSION} · olum-compiler ^{OLUM_COMPILER_VERSION}
       </Badge>
       <h1 class="font-heading text-4xl font-semibold tracking-tight text-foreground sm:text-5xl">Components are just <span class="text-brand">.html</span> files.</h1>
       <p class="max-w-lg text-lg text-muted-foreground">

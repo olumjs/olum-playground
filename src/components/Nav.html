@@ -22,9 +22,11 @@
       nav goes to literal "/null". Content-free + absolutely positioned means
       nothing inside it can ever be the click target.
     -->
-    <div class="relative flex shrink-0 items-center gap-2 font-semibold tracking-tight">
-      <Icon icon="{OlumLogo}" class="size-5 text-primary relative top-0.5" />
-      <span>Olum Playground</span>
+    <div class="group relative flex shrink-0 items-center gap-2.5">
+        <Icon icon="{OlumLogo}" class="w-4 relative top-0.5" />
+      <span class="font-heading text-[15px] font-semibold tracking-tight text-foreground">
+        Olum <span class="font-normal text-muted-foreground">Playground</span>
+      </span>
       <a to="/" class="absolute inset-0" aria-label="Olum Playground — home"></a>
     </div>
 
