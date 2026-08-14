@@ -9,7 +9,7 @@
   import FeaturePager from "../components/FeaturePager";
   import Button from "../components/ui/Button/Button";
   import FadeDemo from "../components/FadeDemo";
-  import { crossfade } from "olum";
+  import { crossfade, transitions, easings } from "olum";
   import { Wand, Sparkles, Shuffle, ArrowLeftRight, BellRing } from "olum-icons/lucide";
 
   const state = {
@@ -45,9 +45,16 @@
     state.log = [`${new Date().toLocaleTimeString()} — ${msg}`, ...state.log].slice(0, 6);
   };
 
-  // Named consts because the compiler resolves `send`/`receive` in the `in`/
-  // `out` attribute strings by identifier, against this script's local scope.
-  const [send, receive] = crossfade();
+  // The compiler resolves `send`/`receive` in the `in`/`out` attribute strings
+  // by identifier against this script's local scope, so they have to be plain
+  // function consts -- destructuring the crossfade pair directly doesn't work.
+  const _cf = crossfade({
+    duration: 600,
+    easing: easings.quintOut,
+    fallback: transitions.scale,
+  });
+  const send = (node, params) => _cf[0](node, params);
+  const receive = (node, params) => _cf[1](node, params);
 
   const codeSample =
     '<span class="text-muted-foreground">&lt;</span><span class="text-rose-600 dark:text-rose-400">transition</span> ' +
