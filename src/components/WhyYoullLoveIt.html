@@ -1,0 +1,20 @@
+<script>
+  import { props } from "olum";
+  import Icon from "./ui/Icon/Icon";
+
+  const { items, heading } = props();
+  const headingText = heading || "Why you'll love it";
+</script>
+
+<section class="mt-12">
+  <h2 class="mb-4 text-lg font-semibold text-foreground">{headingText}</h2>
+  <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+    <for each="item of items" key="item.title">
+      <div class="rounded-xl border border-border p-5">
+        <Icon icon="{item.icon}" class="mb-3 size-5 text-brand" />
+        <div class="mb-1 text-sm font-medium text-foreground">{item.title}</div>
+        <p class="text-sm text-muted-foreground">{item.desc}</p>
+      </div>
+    </for>
+  </div>
+</section>

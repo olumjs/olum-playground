@@ -1,23 +1,72 @@
 <script>
   import Nav from "../components/Nav";
+  import FeatureSidebar from "../components/FeatureSidebar";
+  import SiteFooter from "../components/SiteFooter";
+  import PageHero from "../components/PageHero";
+  import DemoPanel from "../components/DemoPanel";
+  import WhatsHappening from "../components/WhatsHappening";
+  import WhyYoullLoveIt from "../components/WhyYoullLoveIt";
+  import FeaturePager from "../components/FeaturePager";
   import ProductList from "../components/ProductList";
   import CartSummary from "../components/CartSummary";
+  import { Database, Unlink, Package, SquareFunction, PackageCheck } from "olum-icons/lucide";
+
+  // The compiler's module-loading-statement stripper matches its keyword
+  // anywhere in this file's JS, including inside plain string content -- so
+  // below, that word is split across two spans (see the "im"/"port" pair)
+  // to avoid corrupting the compiled output.
+  const codeSample =
+    '<span class="text-muted-foreground">// utils/cart.js</span>\n' +
+    '<span class="text-brand">im</span><span class="text-brand">port</span> { store } <span class="text-brand">from</span> <span class="text-amber-600 dark:text-amber-400">"olum"</span>;\n\n' +
+    '<span class="text-brand">export const</span> cart = store({\n' +
+    "  items: [],\n" +
+    "  add(product) { <span class=\"text-muted-foreground\">/* ... */</span> },\n" +
+    "});\n\n" +
+    '<span class="text-muted-foreground">// ProductList.html and CartSummary.html both just:</span>\n' +
+    '<span class="text-brand">im</span><span class="text-brand">port</span> { cart } <span class="text-brand">from</span> <span class="text-amber-600 dark:text-amber-400">"../utils/cart"</span>;\n' +
+    '<span class="text-muted-foreground">// ...and read/write it directly. No props passed between them.</span>';
+
+  const happening = [
+    "ProductList and CartSummary are siblings — neither passes props to the other.",
+    "Both use the same store module and read/write cart.items directly.",
+    "Add a product on the left; the right side updates instantly.",
+    "Any other component that pulls in cart.js joins the same live state.",
+  ];
+
+  const loveItems = [
+    { icon: Unlink, title: "Zero Prop-Drilling", desc: "Sibling components read and write the same store directly." },
+    { icon: Package, title: "Plain Objects", desc: "store() wraps a plain object with methods — no extra API to learn." },
+    { icon: SquareFunction, title: "Computed Selectors", desc: "cartCount() and cartTotal() are just functions over store state." },
+    { icon: PackageCheck, title: "One Line Away", desc: "Any component that pulls in the store is instantly in sync." },
+  ];
 </script>
 
 <Nav />
 
-<main class="mx-auto max-w-6xl px-6 py-12">
-  <section class="mb-10">
-    <h1 class="mb-1 font-heading text-2xl font-semibold text-foreground">Store</h1>
-    <p class="max-w-2xl text-sm text-muted-foreground">
-      <code class="rounded bg-muted px-1 py-0.5 text-xs">olum-store</code> — a zustand-style shared store. <code class="rounded bg-muted px-1 py-0.5 text-xs">ProductList</code> and
-      <code class="rounded bg-muted px-1 py-0.5 text-xs">CartSummary</code> below are siblings on this page; neither is passed a prop from the other. Both just import
-      <code class="rounded bg-muted px-1 py-0.5 text-xs">src/utils/cart.js</code> and read/write it directly — add a product on the left and watch the right side update with zero prop-drilling.
+<div class="mx-auto flex max-w-[1400px]">
+<FeatureSidebar active="store" />
+<main class="min-w-0 flex-1 px-6 py-12 lg:px-10">
+  <PageHero index="{7}" icon="{Database}" title="Store">
+    <p class="font-medium text-foreground">Shared state, zero prop-drilling</p>
+    <p class="mt-2">
+      <code class="rounded bg-muted px-1 py-0.5 text-sm">olum-store</code> — a zustand-style shared store. <code class="rounded bg-muted px-1 py-0.5 text-sm">ProductList</code> and
+      <code class="rounded bg-muted px-1 py-0.5 text-sm">CartSummary</code> below are siblings on this page; neither is passed a prop from the other.
     </p>
-  </section>
+  </PageHero>
 
-  <section class="grid grid-cols-1 gap-8 lg:grid-cols-2">
-    <ProductList />
-    <CartSummary />
-  </section>
+  <div class="mt-8">
+    <DemoPanel filename="cart.js" code="{codeSample}">
+      <div class="flex flex-col gap-6">
+        <ProductList />
+        <CartSummary />
+      </div>
+    </DemoPanel>
+    <WhatsHappening items="{happening}" />
+  </div>
+
+  <WhyYoullLoveIt items="{loveItems}" />
+  <FeaturePager active="store" />
 </main>
+</div>
+
+<SiteFooter />

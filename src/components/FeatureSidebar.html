@@ -1,0 +1,51 @@
+<script>
+  import { props } from "olum";
+  import Anchor from "./ui/Anchor/Anchor";
+  import Icon from "./ui/Icon/Icon";
+  import { CodeXml, ArrowRight } from "olum-icons/lucide";
+  import { FEATURES } from "../utils/features";
+
+  const { active } = props();
+
+  const activeIndex = () => FEATURES.findIndex((f) => f.slug === active);
+  const pad = (n) => String(n).padStart(2, "0");
+</script>
+
+<aside class="sticky top-14 hidden h-[calc(100svh-3.5rem)] w-56 shrink-0 flex-col gap-6 overflow-y-auto border-r border-border px-4 py-8 lg:flex">
+  <div>
+    <div class="mb-3 flex items-center gap-1.5 px-2.5 text-xs font-medium text-muted-foreground">
+      <span>Features</span>
+      <if when="activeIndex() >= 0">
+        <span class="text-border">/</span>
+        <span class="font-mono text-foreground">{pad(activeIndex() + 1)}</span>
+      </if>
+    </div>
+    <nav class="flex flex-col gap-0.5">
+      <for each="(f, i) of FEATURES" key="f.slug">
+        <Anchor
+          to="{f.to}"
+          variant="ghost"
+          class="h-9 w-full justify-start gap-2.5 rounded-lg px-2.5 font-normal {f.slug === active ? 'bg-brand/10 text-foreground hover:bg-brand/10' : 'text-muted-foreground'}"
+        >
+          <span
+            class="flex size-6 shrink-0 items-center justify-center rounded-md font-mono text-[11px] font-semibold {f.slug === active ? 'bg-brand text-brand-ink' : 'bg-muted text-muted-foreground'}"
+          >
+            {pad(i + 1)}
+          </span>
+          {f.title}
+        </Anchor>
+      </for>
+    </nav>
+  </div>
+
+  <div class="rounded-xl border border-border p-5 text-center">
+    <div class="mx-auto mb-3 flex size-10 items-center justify-center rounded-full bg-brand/10 text-brand">
+      <Icon icon="{CodeXml}" class="size-4.5" />
+    </div>
+    <p class="mb-4 text-sm text-muted-foreground">Everything you need to build fast, interactive, and delightful web apps.</p>
+    <Anchor to="/reactivity" class="w-full justify-center gap-1.5 border-transparent bg-brand text-brand-ink hover:bg-brand hover:brightness-110">
+      Get Started
+      <Icon icon="{ArrowRight}" class="size-3.5" />
+    </Anchor>
+  </div>
+</aside>

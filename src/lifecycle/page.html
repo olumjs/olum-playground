@@ -1,11 +1,26 @@
 <script>
   import { onMount } from "olum";
   import Nav from "../components/Nav";
+  import FeatureSidebar from "../components/FeatureSidebar";
+  import SiteFooter from "../components/SiteFooter";
+  import PageHero from "../components/PageHero";
+  import DemoPanel from "../components/DemoPanel";
+  import WhatsHappening from "../components/WhatsHappening";
+  import WhyYoullLoveIt from "../components/WhyYoullLoveIt";
+  import FeaturePager from "../components/FeaturePager";
   import LifecycleLogger from "../components/LifecycleLogger";
+  import Button from "../components/ui/Button/Button";
+  import { Clock, Eraser, MousePointerClick, CloudDownload } from "olum-icons/lucide";
 
   const state = { photos: [], seconds: 0, lastKey: "—", showLogger: true, log: [] };
 
-  const appendLog = (msg) => (state.log = [...state.log, `${new Date().toLocaleTimeString()} — ${msg}`]);
+  const appendLog = (msg) => (state.log = [`${new Date().toLocaleTimeString()} — ${msg}`, ...state.log].slice(0, 6));
+
+  // Raw elements passed into a custom component's children (DemoPanel's
+  // preview slot) lose inline string handlers -- only a braced, bare
+  // top-level function prop survives that boundary, hence this wrapper
+  // instead of onclick="state.showLogger = !state.showLogger".
+  const toggleLogger = () => (state.showLogger = !state.showLogger);
 
   onMount(async () => {
     const res = await fetch("/photos.json");
@@ -24,17 +39,65 @@
       window.removeEventListener("keydown", onKey);
     };
   });
+
+  // That six-letter module-loading keyword is split across two spans below
+  // ("im" + "port") -- a literal, unsplit occurrence anywhere in this file's
+  // JS (even inside a plain string) trips the compiler's statement-stripping
+  // regex and corrupts the compiled output.
+  const codeSample =
+    '<span class="text-brand">im</span><span class="text-brand">port</span> { onMount } <span class="text-brand">from</span> <span class="text-amber-600 dark:text-amber-400">"olum"</span>;\n\n' +
+    'onMount(() =&gt; {\n' +
+    '  <span class="text-muted-foreground">// runs once, right after this mounts</span>\n' +
+    '  onLog(<span class="text-amber-600 dark:text-amber-400">"mounted"</span>);\n\n' +
+    '  <span class="text-muted-foreground">// the returned function is the cleanup</span>\n' +
+    '  <span class="text-brand">return</span> () =&gt; onLog(<span class="text-amber-600 dark:text-amber-400">"unmounted"</span>);\n' +
+    '});';
+
+  const happening = [
+    "onMount runs once, right after LifecycleLogger is added to the DOM.",
+    "Its returned function is the cleanup — it runs right before unmount.",
+    "Toggling below adds/removes the whole component, firing both edges.",
+    "Every mount and unmount is logged — see the Console tab.",
+  ];
+
+  const loveItems = [
+    { icon: Clock, title: "Single Hook", desc: "onMount is the one lifecycle primitive you need." },
+    { icon: Eraser, title: "Cleanup Built In", desc: "Return a function from onMount and it runs automatically on unmount." },
+    { icon: MousePointerClick, title: "host as Ref", desc: "No bind:this — host.querySelector reaches your own root." },
+    { icon: CloudDownload, title: "Async-Friendly", desc: "onMount callbacks can be async; awaited fetches just work." },
+  ];
 </script>
 
 <Nav />
 
-<main class="mx-auto max-w-6xl px-6 py-12">
-  <h1 class="mb-2 font-heading text-3xl font-semibold text-foreground">Lifecycle</h1>
-  <p class="mb-10 max-w-2xl text-muted-foreground"><code class="rounded bg-muted px-1 py-0.5 text-sm">onMount</code> — async fetch, timers, global listeners, and <code class="rounded bg-muted px-1 py-0.5 text-sm">host</code> as the ref mechanism, each cleaned up in the returned function.</p>
+<div class="mx-auto flex max-w-[1400px]">
+<FeatureSidebar active="lifecycle" />
+<main class="min-w-0 flex-1 px-6 py-12 lg:px-10">
+  <PageHero index="{4}" icon="{Clock}" title="Lifecycle">
+    <p class="font-medium text-foreground">onMount, cleanup &amp; the host ref</p>
+    <p class="mt-2">
+      <code class="rounded bg-muted px-1 py-0.5 text-sm">onMount</code> — async fetch, timers, global listeners, and <code class="rounded bg-muted px-1 py-0.5 text-sm">host</code> as
+      the ref mechanism, each cleaned up in the returned function.
+    </p>
+  </PageHero>
 
-  <section class="mb-12">
+  <div class="mt-8">
+    <DemoPanel filename="Lifecycle.ulum" code="{codeSample}" consoleLines="{state.log}">
+      <div>
+        <Button variant="outline" size="sm" class="mb-3" onclick="{toggleLogger}">
+          {state.showLogger ? "Unmount" : "Mount"} LifecycleLogger
+        </Button>
+        <if when="state.showLogger">
+          <LifecycleLogger onLog="{appendLog}" />
+        </if>
+      </div>
+    </DemoPanel>
+    <WhatsHappening items="{happening}" />
+  </div>
+
+  <section class="mt-10">
     <h2 class="mb-1 text-xl font-semibold text-foreground">Async fetch in onMount</h2>
-    <p class="mb-4 text-sm text-muted-foreground">Fetches <code>/photos.json</code> from <code>public/</code> once, on mount.</p>
+    <p class="mb-4 text-sm text-muted-foreground">Fetches <code class="rounded bg-muted px-1 py-0.5 text-sm">/photos.json</code> from <code class="rounded bg-muted px-1 py-0.5 text-sm">public/</code> once, on mount.</p>
     <div class="rounded-xl border border-border p-6">
       <if when="state.photos.length === 0">
         <p class="text-sm text-muted-foreground">Loading…</p>
@@ -52,42 +115,30 @@
     </div>
   </section>
 
-  <section class="mb-12 grid grid-cols-1 gap-4 sm:grid-cols-2">
+  <section class="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2">
     <div class="rounded-xl border border-border p-6">
       <h2 class="mb-1 text-xl font-semibold text-foreground">Timer</h2>
-      <p class="mb-4 text-sm text-muted-foreground"><code>setInterval</code>, cleared on unmount.</p>
+      <p class="mb-4 text-sm text-muted-foreground"><code class="rounded bg-muted px-1 py-0.5 text-sm">setInterval</code>, cleared on unmount.</p>
       <p class="text-3xl font-semibold tabular-nums text-foreground">{state.seconds}s</p>
     </div>
     <div class="rounded-xl border border-border p-6">
       <h2 class="mb-1 text-xl font-semibold text-foreground">Global listener</h2>
-      <p class="mb-4 text-sm text-muted-foreground"><code>window.addEventListener("keydown", …)</code>, removed on unmount.</p>
-      <p class="text-3xl font-semibold text-foreground">Last key: <span class="text-primary">{state.lastKey}</span></p>
+      <p class="mb-4 text-sm text-muted-foreground"><code class="rounded bg-muted px-1 py-0.5 text-sm">window.addEventListener("keydown", …)</code>, removed on unmount.</p>
+      <p class="text-3xl font-semibold text-foreground">Last key: <span class="text-brand">{state.lastKey}</span></p>
     </div>
   </section>
 
-  <section class="mb-12">
+  <section class="mt-10">
     <h2 class="mb-1 text-xl font-semibold text-foreground">host — the ref mechanism</h2>
-    <p class="mb-4 text-sm text-muted-foreground">No <code>bind:this</code> in Olum — <code>host.querySelector(...)</code> inside <code>onMount</code> reaches into this component's own root. This input was focused imperatively on mount.</p>
+    <p class="mb-4 text-sm text-muted-foreground">No <code class="rounded bg-muted px-1 py-0.5 text-sm">bind:this</code> in Olum — <code class="rounded bg-muted px-1 py-0.5 text-sm">host.querySelector(...)</code> inside <code class="rounded bg-muted px-1 py-0.5 text-sm">onMount</code> reaches into this component's own root. This input was focused imperatively on mount.</p>
     <div class="rounded-xl border border-border p-6">
       <input data-ref="highlight-target" type="text" placeholder="focused via host.querySelector on mount" class="h-9 w-full max-w-sm rounded-lg border border-border bg-background px-3 text-sm outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50" />
     </div>
   </section>
 
-  <section>
-    <h2 class="mb-1 text-xl font-semibold text-foreground">Mount / unmount</h2>
-    <p class="mb-4 text-sm text-muted-foreground">Toggling this <code>&lt;if&gt;</code> adds/removes <code>LifecycleLogger</code>, which reports both edges of its own lifecycle via a callback prop.</p>
-    <div class="rounded-xl border border-border p-6">
-      <button type="button" class="mb-3 h-8 rounded-lg border border-border px-3 text-sm hover:bg-muted" onclick="state.showLogger = !state.showLogger">
-        {state.showLogger ? "Unmount" : "Mount"} LifecycleLogger
-      </button>
-      <if when="state.showLogger">
-        <LifecycleLogger onLog="{appendLog}" />
-      </if>
-      <ul class="mt-3 flex flex-col gap-1 text-xs text-muted-foreground">
-        <for each="(entry, i) of state.log" key="i">
-          <li>{entry}</li>
-        </for>
-      </ul>
-    </div>
-  </section>
+  <WhyYoullLoveIt items="{loveItems}" />
+  <FeaturePager active="lifecycle" />
 </main>
+</div>
+
+<SiteFooter />

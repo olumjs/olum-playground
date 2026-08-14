@@ -1,5 +1,7 @@
 <script>
   import Nav from "../../components/Nav";
+  import FeatureSidebar from "../../components/FeatureSidebar";
+  import SiteFooter from "../../components/SiteFooter";
   import Icon from "../../components/ui/Icon/Icon";
   import Button from "../../components/ui/Button/Button";
   import Avatar from "../../components/ui/Avatar/Avatar";
@@ -83,7 +85,9 @@
 
 <Nav />
 
-<main class="mx-auto max-w-6xl px-6 py-12">
+<div class="mx-auto flex max-w-[1400px]">
+<FeatureSidebar active="ui-kit" />
+<main class="min-w-0 flex-1 px-6 py-12 lg:px-10">
   <h1 class="mb-2 font-heading text-2xl font-semibold text-foreground">UI Kit — Overlay</h1>
   <p class="mb-8 max-w-2xl text-sm text-muted-foreground">
     All portal-based — moved into <code class="rounded bg-muted px-1 py-0.5 text-xs">&lt;body&gt;</code> on open via the shared <code class="rounded bg-muted px-1 py-0.5 text-xs">portal.js</code>, which blurs the app root behind them with a real
@@ -274,3 +278,6 @@
     </div>
   </div>
 </main>
+</div>
+
+<SiteFooter />

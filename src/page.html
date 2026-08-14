@@ -1,5 +1,7 @@
 <script>
   import Nav from "./components/Nav";
+  import FeatureSidebar from "./components/FeatureSidebar";
+  import SiteFooter from "./components/SiteFooter";
   import Badge from "./components/ui/Badge/Badge";
   import Icon from "./components/ui/Icon/Icon";
   import Anchor from "./components/ui/Anchor/Anchor";
@@ -40,7 +42,9 @@
 
 <Nav />
 
-<main class="mx-auto max-w-6xl px-6 py-16">
+<div class="mx-auto flex max-w-[1400px]">
+<FeatureSidebar />
+<main class="min-w-0 flex-1 px-6 py-16 lg:px-10">
   <section class="grid grid-cols-1 items-center gap-12 lg:grid-cols-[1.05fr_1fr] lg:gap-8">
     <div class="flex flex-col items-start gap-5">
       <Badge variant="outline" class="gap-1.5">
@@ -107,3 +111,6 @@
     </for>
   </section>
 </main>
+</div>
+
+<SiteFooter />

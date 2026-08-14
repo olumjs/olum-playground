@@ -1,9 +1,10 @@
 <script>
   import Button from "./ui/Button/Button";
+  import Anchor from "./ui/Anchor/Anchor";
   import Icon from "./ui/Icon/Icon";
   import Toaster from "./ui/Toast/Toaster";
-  import { Sun, Moon, Zap } from "olum-icons/lucide";
-  import {OlumLogo} from "olum-icons";
+  import { Sun, Moon, ArrowUpRight } from "olum-icons/lucide";
+  import { OlumLogo } from "olum-icons";
   import { theme } from "../utils/theme";
 
   // Bare top-level function ref, passed braced ({toggleTheme}) below — component
@@ -14,7 +15,7 @@
 </script>
 
 <header class="sticky top-0 z-40 border-b border-border bg-background/80 backdrop-blur">
-  <div class="mx-auto flex h-14 max-w-6xl items-center justify-between gap-4 px-6">
+  <div class="mx-auto flex h-14 max-w-[1400px] items-center justify-between gap-4 px-6">
     <!--
       Empty overlay anchor, not a wrapping one -- the router's click listener
       reads e.target.getAttribute("to"), not e.currentTarget, so clicking the
@@ -30,9 +31,22 @@
       <a to="/" class="absolute inset-0" aria-label="Olum Playground — home"></a>
     </div>
 
-    <Button variant="ghost" size="icon" ariaLabel="Toggle theme" onclick="{toggleTheme}">
-      <Icon icon="{theme.dark ? Sun : Moon}" class="size-4" />
-    </Button>
+    <nav class="hidden items-center gap-6 md:flex">
+      <Anchor href="https://olumjs.top/docs" target="_blank" variant="link" class="h-auto p-0 text-sm font-normal text-muted-foreground hover:text-foreground">Docs</Anchor>
+      <Anchor to="/" variant="link" class="h-auto p-0 text-sm font-normal text-muted-foreground hover:text-foreground">Playground</Anchor>
+      <Anchor to="/ui" variant="link" class="h-auto p-0 text-sm font-normal text-muted-foreground hover:text-foreground">UI Kit</Anchor>
+      <Anchor href="https://github.com/olumjs" target="_blank" variant="link" class="h-auto gap-1 p-0 text-sm font-normal text-muted-foreground hover:text-foreground">
+        GitHub
+        <Icon icon="{ArrowUpRight}" class="size-3.5" />
+      </Anchor>
+    </nav>
+
+    <div class="flex items-center gap-2">
+      <Button variant="ghost" size="icon" ariaLabel="Toggle theme" onclick="{toggleTheme}">
+        <Icon icon="{theme.dark ? Sun : Moon}" class="size-4" />
+      </Button>
+      <Anchor to="/reactivity" class="border-transparent bg-brand text-brand-ink hover:bg-brand hover:brightness-110">Get Started</Anchor>
+    </div>
   </div>
 </header>
 

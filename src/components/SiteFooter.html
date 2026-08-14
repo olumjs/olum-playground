@@ -1,0 +1,70 @@
+<script>
+  import Icon from "./ui/Icon/Icon";
+  import Anchor from "./ui/Anchor/Anchor";
+  import { OlumLogo } from "olum-icons";
+  import { Heart } from "olum-icons/lucide";
+
+  const columns = [
+    {
+      title: "Resources",
+      links: [
+        { label: "Docs", href: "https://olumjs.top/docs", external: true },
+        { label: "Playground", to: "/" },
+        { label: "UI Kit", to: "/ui" },
+      ],
+    },
+    {
+      title: "Ecosystem",
+      links: [
+        { label: "GitHub", href: "https://github.com/olumjs", external: true },
+        { label: "Community", href: "https://olumjs.top", external: true },
+        { label: "Showcase", href: "https://olumjs.top", external: true },
+      ],
+    },
+    {
+      title: "More",
+      links: [
+        { label: "Changelog", href: "https://olumjs.top", external: true },
+        { label: "Roadmap", href: "https://olumjs.top", external: true },
+        { label: "Contribute", href: "https://github.com/olumjs", external: true },
+      ],
+    },
+  ];
+</script>
+
+<footer class="border-t border-border">
+  <div class="mx-auto grid max-w-[1400px] grid-cols-2 gap-8 px-6 py-12 sm:grid-cols-3 lg:grid-cols-[1.3fr_1fr_1fr_1fr_1.2fr] lg:gap-6">
+    <div class="col-span-2 sm:col-span-3 lg:col-span-1">
+      <div class="flex items-center gap-2">
+        <Icon icon="{OlumLogo}" class="w-4" />
+        <span class="font-heading text-[15px] font-semibold tracking-tight text-foreground">olum</span>
+      </div>
+      <p class="mt-3 max-w-40 text-sm text-muted-foreground">Simple to learn. Fun to build. Ready for anything.</p>
+    </div>
+
+    <for each="col of columns" key="col.title">
+      <div>
+        <div class="mb-3 text-sm font-medium text-foreground">{col.title}</div>
+        <ul class="flex flex-col gap-2.5">
+          <for each="link of col.links" key="link.label">
+            <li>
+              <if when="link.external">
+                <Anchor href="{link.href}" target="_blank" variant="link" class="h-auto p-0 text-sm font-normal text-muted-foreground hover:text-foreground">
+                  {link.label}
+                </Anchor>
+              </if>
+              <else>
+                <Anchor to="{link.to}" variant="link" class="h-auto p-0 text-sm font-normal text-muted-foreground hover:text-foreground">{link.label}</Anchor>
+              </else>
+            </li>
+          </for>
+        </ul>
+      </div>
+    </for>
+
+    <div class="col-span-2 flex items-center rounded-xl border border-border p-5 sm:col-span-3 lg:col-span-1">
+      <Icon icon="{Heart}" class="size-4 shrink-0 text-brand" />
+      <p class="ml-3 text-sm text-muted-foreground">Made with love for developers who ship.</p>
+    </div>
+  </div>
+</footer>

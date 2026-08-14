@@ -1,5 +1,7 @@
 <script>
   import Nav from "../../components/Nav";
+  import FeatureSidebar from "../../components/FeatureSidebar";
+  import SiteFooter from "../../components/SiteFooter";
   import Anchor from "../../components/ui/Anchor/Anchor";
   import Badge from "../../components/ui/Badge/Badge";
   import { params } from "olum";
@@ -11,7 +13,9 @@
 
 <Nav />
 
-<main class="mx-auto max-w-3xl px-6 py-12">
+<div class="mx-auto flex max-w-[1400px]">
+<FeatureSidebar active="router" />
+<main class="min-w-0 max-w-3xl flex-1 px-6 py-12 lg:px-10">
   <!-- Plain text only: Anchor's children render inside the real <a to>, and the
        router's click listener reads e.target (not e.currentTarget), so a nested
        icon here would intercept the click and navigate to "/null" instead. -->
@@ -31,3 +35,6 @@
     </div>
   </else>
 </main>
+</div>
+
+<SiteFooter />

@@ -1,5 +1,7 @@
 <script>
   import Nav from "../../components/Nav";
+  import FeatureSidebar from "../../components/FeatureSidebar";
+  import SiteFooter from "../../components/SiteFooter";
   import Icon from "../../components/ui/Icon/Icon";
   import Button from "../../components/ui/Button/Button";
 
@@ -79,7 +81,9 @@
 
 <Nav />
 
-<main class="mx-auto max-w-6xl px-6 py-12">
+<div class="mx-auto flex max-w-[1400px]">
+<FeatureSidebar active="ui-kit" />
+<main class="min-w-0 flex-1 px-6 py-12 lg:px-10">
   <h1 class="mb-8 font-heading text-2xl font-semibold text-foreground">UI Kit — Navigation</h1>
 
   <section class="mb-12">
@@ -263,3 +267,6 @@
     </div>
   </section>
 </main>
+</div>
+
+<SiteFooter />

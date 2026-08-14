@@ -1,7 +1,15 @@
 <script>
   import Nav from "../components/Nav";
+  import FeatureSidebar from "../components/FeatureSidebar";
+  import SiteFooter from "../components/SiteFooter";
+  import PageHero from "../components/PageHero";
+  import DemoPanel from "../components/DemoPanel";
+  import WhatsHappening from "../components/WhatsHappening";
+  import WhyYoullLoveIt from "../components/WhyYoullLoveIt";
+  import FeaturePager from "../components/FeaturePager";
   import Button from "../components/ui/Button/Button";
   import Badge from "../components/ui/Badge/Badge";
+  import { Zap, Feather, Boxes, GitBranch, Gauge } from "olum-icons/lucide";
 
   // --- counter + derived values ---
   const state = {
@@ -51,49 +59,70 @@
     state.newTag = "";
   };
   const removeTag = (tag) => state.tags.delete(tag);
+
+  // Built as a real string in <script> and injected via html= below — writing
+  // this markup directly in the template would trip the compiler's
+  // text-interpolation scan, which treats any bare "{" as an expression.
+  const codeSample =
+    '<span class="text-muted-foreground">&lt;</span><span class="text-rose-600 dark:text-rose-400">script</span><span class="text-muted-foreground">&gt;</span>\n' +
+    '  <span class="text-brand">const</span> state = { count: <span class="text-amber-600 dark:text-amber-400">0</span> };\n\n' +
+    '  <span class="text-muted-foreground">// derived values — plain functions</span>\n' +
+    '  <span class="text-brand">const</span> doubled = () =&gt; state.count * <span class="text-amber-600 dark:text-amber-400">2</span>;\n' +
+    '  <span class="text-brand">const</span> quadrupled = () =&gt; doubled() * <span class="text-amber-600 dark:text-amber-400">2</span>;\n\n' +
+    '  <span class="text-muted-foreground">// fires on every state.count assignment</span>\n' +
+    '  <span class="text-brand">const</span> watcher = { count(old, next) { log(`${old} → ${next}`) } };\n' +
+    '<span class="text-muted-foreground">&lt;/</span><span class="text-rose-600 dark:text-rose-400">script</span><span class="text-muted-foreground">&gt;</span>\n\n' +
+    '<span class="text-muted-foreground">&lt;</span><span class="text-rose-600 dark:text-rose-400">button</span> <span class="text-sky-600 dark:text-sky-400">onclick</span>=<span class="text-amber-600 dark:text-amber-400">"state.count++"</span><span class="text-muted-foreground">&gt;</span>+<span class="text-muted-foreground">&lt;/</span><span class="text-rose-600 dark:text-rose-400">button</span><span class="text-muted-foreground">&gt;</span>\n' +
+    '<span class="text-muted-foreground">&lt;</span><span class="text-rose-600 dark:text-rose-400">span</span><span class="text-muted-foreground">&gt;</span>{state.count} · doubled = {doubled()}<span class="text-muted-foreground">&lt;/</span><span class="text-rose-600 dark:text-rose-400">span</span><span class="text-muted-foreground">&gt;</span>';
+
+  const happening = [
+    "State updates automatically update the UI.",
+    "Derived values recalculate when dependencies change.",
+    "Watchers run whenever the watched value changes — see the Console tab.",
+    "Deep mutations (arrays/objects/Sets) are tracked.",
+  ];
+
+  const loveItems = [
+    { icon: Feather, title: "Minimal API", desc: "No boilerplate, just plain JavaScript." },
+    { icon: Boxes, title: "Deeply Reactive", desc: "Objects, arrays, and nested values are all tracked." },
+    { icon: GitBranch, title: "Predictable", desc: "Changes flow one way: state → UI." },
+    { icon: Gauge, title: "Performant", desc: "Fine-grained updates for buttery smooth apps." },
+  ];
 </script>
 
 <Nav />
 
-<main class="mx-auto max-w-6xl px-6 py-12">
-  <h1 class="font-heading text-3xl font-semibold tracking-tight text-foreground">Reactivity</h1>
-  <p class="mt-2 max-w-2xl text-muted-foreground">
-    Only <code class="rounded bg-muted px-1 py-0.5 text-sm">state</code> is tracked. Every mutation below — top-level, nested, array, watcher, Set — re-renders
-    via a microtask-batched diff-patch.
-  </p>
+<div class="mx-auto flex max-w-[1400px]">
+<FeatureSidebar active="reactivity" />
+<main class="min-w-0 flex-1 px-6 py-12 lg:px-10">
+  <PageHero index="{1}" icon="{Zap}" title="Reactivity">
+    <p class="font-medium text-foreground">State, derived values, watchers &amp; deep mutation</p>
+    <p class="mt-2">
+      Only <code class="rounded bg-muted px-1 py-0.5 text-sm">state</code> is tracked. Every mutation below — top-level, nested, array, watcher, Set —
+      re-renders via a microtask-batched diff-patch.
+    </p>
+  </PageHero>
 
-  <section class="mt-10">
-    <h2 class="mb-1 text-xl font-semibold text-foreground">Counter, derived values & watcher</h2>
-    <p class="mb-4 text-sm text-muted-foreground">Derived values are plain functions — <code>doubled()</code> calls <code>state.count</code>, <code>quadrupled()</code> calls <code>doubled()</code>. The watcher fires on top-level key assignment.</p>
-    <div class="grid grid-cols-1 gap-6 rounded-xl border border-border p-6 md:grid-cols-2">
-      <div>
-        <div class="flex items-center gap-3">
-          <Button variant="outline" size="icon" ariaLabel="Decrement" onclick="{dec}">−</Button>
-          <span class="w-10 text-center font-heading text-2xl tabular-nums text-foreground">{state.count}</span>
-          <Button variant="outline" size="icon" ariaLabel="Increment" onclick="{inc}">+</Button>
-          <Button variant="ghost" size="sm" onclick="{reset}">Reset</Button>
-        </div>
-        <div class="mt-4 flex gap-6 text-sm text-muted-foreground">
-          <span>doubled() = <strong class="text-foreground">{doubled()}</strong></span>
-          <span>quadrupled() = <strong class="text-foreground">{quadrupled()}</strong></span>
-        </div>
-        <log>{state.count}</log>
+  <div class="mt-8">
+    <DemoPanel filename="Reactivity.ulum" code="{codeSample}" consoleLines="{state.watcherLog}">
+      <div class="flex items-center gap-3">
+        <Button variant="outline" size="icon" ariaLabel="Decrement" onclick="{dec}">−</Button>
+        <span class="w-10 text-center font-heading text-2xl tabular-nums text-foreground">{state.count}</span>
+        <Button variant="outline" size="icon" ariaLabel="Increment" onclick="{inc}">+</Button>
+        <Button variant="ghost" size="sm" onclick="{reset}">Reset</Button>
       </div>
-      <div>
-        <div class="text-sm font-medium text-foreground">Watcher log</div>
-        <ul class="mt-2 space-y-1 text-sm text-muted-foreground">
-          <if when="state.watcherLog.length === 0"><li>Change the count to see entries.</li></if>
-          <for each="line of state.watcherLog" key="line">
-            <li class="font-mono text-xs">{line}</li>
-          </for>
-        </ul>
+      <div class="mt-4 flex flex-col gap-1 text-sm text-muted-foreground">
+        <span>doubled() = <strong class="text-foreground">{doubled()}</strong></span>
+        <span>quadrupled() = <strong class="text-foreground">{quadrupled()}</strong></span>
       </div>
-    </div>
-  </section>
+    </DemoPanel>
+
+    <WhatsHappening items="{happening}" />
+  </div>
 
   <section class="mt-10">
     <h2 class="mb-1 text-xl font-semibold text-foreground">Nested mutation</h2>
-    <p class="mb-4 text-sm text-muted-foreground"><code>state.user.name = "Bo"</code> — a deep write, no reassignment of <code>state.user</code> itself.</p>
+    <p class="mb-4 text-sm text-muted-foreground"><code class="rounded bg-muted px-1 py-0.5 text-sm">state.user.name = "Bo"</code> — a deep write, no reassignment of <code class="rounded bg-muted px-1 py-0.5 text-sm">state.user</code> itself.</p>
     <div class="flex items-center gap-4 rounded-xl border border-border p-6">
       <span class="text-foreground">Hello, <strong>{state.user.name}</strong></span>
       <Button variant="outline" size="sm" onclick="{rename}">Rename</Button>
@@ -102,7 +131,7 @@
 
   <section class="mt-10">
     <h2 class="mb-1 text-xl font-semibold text-foreground">Array mutation (push / splice)</h2>
-    <p class="mb-4 text-sm text-muted-foreground">Both <code>push</code> and <code>splice</code> re-render in place — no need to reassign <code>state.items</code>.</p>
+    <p class="mb-4 text-sm text-muted-foreground">Both <code class="rounded bg-muted px-1 py-0.5 text-sm">push</code> and <code class="rounded bg-muted px-1 py-0.5 text-sm">splice</code> re-render in place — no need to reassign <code class="rounded bg-muted px-1 py-0.5 text-sm">state.items</code>.</p>
     <div class="rounded-xl border border-border p-6">
       <div class="flex gap-2">
         <input
@@ -127,7 +156,7 @@
 
   <section class="mt-10">
     <h2 class="mb-1 text-xl font-semibold text-foreground">Set reactivity</h2>
-    <p class="mb-4 text-sm text-muted-foreground">A <code>Set</code> in state — <code>.add()</code> / <code>.delete()</code> are tracked deeply, same as objects and arrays.</p>
+    <p class="mb-4 text-sm text-muted-foreground">A <code class="rounded bg-muted px-1 py-0.5 text-sm">Set</code> in state — <code class="rounded bg-muted px-1 py-0.5 text-sm">.add()</code> / <code class="rounded bg-muted px-1 py-0.5 text-sm">.delete()</code> are tracked deeply, same as objects and arrays.</p>
     <div class="rounded-xl border border-border p-6">
       <div class="flex gap-2">
         <input
@@ -148,4 +177,10 @@
       </div>
     </div>
   </section>
+
+  <WhyYoullLoveIt items="{loveItems}" />
+  <FeaturePager active="reactivity" />
 </main>
+</div>
+
+<SiteFooter />

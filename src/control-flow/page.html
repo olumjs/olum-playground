@@ -1,8 +1,18 @@
 <script>
   import Nav from "../components/Nav";
+  import FeatureSidebar from "../components/FeatureSidebar";
+  import SiteFooter from "../components/SiteFooter";
+  import PageHero from "../components/PageHero";
+  import DemoPanel from "../components/DemoPanel";
+  import WhatsHappening from "../components/WhatsHappening";
+  import WhyYoullLoveIt from "../components/WhyYoullLoveIt";
+  import FeaturePager from "../components/FeaturePager";
+  import Button from "../components/ui/Button/Button";
+  import { Split, Ban, RefreshCcwDot, ListOrdered, Braces } from "olum-icons/lucide";
 
   const state = {
     tab: "a",
+    log: [],
     showText: "",
     ifText: "",
     showOpen: true,
@@ -16,7 +26,19 @@
     settings: { theme: "dark", locale: "en-US", notifications: true },
   };
 
-  const setTab = (t) => (state.tab = t);
+  const logEvent = (msg) => (state.log = [msg, ...state.log].slice(0, 6));
+
+  const setTab = (t) => {
+    state.tab = t;
+    logEvent(`switched to tab "${t}"`);
+  };
+  // Raw elements passed as a custom component's children (here, DemoPanel's
+  // preview slot) lose inline string handlers like onclick="setTab('a')" --
+  // only a braced, bare top-level function prop survives that boundary (see
+  // Nav.html/transitions for the same rule). Hence one bare fn per tab.
+  const selectTabA = () => setTab("a");
+  const selectTabB = () => setTab("b");
+  const selectTabC = () => setTab("c");
   const toggleShow = () => (state.showOpen = !state.showOpen);
   const toggleIf = () => (state.ifOpen = !state.ifOpen);
 
@@ -36,34 +58,62 @@
 
   const btn = "h-8 rounded-md border border-border bg-background px-3 text-sm text-foreground transition-colors hover:bg-muted";
   const btnActive = "h-8 rounded-md border border-transparent bg-primary px-3 text-sm text-primary-foreground";
+
+  const codeSample =
+    '<span class="text-muted-foreground">&lt;</span><span class="text-rose-600 dark:text-rose-400">if</span> <span class="text-sky-600 dark:text-sky-400">when</span>=<span class="text-amber-600 dark:text-amber-400">"state.tab === \'a\'"</span><span class="text-muted-foreground">&gt;</span>\n' +
+    "  Tab A's content\n" +
+    '<span class="text-muted-foreground">&lt;/</span><span class="text-rose-600 dark:text-rose-400">if</span><span class="text-muted-foreground">&gt;</span>\n\n' +
+    '<span class="text-muted-foreground">&lt;</span><span class="text-rose-600 dark:text-rose-400">else-if</span> <span class="text-sky-600 dark:text-sky-400">when</span>=<span class="text-amber-600 dark:text-amber-400">"state.tab === \'b\'"</span><span class="text-muted-foreground">&gt;</span>\n' +
+    "  Tab B, matched by else-if\n" +
+    '<span class="text-muted-foreground">&lt;/</span><span class="text-rose-600 dark:text-rose-400">else-if</span><span class="text-muted-foreground">&gt;</span>\n\n' +
+    '<span class="text-muted-foreground">&lt;</span><span class="text-rose-600 dark:text-rose-400">else</span><span class="text-muted-foreground">&gt;</span>Tab C fallback<span class="text-muted-foreground">&lt;/</span><span class="text-rose-600 dark:text-rose-400">else</span><span class="text-muted-foreground">&gt;</span>\n\n' +
+    '<span class="text-muted-foreground">// non-matching branches are removed from the DOM,</span>\n' +
+    '<span class="text-muted-foreground">// not just hidden</span>';
+
+  const happening = [
+    "The active branch mounts fresh; the others are removed from the DOM entirely.",
+    "Switching branches re-runs the matched block from scratch.",
+    "Only one of if / else-if / else is ever in the DOM at a time.",
+    "Every tab switch is logged below — see the Console tab.",
+  ];
+
+  const loveItems = [
+    { icon: Ban, title: "Zero Boilerplate", desc: "if / else-if / else read like plain conditionals." },
+    { icon: RefreshCcwDot, title: "State-Aware", desc: "<show> preserves state; <if> resets it on remount." },
+    { icon: ListOrdered, title: "Keyed Loops", desc: "Reorders and removals match by identity, not position." },
+    { icon: Braces, title: "Flexible Iteration", desc: "Loop over arrays, numeric ranges, or object keys." },
+  ];
 </script>
 
 <Nav />
 
-<main class="mx-auto max-w-6xl px-6 py-12">
-  <h1 class="font-heading text-3xl font-semibold tracking-tight text-foreground">Control Flow</h1>
-  <p class="mt-2 max-w-2xl text-muted-foreground">The template primitives that add, remove, hide, and repeat DOM nodes: <code class="rounded bg-muted px-1 py-0.5 text-sm">&lt;if&gt;</code>, <code class="rounded bg-muted px-1 py-0.5 text-sm">&lt;show&gt;</code>, and <code class="rounded bg-muted px-1 py-0.5 text-sm">&lt;for&gt;</code>.</p>
+<div class="mx-auto flex max-w-[1400px]">
+<FeatureSidebar active="control-flow" />
+<main class="min-w-0 flex-1 px-6 py-12 lg:px-10">
+  <PageHero index="{2}" icon="{Split}" title="Control Flow">
+    <p class="font-medium text-foreground">if / else-if / else, show, and keyed for loops</p>
+    <p class="mt-2">The template primitives that add, remove, hide, and repeat DOM nodes: <code class="rounded bg-muted px-1 py-0.5 text-sm">&lt;if&gt;</code>, <code class="rounded bg-muted px-1 py-0.5 text-sm">&lt;show&gt;</code>, and <code class="rounded bg-muted px-1 py-0.5 text-sm">&lt;for&gt;</code>.</p>
+  </PageHero>
 
-  <section class="mt-10">
-    <h2 class="mb-1 text-xl font-semibold text-foreground">if / else-if / else</h2>
-    <p class="mb-4 text-sm text-muted-foreground">Switches on <code>state.tab</code> — the non-matching branches are removed from the DOM entirely, not just hidden.</p>
-    <div class="rounded-xl border border-border p-6">
+  <div class="mt-8">
+    <DemoPanel filename="ControlFlow.ulum" code="{codeSample}" consoleLines="{state.log}">
       <div class="flex gap-2">
-        <button onclick="setTab('a')" class="{state.tab === 'a' ? btnActive : btn}">Tab A</button>
-        <button onclick="setTab('b')" class="{state.tab === 'b' ? btnActive : btn}">Tab B</button>
-        <button onclick="setTab('c')" class="{state.tab === 'c' ? btnActive : btn}">Tab C</button>
+        <Button onclick="{selectTabA}" class="{state.tab === 'a' ? btnActive : btn}">Tab A</Button>
+        <Button onclick="{selectTabB}" class="{state.tab === 'b' ? btnActive : btn}">Tab B</Button>
+        <Button onclick="{selectTabC}" class="{state.tab === 'c' ? btnActive : btn}">Tab C</Button>
       </div>
       <div class="mt-4 rounded-lg bg-muted p-4 text-sm text-foreground">
         <if when="state.tab === 'a'">This is Tab A's content — a plain &lt;if&gt;.</if>
         <else-if when="state.tab === 'b'">Tab B — matched by &lt;else-if&gt;.</else-if>
         <else>Tab C, the &lt;else&gt; fallback.</else>
       </div>
-    </div>
-  </section>
+    </DemoPanel>
+    <WhatsHappening items="{happening}" />
+  </div>
 
   <section class="mt-10">
     <h2 class="mb-1 text-xl font-semibold text-foreground">show vs if</h2>
-    <p class="mb-4 text-sm text-muted-foreground">Type into both inputs, then toggle each panel closed and open again — <code>&lt;show&gt;</code> only flips visibility so your text survives; <code>&lt;if&gt;</code> removes and remounts the node, so it resets.</p>
+    <p class="mb-4 text-sm text-muted-foreground">Type into both inputs, then toggle each panel closed and open again — <code class="rounded bg-muted px-1 py-0.5 text-sm">&lt;show&gt;</code> only flips visibility so your text survives; <code class="rounded bg-muted px-1 py-0.5 text-sm">&lt;if&gt;</code> removes and remounts the node, so it resets.</p>
     <div class="grid grid-cols-1 gap-6 rounded-xl border border-border p-6 md:grid-cols-2">
       <div>
         <div class="mb-2 flex items-center justify-between">
@@ -98,7 +148,7 @@
 
   <section class="mt-10">
     <h2 class="mb-1 text-xl font-semibold text-foreground">Keyed for-loop</h2>
-    <p class="mb-4 text-sm text-muted-foreground"><code>key="todo.id"</code> matches items by identity across reorders/removals, not by position.</p>
+    <p class="mb-4 text-sm text-muted-foreground"><code class="rounded bg-muted px-1 py-0.5 text-sm">key="todo.id"</code> matches items by identity across reorders/removals, not by position.</p>
     <div class="rounded-xl border border-border p-6">
       <div class="flex gap-2">
         <input
@@ -123,8 +173,8 @@
   </section>
 
   <section class="mt-10">
-    <h2 class="mb-1 text-xl font-semibold text-foreground">Numeric range & object-key loops</h2>
-    <p class="mb-4 text-sm text-muted-foreground"><code>each="i of 6"</code> counts 1→6; <code>each="key in obj"</code> walks an object's keys.</p>
+    <h2 class="mb-1 text-xl font-semibold text-foreground">Numeric range &amp; object-key loops</h2>
+    <p class="mb-4 text-sm text-muted-foreground"><code class="rounded bg-muted px-1 py-0.5 text-sm">each="i of 6"</code> counts 1→6; <code class="rounded bg-muted px-1 py-0.5 text-sm">each="key in obj"</code> walks an object's keys.</p>
     <div class="grid grid-cols-1 gap-6 rounded-xl border border-border p-6 md:grid-cols-2">
       <div>
         <div class="mb-2 text-sm font-medium text-foreground">for i of 6</div>
@@ -144,4 +194,10 @@
       </div>
     </div>
   </section>
+
+  <WhyYoullLoveIt items="{loveItems}" />
+  <FeaturePager active="control-flow" />
 </main>
+</div>
+
+<SiteFooter />

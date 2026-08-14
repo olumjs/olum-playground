@@ -1,5 +1,14 @@
 <script>
   import Nav from "../components/Nav";
+  import FeatureSidebar from "../components/FeatureSidebar";
+  import SiteFooter from "../components/SiteFooter";
+  import PageHero from "../components/PageHero";
+  import DemoPanel from "../components/DemoPanel";
+  import WhatsHappening from "../components/WhatsHappening";
+  import WhyYoullLoveIt from "../components/WhyYoullLoveIt";
+  import FeaturePager from "../components/FeaturePager";
+  import Input from "../components/ui/Input/Input";
+  import { Link, Ban, Globe, ArrowRightLeft, Layers } from "olum-icons/lucide";
 
   const state = {
     text: "",
@@ -10,6 +19,18 @@
     color: "red",
     fruits: [],
     fileNames: [],
+    log: [],
+  };
+
+  const logEvent = (msg) => (state.log = [msg, ...state.log].slice(0, 6));
+
+  // A raw <input> passed into DemoPanel's preview slot loses inline string
+  // handlers like oninput="setText($event)" -- only a braced, bare top-level
+  // function passed as a component PROP survives that boundary, hence the
+  // Input component below instead of a raw element.
+  const setText = (e) => {
+    state.text = e.target.value;
+    logEvent(`text → "${state.text}"`);
   };
 
   const setSize = (n) => (state.size = n);
@@ -30,21 +51,55 @@
       null,
       2,
     );
+
+  const codeSample =
+    '<span class="text-muted-foreground">&lt;</span><span class="text-rose-600 dark:text-rose-400">input</span>\n' +
+    '  <span class="text-sky-600 dark:text-sky-400">value</span>=<span class="text-amber-600 dark:text-amber-400">{state.text}</span>\n' +
+    '  <span class="text-sky-600 dark:text-sky-400">oninput</span>=<span class="text-amber-600 dark:text-amber-400">"(e) =&gt; state.text = e.target.value"</span>\n' +
+    '<span class="text-muted-foreground">/&gt;</span>\n\n' +
+    '<span class="text-muted-foreground">// no v-model / ng-model — a value-ish attribute reading</span>\n' +
+    '<span class="text-muted-foreground">// state, plus an event handler writing it back.</span>\n' +
+    '<span class="text-muted-foreground">// checkboxes read e.target.checked, numbers cast with +,</span>\n' +
+    '<span class="text-muted-foreground">// selects flip an "selected" attribute per &lt;option&gt;.</span>';
+
+  const happening = [
+    "value reads from state.text; oninput writes it back — that's the whole binding.",
+    "No compiler magic: it's a real DOM value attribute and a real event listener.",
+    "The same pattern casts numbers with +, reads checked, or reads selected options.",
+    "Every keystroke here is logged below — see the Console tab.",
+  ];
+
+  const loveItems = [
+    { icon: Ban, title: "No Directive Magic", desc: "No v-model or ng-model — just an attribute plus a handler." },
+    { icon: Globe, title: "Read The Platform", desc: "Native DOM events power every binding, nothing proprietary." },
+    { icon: ArrowRightLeft, title: "Cast What You Need", desc: "+e.target.value, e.target.checked — plain JavaScript." },
+    { icon: Layers, title: "Works Everywhere", desc: "Text, checkbox, radio, select, multi-select, file — one pattern." },
+  ];
 </script>
 
 <Nav />
 
-<main class="mx-auto max-w-6xl px-6 py-12">
-  <h1 class="mb-2 font-heading text-3xl font-semibold text-foreground">Binding</h1>
-  <p class="mb-10 max-w-2xl text-muted-foreground">Olum has no <code class="rounded bg-muted px-1 py-0.5 text-sm">model</code> directive — every binding is a value-ish attribute reading state plus an event handler writing it back.</p>
+<div class="mx-auto flex max-w-[1400px]">
+<FeatureSidebar active="binding" />
+<main class="min-w-0 flex-1 px-6 py-12 lg:px-10">
+  <PageHero index="{5}" icon="{Link}" title="Binding">
+    <p class="font-medium text-foreground">Two-way binding, without a model directive</p>
+    <p class="mt-2">Olum has no <code class="rounded bg-muted px-1 py-0.5 text-sm">model</code> directive — every binding is a value-ish attribute reading state plus an event handler writing it back.</p>
+  </PageHero>
 
-  <div class="grid grid-cols-1 gap-8 lg:grid-cols-2">
-    <form class="flex flex-col gap-5 rounded-xl border border-border p-6" onsubmit="(e) => e.preventDefault()">
+  <div class="mt-8">
+    <DemoPanel filename="Binding.ulum" code="{codeSample}" consoleLines="{state.log}">
       <label class="flex flex-col gap-1.5 text-sm">
         <span class="font-medium text-foreground">Text input</span>
-        <input type="text" value="{state.text}" oninput="(e) => state.text = e.target.value" placeholder="type something" class="h-9 rounded-lg border border-border bg-background px-3 outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50" />
+        <Input type="text" value="{state.text}" oninput="{setText}" placeholder="type something" class="h-9" />
       </label>
+      <p class="mt-3 text-sm text-muted-foreground">state.text is now <strong class="text-foreground">"{state.text}"</strong></p>
+    </DemoPanel>
+    <WhatsHappening items="{happening}" />
+  </div>
 
+  <div class="mt-10 grid grid-cols-1 gap-8 lg:grid-cols-2">
+    <form class="flex flex-col gap-5 rounded-xl border border-border p-6" onsubmit="(e) => e.preventDefault()">
       <label class="flex flex-col gap-1.5 text-sm">
         <span class="font-medium text-foreground">Textarea</span>
         <textarea value="{state.bio}" oninput="(e) => state.bio = e.target.value" rows="3" placeholder="a longer answer" class="rounded-lg border border-border bg-background px-3 py-2 outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50"></textarea>
@@ -100,4 +155,10 @@
       <pre class="overflow-x-auto rounded-lg bg-muted p-4 text-xs">{preview()}</pre>
     </div>
   </div>
+
+  <WhyYoullLoveIt items="{loveItems}" />
+  <FeaturePager active="binding" />
 </main>
+</div>
+
+<SiteFooter />

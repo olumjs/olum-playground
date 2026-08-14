@@ -1,16 +1,29 @@
 <script>
   import { scope } from "olum";
   import Nav from "../components/Nav";
+  import FeatureSidebar from "../components/FeatureSidebar";
+  import SiteFooter from "../components/SiteFooter";
+  import PageHero from "../components/PageHero";
+  import DemoPanel from "../components/DemoPanel";
+  import WhatsHappening from "../components/WhatsHappening";
+  import WhyYoullLoveIt from "../components/WhyYoullLoveIt";
+  import FeaturePager from "../components/FeaturePager";
   import StatusBadge from "../components/StatusBadge";
   import CounterCard from "../components/CounterCard";
   import Box from "../components/Box";
+  import { Puzzle, ArrowDownToLine, ArrowUpFromLine, LayoutTemplate, Telescope } from "olum-icons/lucide";
 
-  const state = { score: 0, inspection: null };
+  const state = { score: 0, log: [], inspection: null };
+
+  const logEvent = (msg) => (state.log = [msg, ...state.log].slice(0, 6));
 
   // Component props are resolved at compile time to a plain identifier, not an
   // inline expression -- a function-valued prop must reference a top-level
   // function declared right here (see Nav.html for the same fix).
-  const setScore = (v) => (state.score = v);
+  const setScore = (v) => {
+    state.score = v;
+    logEvent(`onChange fired → score is now ${v}`);
+  };
 
   const inspect = () => {
     const found = scope("CounterCard");
@@ -21,17 +34,59 @@
     const found = scope("CounterCard");
     if (found && found.methods.bump) found.methods.bump();
   };
+
+  const codeSample =
+    '<span class="text-muted-foreground">// parent owns the state</span>\n' +
+    '<span class="text-brand">const</span> state = { score: <span class="text-amber-600 dark:text-amber-400">0</span> };\n' +
+    '<span class="text-brand">const</span> setScore = (v) =&gt; state.score = v;\n\n' +
+    '<span class="text-muted-foreground">&lt;</span><span class="text-rose-600 dark:text-rose-400">CounterCard</span>\n' +
+    '  <span class="text-sky-600 dark:text-sky-400">value</span>=<span class="text-amber-600 dark:text-amber-400">{state.score}</span>\n' +
+    '  <span class="text-sky-600 dark:text-sky-400">onChange</span>=<span class="text-amber-600 dark:text-amber-400">{setScore}</span>\n' +
+    '<span class="text-muted-foreground">/&gt;</span>\n\n' +
+    '<span class="text-muted-foreground">// CounterCard never mutates value itself —</span>\n' +
+    '<span class="text-muted-foreground">// it calls onChange(value + 1) and asks the parent to.</span>';
+
+  const happening = [
+    "CounterCard receives value as a read-only prop.",
+    "Its +1 button calls the onChange callback instead of mutating value.",
+    "The parent's setScore updates state.score, which flows back down.",
+    "Every callback firing is logged below — see the Console tab.",
+  ];
+
+  const loveItems = [
+    { icon: ArrowDownToLine, title: "One-Way Props", desc: "Data flows down, read-only, so state stays predictable." },
+    { icon: ArrowUpFromLine, title: "Callback Props", desc: "Changes flow back up by calling a function the parent owns." },
+    { icon: LayoutTemplate, title: "Real Slots", desc: "Nested markup arrives as children, no special syntax." },
+    { icon: Telescope, title: "scope() Escape Hatch", desc: "Read a mounted component's public props and methods when you need to." },
+  ];
 </script>
 
 <Nav />
 
-<main class="mx-auto max-w-6xl px-6 py-12">
-  <h1 class="mb-2 font-heading text-3xl font-semibold text-foreground">Composition</h1>
-  <p class="mb-10 max-w-2xl text-muted-foreground">Props (one-way, read-only), callback props for changes flowing back up, slots via <code class="rounded bg-muted px-1 py-0.5 text-sm">children</code>, and reading a mounted component's public surface with <code class="rounded bg-muted px-1 py-0.5 text-sm">scope()</code>.</p>
+<div class="mx-auto flex max-w-[1400px]">
+<FeatureSidebar active="composition" />
+<main class="min-w-0 flex-1 px-6 py-12 lg:px-10">
+  <PageHero index="{3}" icon="{Puzzle}" title="Composition">
+    <p class="font-medium text-foreground">Props, callback props, slots &amp; scope()</p>
+    <p class="mt-2">
+      Props (one-way, read-only), callback props for changes flowing back up, slots via <code class="rounded bg-muted px-1 py-0.5 text-sm">children</code>,
+      and reading a mounted component's public surface with <code class="rounded bg-muted px-1 py-0.5 text-sm">scope()</code>.
+    </p>
+  </PageHero>
 
-  <section class="mb-12">
+  <div class="mt-8">
+    <DemoPanel filename="Composition.ulum" code="{codeSample}" consoleLines="{state.log}">
+      <div class="flex flex-col items-start gap-3">
+        <CounterCard value="{state.score}" onChange="{setScore}" />
+        <p class="text-sm text-muted-foreground">Parent's state.score is now <strong class="text-foreground">{state.score}</strong>.</p>
+      </div>
+    </DemoPanel>
+    <WhatsHappening items="{happening}" />
+  </div>
+
+  <section class="mt-10">
     <h2 class="mb-1 text-xl font-semibold text-foreground">Props</h2>
-    <p class="mb-4 text-sm text-muted-foreground">StatusBadge takes plain <code>label</code> / <code>color</code> props — a literal string vs. an interpolated value passed straight through.</p>
+    <p class="mb-4 text-sm text-muted-foreground">StatusBadge takes plain <code class="rounded bg-muted px-1 py-0.5 text-sm">label</code> / <code class="rounded bg-muted px-1 py-0.5 text-sm">color</code> props — a literal string vs. an interpolated value passed straight through.</p>
     <div class="flex flex-wrap gap-3 rounded-xl border border-border p-6">
       <StatusBadge label="Online" color="#16a34a" />
       <StatusBadge label="Building" color="#ca8a04" />
@@ -39,21 +94,9 @@
     </div>
   </section>
 
-  <section class="mb-12">
-    <h2 class="mb-1 text-xl font-semibold text-foreground">Callback props (one-way data flow)</h2>
-    <p class="mb-4 text-sm text-muted-foreground">
-      This page owns <code>state.score</code> and hands <code>CounterCard</code> a read-only <code>value</code> plus an <code>onChange</code> callback — the child never
-      mutates the value itself, it just asks the parent to.
-    </p>
-    <div class="flex flex-col items-start gap-3 rounded-xl border border-border p-6">
-      <CounterCard value="{state.score}" onChange="{setScore}" />
-      <p class="text-sm text-muted-foreground">Parent's state.score is now <strong class="text-foreground">{state.score}</strong>.</p>
-    </div>
-  </section>
-
-  <section class="mb-12">
+  <section class="mt-10">
     <h2 class="mb-1 text-xl font-semibold text-foreground">Slots — children</h2>
-    <p class="mb-4 text-sm text-muted-foreground">Content between a component's tags arrives as <code>children</code>; <code>Box</code> falls back to placeholder text when the parent passes nothing.</p>
+    <p class="mb-4 text-sm text-muted-foreground">Content between a component's tags arrives as <code class="rounded bg-muted px-1 py-0.5 text-sm">children</code>; <code class="rounded bg-muted px-1 py-0.5 text-sm">Box</code> falls back to placeholder text when the parent passes nothing.</p>
     <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
       <Box>
         <p class="text-foreground">Hello from the parent's markup — this is raw <code>children</code>.</p>
@@ -62,11 +105,11 @@
     </div>
   </section>
 
-  <section>
+  <section class="mt-10">
     <h2 class="mb-1 text-xl font-semibold text-foreground">scope() — reading a mounted component's public surface</h2>
     <p class="mb-4 text-sm text-muted-foreground">
-      CounterCard's script is tagged <code>public-props public-methods</code>. <code>scope("CounterCard")</code> reads its live props and lets us call its
-      exposed <code>bump</code> method directly, as an escape hatch (the store is the preferred way to share state).
+      CounterCard's script is tagged <code class="rounded bg-muted px-1 py-0.5 text-sm">public-props public-methods</code>. <code class="rounded bg-muted px-1 py-0.5 text-sm">scope("CounterCard")</code> reads its live props and lets us call its
+      exposed <code class="rounded bg-muted px-1 py-0.5 text-sm">bump</code> method directly, as an escape hatch (the store is the preferred way to share state).
     </p>
     <div class="flex flex-col gap-3 rounded-xl border border-border p-6">
       <div class="flex flex-wrap gap-2">
@@ -78,4 +121,10 @@
       </if>
     </div>
   </section>
+
+  <WhyYoullLoveIt items="{loveItems}" />
+  <FeaturePager active="composition" />
 </main>
+</div>
+
+<SiteFooter />

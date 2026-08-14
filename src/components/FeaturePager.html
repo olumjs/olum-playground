@@ -1,0 +1,47 @@
+<script>
+  import { props } from "olum";
+  import Anchor from "./ui/Anchor/Anchor";
+  import Icon from "./ui/Icon/Icon";
+  import { ArrowLeft, ArrowRight } from "olum-icons/lucide";
+  import { FEATURES } from "../utils/features";
+
+  const { active } = props();
+
+  const index = () => FEATURES.findIndex((f) => f.slug === active);
+  const prev = () => FEATURES[index() - 1];
+  const next = () => FEATURES[index() + 1];
+</script>
+
+<div class="mt-12 flex items-center justify-between gap-4 border-t border-border pt-8">
+  <div class="min-w-0 flex-1">
+    <if when="prev()">
+      <Anchor to="{prev().to}" variant="outline" class="h-auto flex-col items-start gap-0.5 px-4 py-2.5">
+        <span class="flex items-center gap-1.5 text-xs text-muted-foreground">
+          <Icon icon="{ArrowLeft}" class="size-3" />
+          Previous
+        </span>
+        <span class="font-medium text-foreground">{prev() ? prev().title : ""}</span>
+      </Anchor>
+    </if>
+  </div>
+
+  <div class="hidden items-center gap-1.5 sm:flex">
+    <for each="f of FEATURES" key="f.slug">
+      <Anchor to="{f.to}" ariaLabel="{f.title}" class="h-auto w-auto border-transparent bg-transparent p-1 hover:bg-transparent">
+        <span class="block rounded-full transition-all {f.slug === active ? 'size-2 bg-brand' : 'size-1.5 bg-muted-foreground/30'}"></span>
+      </Anchor>
+    </for>
+  </div>
+
+  <div class="min-w-0 flex-1 text-right">
+    <if when="next()">
+      <Anchor to="{next().to}" variant="outline" class="h-auto flex-col items-end gap-0.5 px-4 py-2.5">
+        <span class="flex items-center gap-1.5 text-xs text-muted-foreground">
+          Next
+          <Icon icon="{ArrowRight}" class="size-3" />
+        </span>
+        <span class="font-medium text-foreground">{next() ? next().title : ""}</span>
+      </Anchor>
+    </if>
+  </div>
+</div>

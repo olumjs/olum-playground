@@ -1,5 +1,7 @@
 <script>
   import Nav from "../../components/Nav";
+  import FeatureSidebar from "../../components/FeatureSidebar";
+  import SiteFooter from "../../components/SiteFooter";
   import Button from "../../components/ui/Button/Button";
   import Icon from "../../components/ui/Icon/Icon";
   import ButtonGroup from "../../components/ui/ButtonGroup/ButtonGroup";
@@ -88,7 +90,9 @@
 
 <Nav />
 
-<main class="mx-auto max-w-6xl px-6 py-12">
+<div class="mx-auto flex max-w-[1400px]">
+<FeatureSidebar active="ui-kit" />
+<main class="min-w-0 flex-1 px-6 py-12 lg:px-10">
   <header class="mb-10">
     <h1 class="font-heading text-3xl font-semibold tracking-tight text-foreground">Forms</h1>
     <p class="mt-1 text-muted-foreground">Every form-category component from the olum-ui registry, live.</p>
@@ -334,3 +338,6 @@
     </div>
   </section>
 </main>
+</div>
+
+<SiteFooter />

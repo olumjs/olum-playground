@@ -1,0 +1,71 @@
+<script>
+  import { props } from "olum";
+  import Icon from "./ui/Icon/Icon";
+  import { Copy, Check, RefreshCw } from "olum-icons/lucide";
+
+  const { filename, code, consoleLines = [], children } = props();
+
+  const state = { tab: "preview", copied: false };
+  const setTab = (t) => (state.tab = t);
+
+  const stripHtml = (html) =>
+    html
+      .replace(/<[^>]*>/g, "")
+      .replace(/&lt;/g, "<")
+      .replace(/&gt;/g, ">")
+      .replace(/&amp;/g, "&")
+      .replace(/&quot;/g, '"')
+      .replace(/&#39;/g, "'");
+
+  const copyCode = async () => {
+    await navigator.clipboard.writeText(stripHtml(code));
+    state.copied = true;
+    setTimeout(() => (state.copied = false), 1500);
+  };
+</script>
+
+<div class="grid grid-cols-1 overflow-hidden rounded-xl border border-border lg:grid-cols-2 lg:divide-x lg:divide-border">
+  <div class="flex flex-col">
+    <div class="flex h-10 shrink-0 items-center justify-between border-b border-border px-4">
+      <span class="font-mono text-xs text-muted-foreground">{filename}</span>
+      <button type="button" onclick="copyCode()" class="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground">
+        <if when="state.copied">
+          <Icon icon="{Check}" class="size-3.5 text-brand" />
+          Copied
+        </if>
+        <else>
+          <Icon icon="{Copy}" class="size-3.5" />
+          Copy
+        </else>
+      </button>
+    </div>
+    <pre class="flex-1 overflow-x-auto p-4 font-mono text-[13px] leading-relaxed text-foreground"><code html="code"></code></pre>
+  </div>
+
+  <div class="flex flex-col bg-muted/30">
+    <div class="flex h-10 shrink-0 items-center justify-between border-b border-border px-4">
+      <div class="flex h-full items-center gap-4">
+        <button type="button" onclick="setTab('preview')" class="h-full border-b-2 text-sm {state.tab === 'preview' ? 'border-brand font-medium text-foreground' : 'border-transparent text-muted-foreground'}">Preview</button>
+        <button type="button" onclick="setTab('console')" class="h-full border-b-2 text-sm {state.tab === 'console' ? 'border-brand font-medium text-foreground' : 'border-transparent text-muted-foreground'}">Console</button>
+      </div>
+      <Icon icon="{RefreshCw}" class="size-3.5 text-muted-foreground" />
+    </div>
+    <div class="flex-1 p-4">
+      <show when="state.tab === 'preview'">
+        <div>{children}</div>
+      </show>
+      <show when="state.tab === 'console'">
+        <div>
+          <if when="consoleLines.length === 0">
+            <p class="font-mono text-xs text-muted-foreground">// no output yet</p>
+          </if>
+          <ul class="flex flex-col gap-1.5">
+            <for each="line of consoleLines" key="line">
+              <li class="font-mono text-xs text-muted-foreground">{line}</li>
+            </for>
+          </ul>
+        </div>
+      </show>
+    </div>
+  </div>
+</div>

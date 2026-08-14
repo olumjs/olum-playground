@@ -1,38 +1,87 @@
 <script>
   import Nav from "../components/Nav";
+  import FeatureSidebar from "../components/FeatureSidebar";
+  import SiteFooter from "../components/SiteFooter";
+  import PageHero from "../components/PageHero";
+  import DemoPanel from "../components/DemoPanel";
+  import WhatsHappening from "../components/WhatsHappening";
+  import WhyYoullLoveIt from "../components/WhyYoullLoveIt";
+  import FeaturePager from "../components/FeaturePager";
   import Card from "../components/ui/Card/Card";
   import CardHeader from "../components/ui/Card/CardHeader";
   import CardTitle from "../components/ui/Card/CardTitle";
   import CardDescription from "../components/ui/Card/CardDescription";
   import Badge from "../components/ui/Badge/Badge";
   import { posts } from "../utils/posts";
+  import { Route, FolderTree, Link2, Waypoints, CircleSlash } from "olum-icons/lucide";
+
+  const codeSample =
+    '<span class="text-muted-foreground">src/</span>\n' +
+    '  blog/\n' +
+    '    <span class="text-rose-600 dark:text-rose-400">page.html</span>          <span class="text-muted-foreground">// /blog</span>\n' +
+    '    <span class="text-sky-600 dark:text-sky-400">[slug]</span>/\n' +
+    '      <span class="text-rose-600 dark:text-rose-400">page.html</span>        <span class="text-muted-foreground">// /blog/:slug</span>\n' +
+    '  match/\n' +
+    '    <span class="text-sky-600 dark:text-sky-400">[slug]</span>/<span class="text-sky-600 dark:text-sky-400">[id]</span>/\n' +
+    '      <span class="text-rose-600 dark:text-rose-400">page.html</span>        <span class="text-muted-foreground">// /match/:slug/:id</span>\n\n' +
+    '<span class="text-muted-foreground">// the folder structure IS the route tree</span>';
+
+  const happening = [
+    "Every src/**/page.html becomes a route at the matching URL, no config.",
+    "A [slug] folder segment becomes a dynamic route param.",
+    "Multiple dynamic segments can chain in one path, like /match/[slug]/[id].",
+    "Click a post below to navigate to its dynamic detail route.",
+  ];
+
+  const loveItems = [
+    { icon: FolderTree, title: "File-Based Routes", desc: "The folder structure under src/ is the route tree." },
+    { icon: Link2, title: "Dynamic Segments", desc: "[slug] folders become route params, extracted automatically." },
+    { icon: Waypoints, title: "Multi-Segment Routes", desc: "Chain several dynamic parts, like /match/[slug]/[id]." },
+    { icon: CircleSlash, title: "No Config", desc: "No route table to write or keep in sync by hand." },
+  ];
 </script>
 
 <Nav />
 
-<main class="mx-auto max-w-3xl px-6 py-12">
-  <h1 class="mb-1 font-heading text-3xl font-semibold text-foreground">Blog</h1>
-  <p class="mb-6 max-w-xl text-muted-foreground">File-based routing: this list lives at <code class="rounded bg-muted px-1.5 py-0.5 text-sm">src/blog/page.html</code>, each post at the dynamic route <code class="rounded bg-muted px-1.5 py-0.5 text-sm">src/blog/[slug]/page.html</code>.</p>
-  <p class="mb-10 max-w-xl text-sm text-muted-foreground">One dynamic segment isn't the whole story — <a to="/match/premier-league/1042" class="text-primary underline underline-offset-2">/match/[slug]/[id]</a> shows two segments in the same route.</p>
+<div class="mx-auto flex max-w-[1400px]">
+<FeatureSidebar active="router" />
+<main class="min-w-0 flex-1 px-6 py-12 lg:px-10">
+  <PageHero index="{8}" icon="{Route}" title="Router">
+    <p class="font-medium text-foreground">File-based routing, dynamic [slug] params</p>
+    <p class="mt-2">This list lives at <code class="rounded bg-muted px-1.5 py-0.5 text-sm">src/blog/page.html</code>, each post at the dynamic route <code class="rounded bg-muted px-1.5 py-0.5 text-sm">src/blog/[slug]/page.html</code>.</p>
+  </PageHero>
 
-  <div class="space-y-3">
-    <for each="post of posts" key="post.slug">
-      <!--
-        Empty overlay anchor, not a wrapping one -- the router's click
-        listener reads e.target.getAttribute("to"), not e.currentTarget, so
-        clicking any nested element (the badge, the title) makes e.target a
-        node with no "to" attribute and the nav goes to literal "/null".
-        Content-free + absolutely positioned means nothing inside it can
-        ever be the click target.
-      -->
-      <Card class="relative transition-colors hover:ring-primary/40">
-        <CardHeader>
-          <Badge variant="outline" class="mb-1 w-fit">{post.date}</Badge>
-          <CardTitle>{post.title}</CardTitle>
-          <CardDescription>{post.excerpt}</CardDescription>
-        </CardHeader>
-        <a to="/blog/{post.slug}" class="absolute inset-0" aria-label="{post.title}"></a>
-      </Card>
-    </for>
+  <div class="mt-8">
+    <DemoPanel filename="routes" code="{codeSample}">
+      <div class="flex flex-col gap-3">
+        <for each="post of posts" key="post.slug">
+          <!--
+            Empty overlay anchor, not a wrapping one -- the router's click
+            listener reads e.target.getAttribute("to"), not e.currentTarget, so
+            clicking any nested element (the badge, the title) makes e.target a
+            node with no "to" attribute and the nav goes to literal "/null".
+            Content-free + absolutely positioned means nothing inside it can
+            ever be the click target.
+          -->
+          <Card class="relative transition-colors hover:ring-brand/40">
+            <CardHeader>
+              <Badge variant="outline" class="mb-1 w-fit">{post.date}</Badge>
+              <CardTitle>{post.title}</CardTitle>
+              <CardDescription>{post.excerpt}</CardDescription>
+            </CardHeader>
+            <a to="/blog/{post.slug}" class="absolute inset-0" aria-label="{post.title}"></a>
+          </Card>
+        </for>
+      </div>
+    </DemoPanel>
+    <WhatsHappening items="{happening}" />
   </div>
+
+  <p class="mt-6 text-sm text-muted-foreground">One dynamic segment isn't the whole story — <a to="/match/premier-league/1042" class="text-brand underline underline-offset-2">/match/[slug]/[id]</a> shows two segments in the same route.</p>
+
+  <WhyYoullLoveIt items="{loveItems}" />
+  <FeaturePager active="router" />
 </main>
+</div>
+
+<SiteFooter />

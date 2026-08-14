@@ -1,0 +1,28 @@
+<script>
+  import { props } from "olum";
+  import Button from "./ui/Button/Button";
+
+  // <transition>'s lifecycle-event attributes (onintrostart etc.) must be bare
+  // identifiers resolved against the component that literally contains this
+  // markup. Passed as DemoPanel's children (a different component), that
+  // resolution breaks -- so this whole demo, transition included, lives in
+  // its own component instead of being written inline in the page.
+  const { onEvent } = props();
+
+  const state = { on: true };
+  const toggle = () => (state.on = !state.on);
+
+  const onFadeIntroStart = () => onEvent("fade: intro start");
+  const onFadeIntroEnd = () => onEvent("fade: intro end");
+  const onFadeOutroStart = () => onEvent("fade: outro start");
+  const onFadeOutroEnd = () => onEvent("fade: outro end");
+</script>
+
+<Button onclick="{toggle}">Toggle</Button>
+<div class="mt-4 flex h-16 items-center">
+  <if when="state.on">
+    <transition transition="fade" onintrostart="onFadeIntroStart" onintroend="onFadeIntroEnd" onoutrostart="onFadeOutroStart" onoutroend="onFadeOutroEnd">
+      <div class="rounded-lg bg-brand/10 px-4 py-3 text-sm text-brand">Fades in and out</div>
+    </transition>
+  </if>
+</div>
