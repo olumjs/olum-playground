@@ -48,9 +48,9 @@
     '<span class="text-brand">im</span><span class="text-brand">port</span> { onMount } <span class="text-brand">from</span> <span class="text-amber-600 dark:text-amber-400">"olum"</span>;\n\n' +
     'onMount(() =&gt; {\n' +
     '  <span class="text-muted-foreground">// runs once, right after this mounts</span>\n' +
-    '  onLog(<span class="text-amber-600 dark:text-amber-400">"mounted"</span>);\n\n' +
+    '  onlog(<span class="text-amber-600 dark:text-amber-400">"mounted"</span>);\n\n' +
     '  <span class="text-muted-foreground">// the returned function is the cleanup</span>\n' +
-    '  <span class="text-brand">return</span> () =&gt; onLog(<span class="text-amber-600 dark:text-amber-400">"unmounted"</span>);\n' +
+    '  <span class="text-brand">return</span> () =&gt; onlog(<span class="text-amber-600 dark:text-amber-400">"unmounted"</span>);\n' +
     '});';
 
   const happening = [
@@ -88,7 +88,7 @@
           {state.showLogger ? "Unmount" : "Mount"} LifecycleLogger
         </Button>
         <if when="state.showLogger">
-          <LifecycleLogger onLog="{appendLog}" />
+          <LifecycleLogger onlog="{appendLog}" />
         </if>
       </div>
     </DemoPanel>

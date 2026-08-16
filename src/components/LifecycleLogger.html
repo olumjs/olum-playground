@@ -1,11 +1,11 @@
 <script>
   import { onMount, props } from "olum";
 
-  const { onLog } = props();
+  const { onlog } = props();
 
   onMount(() => {
-    onLog("mounted");
-    return () => onLog("unmounted");
+    onlog("mounted");
+    return () => onlog("unmounted");
   });
 </script>
 

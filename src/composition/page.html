@@ -22,7 +22,7 @@
   // function declared right here (see Nav.html for the same fix).
   const setScore = (v) => {
     state.score = v;
-    logEvent(`onChange fired → score is now ${v}`);
+    logEvent(`onchange fired → score is now ${v}`);
   };
 
   const inspect = () => {
@@ -41,14 +41,14 @@
     '<span class="text-brand">const</span> setScore = (v) =&gt; state.score = v;\n\n' +
     '<span class="text-muted-foreground">&lt;</span><span class="text-rose-600 dark:text-rose-400">CounterCard</span>\n' +
     '  <span class="text-sky-600 dark:text-sky-400">value</span>=<span class="text-amber-600 dark:text-amber-400">{state.score}</span>\n' +
-    '  <span class="text-sky-600 dark:text-sky-400">onChange</span>=<span class="text-amber-600 dark:text-amber-400">{setScore}</span>\n' +
+    '  <span class="text-sky-600 dark:text-sky-400">onchange</span>=<span class="text-amber-600 dark:text-amber-400">{setScore}</span>\n' +
     '<span class="text-muted-foreground">/&gt;</span>\n\n' +
     '<span class="text-muted-foreground">// CounterCard never mutates value itself —</span>\n' +
-    '<span class="text-muted-foreground">// it calls onChange(value + 1) and asks the parent to.</span>';
+    '<span class="text-muted-foreground">// it calls onchange(value + 1) and asks the parent to.</span>';
 
   const happening = [
     "CounterCard receives value as a read-only prop.",
-    "Its +1 button calls the onChange callback instead of mutating value.",
+    "Its +1 button calls the onchange callback instead of mutating value.",
     "The parent's setScore updates state.score, which flows back down.",
     "Every callback firing is logged below — see the Console tab.",
   ];
@@ -77,7 +77,7 @@
   <div class="mt-8">
     <DemoPanel filename="Composition.ulum" code="{codeSample}" consoleLines="{state.log}">
       <div class="flex flex-col items-start gap-3">
-        <CounterCard value="{state.score}" onChange="{setScore}" />
+        <CounterCard value="{state.score}" onchange="{setScore}" />
         <p class="text-sm text-muted-foreground">Parent's state.score is now <strong class="text-foreground">{state.score}</strong>.</p>
       </div>
     </DemoPanel>

@@ -25,6 +25,7 @@
   import InputGroupAddon from "../../components/ui/InputGroup/InputGroupAddon";
   import InputGroupButton from "../../components/ui/InputGroup/InputGroupButton";
   import InputGroupInput from "../../components/ui/InputGroup/InputGroupInput";
+  import InputGroupText from "../../components/ui/InputGroup/InputGroupText";
   import InputOTP from "../../components/ui/InputOTP/InputOTP";
   import InputOTPGroup from "../../components/ui/InputOTP/InputOTPGroup";
   import InputOTPSeparator from "../../components/ui/InputOTP/InputOTPSeparator";
@@ -150,22 +151,22 @@
           <FieldLegend variant="label">Choose a plan</FieldLegend>
           <RadioGroup>
             <div class="flex items-center gap-2">
-              <RadioGroupItem id="plan-free" name="plan" value="free" defaultChecked="{state.plan === 'free'}" onCheckedChange="{onPlanChange}" />
+              <RadioGroupItem id="plan-free" name="plan" value="free" defaultChecked="{state.plan === 'free'}" onchange="{onPlanChange}" />
               <Label for="plan-free">Free</Label>
             </div>
             <div class="flex items-center gap-2">
-              <RadioGroupItem id="plan-pro" name="plan" value="pro" defaultChecked="{state.plan === 'pro'}" onCheckedChange="{onPlanChange}" />
+              <RadioGroupItem id="plan-pro" name="plan" value="pro" defaultChecked="{state.plan === 'pro'}" onchange="{onPlanChange}" />
               <Label for="plan-pro">Pro</Label>
             </div>
             <div class="flex items-center gap-2">
-              <RadioGroupItem id="plan-ent" name="plan" value="enterprise" defaultChecked="{state.plan === 'enterprise'}" onCheckedChange="{onPlanChange}" />
+              <RadioGroupItem id="plan-ent" name="plan" value="enterprise" defaultChecked="{state.plan === 'enterprise'}" onchange="{onPlanChange}" />
               <Label for="plan-ent">Enterprise</Label>
             </div>
           </RadioGroup>
         </FieldSet>
 
         <Field orientation="horizontal">
-          <Switch id="pf-notify" defaultChecked="{state.notify}" onCheckedChange="{onNotifyChange}" />
+          <Switch id="pf-notify" defaultChecked="{state.notify}" onchange="{onNotifyChange}" />
           <FieldContent>
             <FieldLabel for="pf-notify">Email notifications</FieldLabel>
             <FieldDescription>Currently {state.notify ? "on" : "off"}.</FieldDescription>
@@ -173,7 +174,7 @@
         </Field>
 
         <Field orientation="horizontal">
-          <Checkbox id="pf-terms" defaultChecked="{state.terms}" invalid="{state.termsError}" onCheckedChange="{onTermsChange}" />
+          <Checkbox id="pf-terms" defaultChecked="{state.terms}" invalid="{state.termsError}" onchange="{onTermsChange}" />
           <FieldContent>
             <FieldLabel for="pf-terms">I agree to the terms</FieldLabel>
             <if when="state.termsError">
@@ -283,7 +284,7 @@
     <h2 class="mb-1 text-xl font-semibold text-foreground">Select</h2>
     <p class="mb-4 text-sm text-muted-foreground">A custom dropdown, composed from Trigger/Content/Item.</p>
     <div class="rounded-xl border border-border p-6">
-      <Select defaultValue="olum" onValueChange="{onFrameworkChange}">
+      <Select defaultValue="olum" onchange="{onFrameworkChange}">
         <SelectTrigger class="w-56">
           <SelectValue placeholder="Pick a framework" />
         </SelectTrigger>

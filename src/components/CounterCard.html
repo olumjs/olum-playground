@@ -1,9 +1,9 @@
 <script public-props public-methods>
   import { props } from "olum";
 
-  const { value, onChange } = props();
+  const { value, onchange } = props();
 
-  const bump = () => onChange(value + 1);
+  const bump = () => onchange(value + 1);
 </script>
 
 <div class="flex items-center gap-3 rounded-lg border border-border p-3">

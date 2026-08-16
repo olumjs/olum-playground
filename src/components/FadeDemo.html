@@ -1,13 +1,26 @@
 <script>
+  import { props } from "olum";
   import Button from "./ui/Button/Button";
+
+  const { onevent } = props();
+
   const state = { on: true };
   const toggle = () => (state.on = !state.on);
+
+  // <transition> resolves onintrostart/onintroend/onoutrostart/onoutroend by
+  // looking the attribute value up as a bare method name in THIS component's
+  // own scope (olum.js transitionHandler), so every phase needs a named
+  // top-level function here -- an inline arrow or a call never resolves.
+  const introStart = () => onevent && onevent("introstart — fade in begins");
+  const introEnd = () => onevent && onevent("introend — fade in finished");
+  const outroStart = () => onevent && onevent("outrostart — fade out begins");
+  const outroEnd = () => onevent && onevent("outroend — node removed");
 </script>
 
 <Button onclick="{toggle}">Toggle</Button>
 <div class="mt-4 flex h-16 items-center">
   <if when="state.on">
-    <transition transition="fade">
+    <transition transition="fade" onintrostart="introStart" onintroend="introEnd" onoutrostart="outroStart" onoutroend="outroEnd">
       <div class="rounded-lg bg-brand/10 px-4 py-3 text-sm text-brand">Fades in and out</div>
     </transition>
   </if>

@@ -58,10 +58,13 @@
 
   const codeSample =
     '<span class="text-muted-foreground">&lt;</span><span class="text-rose-600 dark:text-rose-400">transition</span> ' +
-    '<span class="text-sky-600 dark:text-sky-400">transition</span>=<span class="text-amber-600 dark:text-amber-400">"fade"</span>' +
+    '<span class="text-sky-600 dark:text-sky-400">transition</span>=<span class="text-amber-600 dark:text-amber-400">"fade"</span>\n' +
+    '  <span class="text-sky-600 dark:text-sky-400">onintrostart</span>=<span class="text-amber-600 dark:text-amber-400">"introStart"</span>\n' +
+    '  <span class="text-sky-600 dark:text-sky-400">onoutroend</span>=<span class="text-amber-600 dark:text-amber-400">"outroEnd"</span>\n' +
     '<span class="text-muted-foreground">&gt;</span>\n' +
     "  Fades in and out\n" +
-    '<span class="text-muted-foreground">&lt;/</span><span class="text-rose-600 dark:text-rose-400">transition</span><span class="text-muted-foreground">&gt;</span>';
+    '<span class="text-muted-foreground">&lt;/</span><span class="text-rose-600 dark:text-rose-400">transition</span><span class="text-muted-foreground">&gt;</span>\n\n' +
+    '<span class="text-muted-foreground">// the value is a bare method name in the same component</span>';
 
   const happening = [
     "Toggling swaps the element in/out; <transition> animates both directions.",
@@ -93,7 +96,7 @@
 
     <div class="mt-8">
       <DemoPanel filename="Transitions.ulum" code="{codeSample}" consoleLines="{state.log}">
-        <FadeDemo onEvent="{logEvent}" />
+        <FadeDemo onevent="{logEvent}" />
       </DemoPanel>
       <WhatsHappening items="{happening}" />
     </div>
