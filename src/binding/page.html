@@ -3,6 +3,7 @@
   import FeatureSidebar from "../components/FeatureSidebar";
   import SiteFooter from "../components/SiteFooter";
   import PageHero from "../components/PageHero";
+  import Anchor from "../components/ui/Anchor/Anchor";
   import DemoPanel from "../components/DemoPanel";
   import WhatsHappening from "../components/WhatsHappening";
   import WhyYoullLoveIt from "../components/WhyYoullLoveIt";
@@ -82,6 +83,7 @@
 <div class="mx-auto flex max-w-[1400px]">
 <FeatureSidebar active="binding" />
 <main class="min-w-0 flex-1 px-6 py-12 lg:px-10">
+  <Anchor to="/" variant="ghost" size="sm" class="mb-6">← Back to home</Anchor>
   <PageHero index="{5}" icon="{Link}" title="Binding">
     <p class="font-medium text-foreground">Two-way binding, without a model directive</p>
     <p class="mt-2">Olum has no <code class="rounded bg-muted px-1 py-0.5 text-sm">model</code> directive — every binding is a value-ish attribute reading state plus an event handler writing it back.</p>

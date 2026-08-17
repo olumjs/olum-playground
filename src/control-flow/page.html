@@ -3,6 +3,7 @@
   import FeatureSidebar from "../components/FeatureSidebar";
   import SiteFooter from "../components/SiteFooter";
   import PageHero from "../components/PageHero";
+  import Anchor from "../components/ui/Anchor/Anchor";
   import DemoPanel from "../components/DemoPanel";
   import WhatsHappening from "../components/WhatsHappening";
   import WhyYoullLoveIt from "../components/WhyYoullLoveIt";
@@ -90,6 +91,7 @@
 <div class="mx-auto flex max-w-[1400px]">
 <FeatureSidebar active="control-flow" />
 <main class="min-w-0 flex-1 px-6 py-12 lg:px-10">
+  <Anchor to="/" variant="ghost" size="sm" class="mb-6">← Back to home</Anchor>
   <PageHero index="{2}" icon="{Split}" title="Control Flow">
     <p class="font-medium text-foreground">if / else-if / else, show, and keyed for loops</p>
     <p class="mt-2">The template primitives that add, remove, hide, and repeat DOM nodes: <code class="rounded bg-muted px-1 py-0.5 text-sm">&lt;if&gt;</code>, <code class="rounded bg-muted px-1 py-0.5 text-sm">&lt;show&gt;</code>, and <code class="rounded bg-muted px-1 py-0.5 text-sm">&lt;for&gt;</code>.</p>
