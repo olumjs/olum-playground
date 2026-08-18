@@ -14,8 +14,8 @@
   const state = {
     tab: "a",
     log: [],
-    showText: "",
-    ifText: "",
+    // showText: "",
+    // ifText: "",
     showOpen: true,
     ifOpen: true,
     todos: [
@@ -119,13 +119,11 @@
     <div class="grid grid-cols-1 gap-6 rounded-xl border border-border p-6 md:grid-cols-2">
       <div>
         <div class="mb-2 flex items-center justify-between">
-          <span class="text-sm font-medium text-foreground">&lt;show&gt; — preserves state</span>
+          <span class="text-sm font-medium text-foreground">&lt;show&gt; — preserves data</span>
           <button onclick="toggleShow()" class="{btn}">{state.showOpen ? "Hide" : "Show"}</button>
         </div>
         <show when="state.showOpen">
           <input
-            value="{state.showText}"
-            oninput="(e) => state.showText = e.target.value"
             placeholder="Type, then hide/show…"
             class="h-8 w-full rounded-md border border-border bg-background px-2.5 text-sm outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50"
           />
@@ -133,13 +131,11 @@
       </div>
       <div>
         <div class="mb-2 flex items-center justify-between">
-          <span class="text-sm font-medium text-foreground">&lt;if&gt; — resets state</span>
+          <span class="text-sm font-medium text-foreground">&lt;if&gt; — resets data</span>
           <button onclick="toggleIf()" class="{btn}">{state.ifOpen ? "Remove" : "Add"}</button>
         </div>
         <if when="state.ifOpen">
           <input
-            value="{state.ifText}"
-            oninput="(e) => state.ifText = e.target.value"
             placeholder="Type, then remove/add…"
             class="h-8 w-full rounded-md border border-border bg-background px-2.5 text-sm outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50"
           />
